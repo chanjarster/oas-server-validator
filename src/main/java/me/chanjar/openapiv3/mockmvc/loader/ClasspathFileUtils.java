@@ -1,4 +1,4 @@
-package me.chanjar.openapiv3.mockmvc.utils;
+package me.chanjar.openapiv3.mockmvc.loader;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -27,9 +26,6 @@ class ClasspathFileUtils {
 
     try (InputStreamReader reader = new InputStreamReader(resource.getInputStream())) {
       return IOUtils.toString(reader);
-    } catch (FileNotFoundException e) {
-      LOGGER.warn("Resource not found", e);
-      return null;
     }
 
   }
