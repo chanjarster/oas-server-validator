@@ -9,8 +9,28 @@ import org.springframework.http.HttpMethod;
 public class OperationResolver {
 
   private OpenAPI openAPI;
+  private String path;
+  private HttpMethod httpMethod;
 
-  public Operation resolve(OpenAPI openAPI, String path, HttpMethod httpMethod) {
+  /**
+   * @param openAPI    {@link OpenAPI} object be searched
+   * @param path       locates at: <code>paths.[path(PathItem)]</code><br>
+   *                   see: <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#paths-object">Paths Object</a>
+   * @param httpMethod locates at: <code>paths.[path].[http-method]</code><br>
+   *                   see: <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#path-item-object">Path Item Object</a>
+   */
+  public OperationResolver(OpenAPI openAPI, String path, HttpMethod httpMethod) {
+    this.openAPI = openAPI;
+    this.path = path;
+    this.httpMethod = httpMethod;
+  }
+
+  /**
+   * Get an {@link Operation} object
+   *
+   * @return
+   */
+  public Operation resolve() {
 
     PathItem pathItem = openAPI.getPaths().get(path);
     switch (httpMethod) {

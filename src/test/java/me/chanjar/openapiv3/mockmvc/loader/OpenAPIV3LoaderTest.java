@@ -13,7 +13,7 @@ public class OpenAPIV3LoaderTest {
 
   @Test
   public void test_loadFromClasspath_good() throws IOException {
-    OpenAPI openAPI = OpenAPIV3Loader.loadFromClasspath("me/chanjar/openapiv3/mockmvc/loader/petstore.yaml");
+    OpenAPI openAPI = OpenAPIV3Loader.loadFromClasspath("petstore.yaml");
     assertNotNull(openAPI);
   }
 
@@ -27,7 +27,7 @@ public class OpenAPIV3LoaderTest {
   @Test
   public void test_loadFromLocalDisk_good() throws IOException {
 
-    String specContent = ClasspathFileUtils.getFileContent("me/chanjar/openapiv3/mockmvc/loader/petstore.yaml");
+    String specContent = ClasspathFileUtils.getFileContent("petstore.yaml");
 
     File tempFile = File.createTempFile("openapi-", ".yaml");
     tempFile.deleteOnExit();
