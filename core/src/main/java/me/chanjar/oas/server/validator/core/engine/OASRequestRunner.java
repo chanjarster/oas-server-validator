@@ -9,6 +9,6 @@ import me.chanjar.oas.server.validator.core.interaction.OASRequest;
 public interface OASRequestRunner<RES> {
 
 
-  RES doRequest(OASRequest oasRequest);
+  RES doRequest(OASRequest oasRequest) throws Exception;
 
 }

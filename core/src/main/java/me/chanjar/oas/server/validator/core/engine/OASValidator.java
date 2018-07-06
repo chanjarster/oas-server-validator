@@ -29,6 +29,7 @@ public abstract class OASValidator<RES, R extends OASRequestRunner<RES>, V exten
   private OASRequestResponseGenerator oasRequestResponseGenerator = null;
 
   private OASValidationOptions options = new OASValidationOptions();
+
   private R oasRequestRunner = null;
   private V oasResponseValidator = null;
 
@@ -49,7 +50,7 @@ public abstract class OASValidator<RES, R extends OASRequestRunner<RES>, V exten
    *                               {@link ApiResponse} Object locates at: <code>paths.[path(PathItem)].[http-method(Operation)].responses.[http-status-code(Response)]</code><br>
    *                               see <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#responses-object">Response Object</a>
    */
-  public void validate(String path, PathItem.HttpMethod httpMethod, String responseHttpStatusCode) {
+  public void validate(String path, PathItem.HttpMethod httpMethod, String responseHttpStatusCode) throws Exception {
 
     PathItem pathItem = openAPI.getPaths().get(path);
 
