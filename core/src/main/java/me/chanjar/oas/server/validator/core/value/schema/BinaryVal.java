@@ -10,4 +10,5 @@ public class BinaryVal extends SchemaVal<Byte[]> {
   public BinaryVal(Byte[] value) {
     super(value);
   }
+
 }

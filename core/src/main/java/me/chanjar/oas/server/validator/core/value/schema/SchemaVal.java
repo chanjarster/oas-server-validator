@@ -1,5 +1,10 @@
 package me.chanjar.oas.server.validator.core.value.schema;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.util.Objects;
+
 /**
  * property value of {@link io.swagger.v3.oas.models.media.Schema}<br>
  * doc: <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#schemaObject">Schema Object</a><br>
@@ -33,4 +38,24 @@ public abstract class SchemaVal<T> {
     return value;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    SchemaVal<?> schemaVal = (SchemaVal<?>) o;
+    return Objects.equals(value, schemaVal.value);
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(value);
+  }
+
+  @Override
+  public String toString() {
+    return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+        .append("value", value)
+        .toString();
+  }
 }

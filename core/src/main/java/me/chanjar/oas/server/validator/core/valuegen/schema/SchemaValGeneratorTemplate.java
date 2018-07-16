@@ -1,6 +1,7 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema;
 
 import io.swagger.v3.oas.models.media.Schema;
+import me.chanjar.oas.server.validator.core.value.schema.IgnoredVal;
 import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
 import me.chanjar.oas.server.validator.core.valuegen.SchemaValGenerationException;
 
@@ -25,14 +26,26 @@ public abstract class SchemaValGeneratorTemplate<S extends Schema, V extends Sch
   }
 
   @Override
-  public List<V> generateGoods(S schema) {
+  public List<SchemaVal> generateGoods(S schema, SchemaValCons cons, boolean typeSensitive) {
 
-    List<V> result = new ArrayList<>();
+    List<SchemaVal> result = new ArrayList<>();
 
     for (GoodSchemaValGenerator<S, V> goodSchemaValGenerator : getGoodGenerators()) {
       if (goodSchemaValGenerator.supports(schema)) {
         result.add(goodSchemaValGenerator.generate(schema));
       }
+    }
+
+    if (!cons.isRequired()) {
+      result.add(IgnoredVal.INSTANCE);
+    }
+
+    if (cons.isNullable()) {
+      result.add(createNullSchemaVal());
+    }
+
+    if (!typeSensitive) {
+      result.add(createDifferentTypeSchemaVal());
     }
 
     if (result.isEmpty()) {
@@ -44,7 +57,7 @@ public abstract class SchemaValGeneratorTemplate<S extends Schema, V extends Sch
   }
 
   @Override
-  public SchemaVal generateBad(S schema, boolean allowChangeType) {
+  public SchemaVal generateBad(S schema, SchemaValCons cons, boolean typeSensitive) {
 
     for (BadSchemaValGenerator<S, V> badSchemaValGenerator : getBadGenerators()) {
       if (badSchemaValGenerator.supports(schema)) {
@@ -52,8 +65,16 @@ public abstract class SchemaValGeneratorTemplate<S extends Schema, V extends Sch
       }
     }
 
-    if (allowChangeType) {
-      return getDifferentTypeSchemaVal();
+    if (cons.isRequired()) {
+      return IgnoredVal.INSTANCE;
+    }
+
+    if (!cons.isNullable()) {
+      return createNullSchemaVal();
+    }
+
+    if (typeSensitive) {
+      return createDifferentTypeSchemaVal();
     }
 
     throw null;
@@ -61,7 +82,8 @@ public abstract class SchemaValGeneratorTemplate<S extends Schema, V extends Sch
   }
 
   @Override
-  public List<SchemaVal> generateBads(S schema, boolean allowChangeType) {
+  public List<SchemaVal> generateBads(S schema, SchemaValCons cons,
+      boolean typeSensitive) {
 
     List<SchemaVal> result = new ArrayList<>();
 
@@ -71,15 +93,25 @@ public abstract class SchemaValGeneratorTemplate<S extends Schema, V extends Sch
       }
     }
 
-    if (allowChangeType) {
-      result.add(getDifferentTypeSchemaVal());
+    if (typeSensitive) {
+      result.add(createDifferentTypeSchemaVal());
+    }
+
+    if (cons.isRequired()) {
+      result.add(IgnoredVal.INSTANCE);
+    }
+
+    if (!cons.isNullable()) {
+      result.add(createNullSchemaVal());
     }
 
     return result;
 
   }
 
-  protected abstract SchemaVal getDifferentTypeSchemaVal();
+  protected abstract SchemaVal createDifferentTypeSchemaVal();
+
+  protected abstract V createNullSchemaVal();
 
   protected abstract Class<S> getSchemaValClass();
 

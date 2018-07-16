@@ -47,7 +47,12 @@ public class StringValGenerator extends SchemaValGeneratorTemplate<StringSchema,
   }
 
   @Override
-  protected SchemaVal getDifferentTypeSchemaVal() {
+  protected StringVal createNullSchemaVal() {
+    return new StringVal(null);
+  }
+
+  @Override
+  protected SchemaVal createDifferentTypeSchemaVal() {
     return new IntegerVal(0);
   }
 

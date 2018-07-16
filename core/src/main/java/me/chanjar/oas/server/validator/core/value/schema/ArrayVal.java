@@ -10,4 +10,6 @@ public class ArrayVal extends SchemaVal<SchemaVal[]> {
   public ArrayVal(SchemaVal[] value) {
     super(value);
   }
+
+
 }

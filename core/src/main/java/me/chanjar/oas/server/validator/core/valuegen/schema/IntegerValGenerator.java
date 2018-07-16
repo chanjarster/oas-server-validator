@@ -22,7 +22,6 @@ public class IntegerValGenerator extends SchemaValGeneratorTemplate<IntegerSchem
 
   public IntegerValGenerator() {
 
-    // TODO
     goodGenerators = Collections.unmodifiableList(Arrays.asList(
         new GoodIntegerGenerator1(),
         new GoodIntegerGenerator2(),
@@ -47,8 +46,13 @@ public class IntegerValGenerator extends SchemaValGeneratorTemplate<IntegerSchem
   }
 
   @Override
-  protected SchemaVal getDifferentTypeSchemaVal() {
+  protected SchemaVal createDifferentTypeSchemaVal() {
     return new StringVal("string");
+  }
+
+  @Override
+  protected IntegerVal createNullSchemaVal() {
+    return new IntegerVal(null);
   }
 
   @Override

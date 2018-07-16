@@ -6,7 +6,9 @@ package me.chanjar.oas.server.validator.core.value.schema;
  * @see io.swagger.v3.oas.models.media.IntegerSchema
  */
 public class IntegerVal extends SchemaVal<Integer> {
+
   public IntegerVal(Integer value) {
     super(value);
   }
+
 }
