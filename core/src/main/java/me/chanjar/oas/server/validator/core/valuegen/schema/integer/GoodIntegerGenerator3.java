@@ -4,9 +4,12 @@ import io.swagger.v3.oas.models.media.IntegerSchema;
 import me.chanjar.oas.server.validator.core.value.schema.IntegerVal;
 
 /**
- * Supports maximum != null
- * https://tools.ietf.org/html/draft-wright-json-schema-validation-00#section-5.2
- * https://tools.ietf.org/html/draft-wright-json-schema-validation-00#section-5.3
+ * Supports:
+ * <ol>
+ * <li><a href="https://tools.ietf.org/html/draft-wright-json-schema-validation-00#section-5.2">maximum</a> != null</li>
+ * <li><a href="https://tools.ietf.org/html/draft-wright-json-schema-validation-00#section-5.3">exclusiveMaximum</a></li>
+ * <li><a href="https://tools.ietf.org/html/draft-wright-json-schema-validation-00#section-5.1">multipleOf</a></li>
+ * </ol>
  */
 public class GoodIntegerGenerator3 implements GoodIntegerValGenerator {
   @Override
@@ -19,10 +22,15 @@ public class GoodIntegerGenerator3 implements GoodIntegerValGenerator {
   public IntegerVal generate(IntegerSchema schema) {
 
     if (Boolean.TRUE.equals(schema.getExclusiveMaximum())) {
-      return new IntegerVal(schema.getMaximum().intValue() - 1);
+      if (schema.getMultipleOf() != null) {
+
+      } else {
+        return new IntegerVal(schema.getMaximum().intValue() - 1);
+      }
+
     }
 
     return new IntegerVal(schema.getMaximum().intValue());
-    
+
   }
 }

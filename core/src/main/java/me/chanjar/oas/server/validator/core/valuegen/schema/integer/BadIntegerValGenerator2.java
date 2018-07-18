@@ -4,7 +4,7 @@ import io.swagger.v3.oas.models.media.IntegerSchema;
 import me.chanjar.oas.server.validator.core.value.schema.IntegerVal;
 
 /**
- * Support maxLength != null
+ * Support maxLength != null, multipleOf
  */
 public class BadIntegerValGenerator2 implements BadIntegerValGenerator {
 

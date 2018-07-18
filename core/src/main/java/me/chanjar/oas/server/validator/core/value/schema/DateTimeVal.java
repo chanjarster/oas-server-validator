@@ -1,6 +1,6 @@
 package me.chanjar.oas.server.validator.core.value.schema;
 
-import java.time.ZonedDateTime;
+import java.util.Date;
 
 /**
  * As defined by <code>date-time</code> - <a href="https://xml2rfc.ietf.org/public/rfc/html/rfc3339.html#anchor14">RFC3339</a><br>
@@ -8,8 +8,8 @@ import java.time.ZonedDateTime;
  *
  * @see io.swagger.v3.oas.models.media.DateTimeSchema
  */
-public class DateTimeVal extends SchemaVal<ZonedDateTime> {
-  public DateTimeVal(ZonedDateTime value) {
+public class DateTimeVal extends SchemaVal<Date> {
+  public DateTimeVal(Date value) {
     super(value);
   }
 }

@@ -6,8 +6,8 @@ package me.chanjar.oas.server.validator.core.value.schema;
  *
  * @see io.swagger.v3.oas.models.media.BinarySchema
  */
-public class BinaryVal extends SchemaVal<Byte[]> {
-  public BinaryVal(Byte[] value) {
+public class BinaryVal extends SchemaVal<String> {
+  public BinaryVal(String value) {
     super(value);
   }
 

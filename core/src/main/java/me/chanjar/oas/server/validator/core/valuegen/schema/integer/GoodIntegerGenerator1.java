@@ -10,7 +10,9 @@ public class GoodIntegerGenerator1 implements GoodIntegerValGenerator {
   @Override
   public boolean supports(IntegerSchema schema) {
 
-    return IntegerSchemaSupport.supports(schema) && schema.getMaximum() == null && schema.getMinimum() == null;
+    return IntegerSchemaSupport.supports(schema)
+        && schema.getMaximum() == null
+        && schema.getMinimum() == null;
   }
 
   @Override
