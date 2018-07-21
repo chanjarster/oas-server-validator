@@ -1,7 +1,7 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.string;
 
+import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
-import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
 import me.chanjar.oas.server.validator.core.value.schema.StringVal;
 import org.apache.commons.lang3.StringUtils;
 
@@ -11,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 public class BadStringValGenerator1 implements BadStringValGenerator {
 
   @Override
-  public boolean supports(StringSchema schema) {
+  public boolean supports(Schema schema) {
     return StringSchemaSupport.supports(schema) && schema.getMinLength() != null;
   }
 

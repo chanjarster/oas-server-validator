@@ -1,6 +1,7 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.integer;
 
 import io.swagger.v3.oas.models.media.IntegerSchema;
+import io.swagger.v3.oas.models.media.Schema;
 import me.chanjar.oas.server.validator.core.value.schema.IntegerVal;
 
 /**
@@ -9,7 +10,7 @@ import me.chanjar.oas.server.validator.core.value.schema.IntegerVal;
 public class BadIntegerValGenerator1 implements BadIntegerValGenerator {
 
   @Override
-  public boolean supports(IntegerSchema schema) {
+  public boolean supports(Schema schema) {
     return IntegerSchemaSupport.supports(schema) && schema.getMinimum() != null;
   }
 

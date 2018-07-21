@@ -1,5 +1,6 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema;
 
+import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import me.chanjar.oas.server.validator.core.value.schema.IgnoredVal;
 import me.chanjar.oas.server.validator.core.value.schema.IntegerVal;
@@ -126,7 +127,7 @@ public class SchemaValGeneratorTemplateTest {
       GoodSchemaValGenerator<StringSchema, StringVal> g = new GoodSchemaValGenerator<StringSchema, StringVal>() {
 
         @Override
-        public boolean supports(StringSchema schema) {
+        public boolean supports(Schema schema) {
           return true;
         }
 

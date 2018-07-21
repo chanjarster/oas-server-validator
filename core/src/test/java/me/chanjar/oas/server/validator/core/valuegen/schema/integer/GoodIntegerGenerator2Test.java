@@ -40,6 +40,10 @@ public class GoodIntegerGenerator2Test {
             new Object[] { createSchema2(BigDecimal.ONE, true, BigDecimal.valueOf(2L)), 2 },
             new Object[] { createSchema2(BigDecimal.ONE, false, BigDecimal.valueOf(2L)), 2 },
 
+            new Object[] { createSchema2(BigDecimal.valueOf(2L), null, BigDecimal.valueOf(2L)), 2 },
+            new Object[] { createSchema2(BigDecimal.valueOf(2L), true, BigDecimal.valueOf(2L)), 4 },
+            new Object[] { createSchema2(BigDecimal.valueOf(2L), false, BigDecimal.valueOf(2L)), 2 },
+
             new Object[] { createSchema2(BigDecimal.ONE, null, BigDecimal.valueOf(2.5D)), 5 },
             new Object[] { createSchema2(BigDecimal.ONE, true, BigDecimal.valueOf(2.5D)), 5 },
             new Object[] { createSchema2(BigDecimal.ONE, false, BigDecimal.valueOf(2.5D)), 5 },
@@ -84,8 +88,8 @@ public class GoodIntegerGenerator2Test {
   }
 
   @Test(dataProvider = "testGenerateData")
-  public void testGenerate(IntegerSchema schema, int referenceValue) {
-    assertEquals(goodIntegerGenerator2.generate(schema), new IntegerVal(referenceValue));
+  public void testGenerate(IntegerSchema schema, int expected) {
+    assertEquals(goodIntegerGenerator2.generate(schema), new IntegerVal(expected));
   }
 
   private IntegerSchema createSchema(BigDecimal min, BigDecimal max) {

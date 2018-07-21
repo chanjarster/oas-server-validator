@@ -21,7 +21,7 @@ public abstract class SchemaValGeneratorTemplate<S extends Schema, V extends Sch
     }
 
     throw new SchemaValGenerationException(
-        "Cannot generate good mock " + getSchemaValClass().getSimpleName() + " for schema: " + schema.toString());
+        "Cannot generate good " + getSchemaValClass().getSimpleName() + " for schema: " + schema.toString());
 
   }
 
@@ -50,7 +50,7 @@ public abstract class SchemaValGeneratorTemplate<S extends Schema, V extends Sch
 
     if (result.isEmpty()) {
       throw new SchemaValGenerationException(
-          "Cannot generate good mock " + getSchemaValClass().getSimpleName() + "s for schema: " + schema.toString());
+          "Cannot generate good " + getSchemaValClass().getSimpleName() + "s for schema: " + schema.toString());
     }
     return result;
 

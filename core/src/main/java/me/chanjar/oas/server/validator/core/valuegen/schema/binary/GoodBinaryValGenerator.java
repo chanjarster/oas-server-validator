@@ -1,6 +1,7 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.binary;
 
 import io.swagger.v3.oas.models.media.BinarySchema;
+import io.swagger.v3.oas.models.media.Schema;
 import me.chanjar.oas.server.validator.core.value.schema.BinaryVal;
 import me.chanjar.oas.server.validator.core.valuegen.schema.GoodSchemaValGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -14,7 +15,7 @@ import java.util.Base64;
 public class GoodBinaryValGenerator implements GoodSchemaValGenerator<BinarySchema, BinaryVal> {
 
   @Override
-  public boolean supports(BinarySchema schema) {
+  public boolean supports(Schema schema) {
     return BinarySchemaSupport.supports(schema);
   }
 

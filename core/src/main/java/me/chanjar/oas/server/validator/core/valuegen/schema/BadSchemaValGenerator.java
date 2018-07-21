@@ -5,7 +5,7 @@ import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
 
 public interface BadSchemaValGenerator<S extends Schema, V extends SchemaVal> {
 
-  boolean supports(S schema);
+  boolean supports(Schema schema);
 
   V generate(S schema);
 

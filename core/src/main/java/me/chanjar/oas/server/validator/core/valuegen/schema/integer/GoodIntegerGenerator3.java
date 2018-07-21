@@ -1,7 +1,12 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.integer;
 
 import io.swagger.v3.oas.models.media.IntegerSchema;
+import io.swagger.v3.oas.models.media.Schema;
+import me.chanjar.oas.server.validator.core.utils.BigDecimalUtils;
 import me.chanjar.oas.server.validator.core.value.schema.IntegerVal;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * Supports:
@@ -13,7 +18,7 @@ import me.chanjar.oas.server.validator.core.value.schema.IntegerVal;
  */
 public class GoodIntegerGenerator3 implements GoodIntegerValGenerator {
   @Override
-  public boolean supports(IntegerSchema schema) {
+  public boolean supports(Schema schema) {
 
     return IntegerSchemaSupport.supports(schema) && schema.getMaximum() != null;
   }
@@ -21,16 +26,43 @@ public class GoodIntegerGenerator3 implements GoodIntegerValGenerator {
   @Override
   public IntegerVal generate(IntegerSchema schema) {
 
-    if (Boolean.TRUE.equals(schema.getExclusiveMaximum())) {
-      if (schema.getMultipleOf() != null) {
+    BigDecimal max = schema.getMaximum();
+    BigDecimal result;
 
+    boolean exclusiveMax = Boolean.TRUE.equals(schema.getExclusiveMaximum());
+
+    BigDecimal multipleOf = schema.getMultipleOf();
+    if (multipleOf != null) {
+
+      int startMultiplier = max.divide(multipleOf, 0, RoundingMode.FLOOR).intValue();
+
+      do {
+        result = BigDecimalUtils.findIntegerMultipleOf(multipleOf, startMultiplier, false);
+        startMultiplier--;
+      } while (!satisfy(max, result, exclusiveMax));
+
+    } else {
+
+      if (exclusiveMax) {
+        result = BigDecimalUtils.findIntegerLt(max);
       } else {
-        return new IntegerVal(schema.getMaximum().intValue() - 1);
+        result = BigDecimalUtils.findIntegerLte(max);
       }
 
     }
 
-    return new IntegerVal(schema.getMaximum().intValue());
+    return new IntegerVal(result.intValue());
 
   }
+
+  private boolean satisfy(BigDecimal max, BigDecimal result, boolean exclusiveMax) {
+
+    if (exclusiveMax) {
+      return result.compareTo(max) < 0;
+    }
+
+    return result.compareTo(max) <= 0;
+
+  }
+
 }

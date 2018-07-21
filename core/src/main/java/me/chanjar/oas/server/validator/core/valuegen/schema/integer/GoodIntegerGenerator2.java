@@ -1,6 +1,8 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.integer;
 
 import io.swagger.v3.oas.models.media.IntegerSchema;
+import io.swagger.v3.oas.models.media.Schema;
+import me.chanjar.oas.server.validator.core.utils.BigDecimalUtils;
 import me.chanjar.oas.server.validator.core.value.schema.IntegerVal;
 
 import java.math.BigDecimal;
@@ -16,7 +18,7 @@ import java.math.RoundingMode;
  */
 public class GoodIntegerGenerator2 implements GoodIntegerValGenerator {
   @Override
-  public boolean supports(IntegerSchema schema) {
+  public boolean supports(Schema schema) {
 
     return IntegerSchemaSupport.supports(schema) && schema.getMinimum() != null;
   }
@@ -25,26 +27,26 @@ public class GoodIntegerGenerator2 implements GoodIntegerValGenerator {
   public IntegerVal generate(IntegerSchema schema) {
 
     BigDecimal min = schema.getMinimum();
-    BigDecimal result = schema.getMinimum();
+    BigDecimal result;
 
     boolean exclusiveMin = Boolean.TRUE.equals(schema.getExclusiveMinimum());
 
     BigDecimal multipleOf = schema.getMultipleOf();
     if (multipleOf != null) {
 
-      BigDecimal multiplier = result.divide(multipleOf, 0, RoundingMode.CEILING);
+      int startMultiplier = min.divide(multipleOf, 0, RoundingMode.CEILING).intValue();
 
-      result = multiplier.multiply(multipleOf);
-      while (!satisfy(min, result, exclusiveMin)) {
-        // result is not an integer val, add multiplier until result becomes an integer
-        multiplier = multiplier.add(BigDecimal.ONE);
-        result = multiplier.multiply(multipleOf);
-      }
+      do {
+        result = BigDecimalUtils.findIntegerMultipleOf(multipleOf, startMultiplier, true);
+        startMultiplier++;
+      } while (!satisfy(min, result, exclusiveMin));
+
     } else {
 
-      while (!satisfy(min, result, exclusiveMin)) {
-        // result is not an integer val, add 1 and ceiling
-        result = result.add(BigDecimal.ONE).setScale(0, RoundingMode.FLOOR);
+      if (exclusiveMin) {
+        result = BigDecimalUtils.findIntegerGt(min);
+      } else {
+        result = BigDecimalUtils.findIntegerGte(min);
       }
 
     }
@@ -54,11 +56,6 @@ public class GoodIntegerGenerator2 implements GoodIntegerValGenerator {
   }
 
   private boolean satisfy(BigDecimal min, BigDecimal result, boolean exclusiveMin) {
-
-    if (new BigDecimal(result.intValue()).compareTo(result) != 0) {
-      // result is not an integer
-      return false;
-    }
 
     if (exclusiveMin) {
       return result.compareTo(min) > 0;
