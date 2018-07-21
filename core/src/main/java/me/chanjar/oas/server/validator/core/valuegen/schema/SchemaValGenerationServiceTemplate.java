@@ -8,13 +8,33 @@ import me.chanjar.oas.server.validator.core.valuegen.SchemaValGenerationExceptio
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class SchemaValGeneratorTemplate<S extends Schema, V extends SchemaVal>
-    implements SchemaValGenerator<S, V> {
+public abstract class SchemaValGenerationServiceTemplate<S extends Schema, V extends SchemaVal>
+    implements SchemaValGenerationService<S, V> {
+
+  private List<SchemaValGenerator<S, V>> goodGenerators = new ArrayList<>();
+
+  private List<SchemaValGenerator<S, V>> badGenerators = new ArrayList<>();
+
+  public void addGoodGenerator(SchemaValGenerator<S, V> schemaValGenerator) {
+    goodGenerators.add(schemaValGenerator);
+  }
+
+  public void addBadGenerator(SchemaValGenerator<S, V> schemaValGenerator) {
+    badGenerators.add(schemaValGenerator);
+  }
+
+  public void addGoodGenerators(List<? extends SchemaValGenerator<S, V>> schemaValGenerators) {
+    goodGenerators.addAll(schemaValGenerators);
+  }
+
+  public void addBadGenerators(List<? extends SchemaValGenerator<S, V>> schemaValGenerators) {
+    badGenerators.addAll(schemaValGenerators);
+  }
 
   @Override
   public V generateGood(S schema) {
 
-    for (GoodSchemaValGenerator<S, V> goodSchemaValGenerator : getGoodGenerators()) {
+    for (SchemaValGenerator<S, V> goodSchemaValGenerator : goodGenerators) {
       if (goodSchemaValGenerator.supports(schema)) {
         return goodSchemaValGenerator.generate(schema);
       }
@@ -30,7 +50,7 @@ public abstract class SchemaValGeneratorTemplate<S extends Schema, V extends Sch
 
     List<SchemaVal> result = new ArrayList<>();
 
-    for (GoodSchemaValGenerator<S, V> goodSchemaValGenerator : getGoodGenerators()) {
+    for (SchemaValGenerator<S, V> goodSchemaValGenerator : goodGenerators) {
       if (goodSchemaValGenerator.supports(schema)) {
         result.add(goodSchemaValGenerator.generate(schema));
       }
@@ -59,7 +79,7 @@ public abstract class SchemaValGeneratorTemplate<S extends Schema, V extends Sch
   @Override
   public SchemaVal generateBad(S schema, SchemaValCons cons, boolean typeSensitive) {
 
-    for (BadSchemaValGenerator<S, V> badSchemaValGenerator : getBadGenerators()) {
+    for (SchemaValGenerator<S, V> badSchemaValGenerator : badGenerators) {
       if (badSchemaValGenerator.supports(schema)) {
         return badSchemaValGenerator.generate(schema);
       }
@@ -77,7 +97,8 @@ public abstract class SchemaValGeneratorTemplate<S extends Schema, V extends Sch
       return createDifferentTypeSchemaVal();
     }
 
-    throw null;
+    throw new SchemaValGenerationException(
+        "Cannot generate bad " + getSchemaValClass().getSimpleName() + " for schema: " + schema.toString());
 
   }
 
@@ -87,7 +108,7 @@ public abstract class SchemaValGeneratorTemplate<S extends Schema, V extends Sch
 
     List<SchemaVal> result = new ArrayList<>();
 
-    for (BadSchemaValGenerator<S, V> badSchemaValGenerator : getBadGenerators()) {
+    for (SchemaValGenerator<S, V> badSchemaValGenerator : badGenerators) {
       if (badSchemaValGenerator.supports(schema)) {
         result.add(badSchemaValGenerator.generate(schema));
       }
@@ -105,6 +126,11 @@ public abstract class SchemaValGeneratorTemplate<S extends Schema, V extends Sch
       result.add(createNullSchemaVal());
     }
 
+    if (result.isEmpty()) {
+      throw new SchemaValGenerationException(
+          "Cannot generate bad " + getSchemaValClass().getSimpleName() + "s for schema: " + schema.toString());
+    }
+
     return result;
 
   }
@@ -115,7 +141,5 @@ public abstract class SchemaValGeneratorTemplate<S extends Schema, V extends Sch
 
   protected abstract Class<S> getSchemaValClass();
 
-  protected abstract List<? extends BadSchemaValGenerator<S, V>> getBadGenerators();
 
-  protected abstract List<? extends GoodSchemaValGenerator<S, V>> getGoodGenerators();
 }

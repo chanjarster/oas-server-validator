@@ -2,22 +2,22 @@ package me.chanjar.oas.server.validator.core.valuegen.schema;
 
 import io.swagger.v3.oas.models.media.ByteArraySchema;
 import me.chanjar.oas.server.validator.core.value.schema.ByteArrayVal;
-import me.chanjar.oas.server.validator.core.value.schema.ByteArrayVal;
 import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
 import me.chanjar.oas.server.validator.core.value.schema.StringVal;
 import me.chanjar.oas.server.validator.core.valuegen.schema.bytearray.ByteArraySchemaSupport;
 import me.chanjar.oas.server.validator.core.valuegen.schema.bytearray.GoodByteArrayValGenerator;
 
-import java.util.Collections;
-import java.util.List;
-
 /**
  * {@link ByteArrayVal} generator for {@link ByteArraySchema}<br>
  * doc: <a href="https://tools.ietf.org/html/draft-wright-json-schema-validation-00#section-5">JSON Schema Validation</a>
  */
-public class ByteArrayValGenerator extends SchemaValGeneratorTemplate<ByteArraySchema, ByteArrayVal> {
+public class ByteArrayValGenerationService extends SchemaValGenerationServiceTemplate<ByteArraySchema, ByteArrayVal> {
 
-  private final GoodByteArrayValGenerator goodGenerator = new GoodByteArrayValGenerator();
+  public ByteArrayValGenerationService() {
+    // TODO move it to factory
+    addGoodGenerator(new GoodByteArrayValGenerator());
+    // FIXME lack of bad generators
+  }
 
   @Override
   public boolean supports(ByteArraySchema schema) {
@@ -37,16 +37,6 @@ public class ByteArrayValGenerator extends SchemaValGeneratorTemplate<ByteArrayS
   @Override
   protected ByteArrayVal createNullSchemaVal() {
     return new ByteArrayVal(null);
-  }
-
-  @Override
-  protected List<? extends BadSchemaValGenerator<ByteArraySchema, ByteArrayVal>> getBadGenerators() {
-    return Collections.emptyList();
-  }
-
-  @Override
-  protected List<? extends GoodSchemaValGenerator<ByteArraySchema, ByteArrayVal>> getGoodGenerators() {
-    return Collections.singletonList(goodGenerator);
   }
 
 }

@@ -16,7 +16,7 @@ import java.math.RoundingMode;
  * <li><a href="https://tools.ietf.org/html/draft-wright-json-schema-validation-00#section-5.1">multipleOf</a></li>
  * </ol>
  */
-public class GoodIntegerGenerator2 implements GoodIntegerValGenerator {
+public class GoodIntegerGenerator2 implements IntegerValGenerator {
   @Override
   public boolean supports(Schema schema) {
 

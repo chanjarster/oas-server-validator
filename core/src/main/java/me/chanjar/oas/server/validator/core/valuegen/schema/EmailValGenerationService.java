@@ -9,7 +9,6 @@ import me.chanjar.oas.server.validator.core.valuegen.schema.email.EmailSchemaSup
 import me.chanjar.oas.server.validator.core.valuegen.schema.email.GoodEmailValGenerator;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -21,15 +20,12 @@ import static java.util.stream.Collectors.toList;
  * test case reference: <a href="https://blogs.msdn.microsoft.com/testing123/2009/02/06/email-address-test-cases/">Email address test cases</a>
  * </p>
  */
-public class EmailValGenerator extends SchemaValGeneratorTemplate<EmailSchema, EmailVal> {
+public class EmailValGenerationService extends SchemaValGenerationServiceTemplate<EmailSchema, EmailVal> {
 
-  private final List<GoodEmailValGenerator> goodGenerators;
+  public EmailValGenerationService() {
 
-  private final List<BadEmailValGenerator> badGenerators;
-
-  public EmailValGenerator() {
-
-    goodGenerators = Collections.unmodifiableList(
+    // TODO move it to factory
+    addGoodGenerators(
         batchCreateGood(
             "email@domain.com",
             "firstname.lastname@domain.com",
@@ -44,9 +40,10 @@ public class EmailValGenerator extends SchemaValGeneratorTemplate<EmailSchema, E
             "email@domain.name",
             "email@domain.co.jp",
             "firstname-lastname@domain.com"
-        ));
+        )
+    );
 
-    badGenerators = Collections.unmodifiableList(
+    addBadGenerators(
         batchCreateBad(
             "plainaddress",
             "#@%^%#$@#$@#.com",
@@ -88,15 +85,6 @@ public class EmailValGenerator extends SchemaValGeneratorTemplate<EmailSchema, E
     return new IntegerVal(0);
   }
 
-  @Override
-  protected List<? extends BadSchemaValGenerator<EmailSchema, EmailVal>> getBadGenerators() {
-    return badGenerators;
-  }
-
-  @Override
-  protected List<? extends GoodSchemaValGenerator<EmailSchema, EmailVal>> getGoodGenerators() {
-    return goodGenerators;
-  }
 
   private List<GoodEmailValGenerator> batchCreateGood(String... emails) {
     return Arrays.stream(emails).map(email -> new GoodEmailValGenerator(email)).collect(toList());

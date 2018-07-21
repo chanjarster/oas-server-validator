@@ -7,7 +7,7 @@ import me.chanjar.oas.server.validator.core.value.schema.IntegerVal;
 /**
  * Support maxLength != null, multipleOf
  */
-public class BadIntegerValGenerator2 implements BadIntegerValGenerator {
+public class BadIntegerValGenerator2 implements IntegerValGenerator {
 
   @Override
   public boolean supports(Schema schema) {

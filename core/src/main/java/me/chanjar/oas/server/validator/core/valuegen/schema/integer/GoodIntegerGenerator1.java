@@ -12,7 +12,7 @@ import me.chanjar.oas.server.validator.core.value.schema.IntegerVal;
  * <li><a href="https://tools.ietf.org/html/draft-wright-json-schema-validation-00#section-5.1">multipleOf</a></li>
  * </ol>
  */
-public class GoodIntegerGenerator1 implements GoodIntegerValGenerator {
+public class GoodIntegerGenerator1 implements IntegerValGenerator {
   @Override
   public boolean supports(Schema schema) {
 

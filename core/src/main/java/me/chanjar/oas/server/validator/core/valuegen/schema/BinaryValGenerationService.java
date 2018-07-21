@@ -7,16 +7,17 @@ import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
 import me.chanjar.oas.server.validator.core.valuegen.schema.binary.BinarySchemaSupport;
 import me.chanjar.oas.server.validator.core.valuegen.schema.binary.GoodBinaryValGenerator;
 
-import java.util.Collections;
-import java.util.List;
-
 /**
  * {@link BinaryVal} generator for {@link BinarySchema}<br>
  * doc: <a href="https://tools.ietf.org/html/draft-wright-json-schema-validation-00#section-5">JSON Schema Validation</a>
  */
-public class BinaryValGenerator extends SchemaValGeneratorTemplate<BinarySchema, BinaryVal> {
+public class BinaryValGenerationService extends SchemaValGenerationServiceTemplate<BinarySchema, BinaryVal> {
 
-  private final GoodBinaryValGenerator goodGenerator = new GoodBinaryValGenerator();
+  public BinaryValGenerationService() {
+    // TODO move it to factory
+    addGoodGenerator(new GoodBinaryValGenerator());
+    // FIXME lack of bad generators
+  }
 
   @Override
   public boolean supports(BinarySchema schema) {
@@ -38,14 +39,5 @@ public class BinaryValGenerator extends SchemaValGeneratorTemplate<BinarySchema,
     return new BinaryVal(null);
   }
 
-  @Override
-  protected List<? extends BadSchemaValGenerator<BinarySchema, BinaryVal>> getBadGenerators() {
-    return Collections.emptyList();
-  }
-
-  @Override
-  protected List<? extends GoodSchemaValGenerator<BinarySchema, BinaryVal>> getGoodGenerators() {
-    return Collections.singletonList(goodGenerator);
-  }
 
 }

@@ -7,7 +7,7 @@ import me.chanjar.oas.server.validator.core.value.schema.StringVal;
 /**
  * Support minLength == null && maxLength == null
  */
-public class GoodStringValGenerator1 implements GoodStringValGenerator {
+public class GoodStringValGenerator1 implements StringValGenerator {
 
   @Override
   public boolean supports(Schema schema) {

@@ -8,7 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * Support minLength != null
  */
-public class GoodStringValGenerator2 implements GoodStringValGenerator {
+public class GoodStringValGenerator2 implements StringValGenerator {
 
   @Override
   public boolean supports(Schema schema) {

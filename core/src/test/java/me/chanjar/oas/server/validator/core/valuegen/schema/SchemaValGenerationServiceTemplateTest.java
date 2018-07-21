@@ -15,7 +15,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static org.testng.Assert.assertEquals;
 
-public class SchemaValGeneratorTemplateTest {
+public class SchemaValGenerationServiceTemplateTest {
 
   private TestValGenerator generator = new TestValGenerator();
 
@@ -100,7 +100,24 @@ public class SchemaValGeneratorTemplateTest {
 
   }
 
-  public static class TestValGenerator extends SchemaValGeneratorTemplate<StringSchema, StringVal> {
+  public static class TestValGenerator extends SchemaValGenerationServiceTemplate<StringSchema, StringVal> {
+
+    public TestValGenerator() {
+      addGoodGenerator(
+          new SchemaValGenerator<StringSchema, StringVal>() {
+
+            @Override
+            public boolean supports(Schema schema) {
+              return true;
+            }
+
+            @Override
+            public StringVal generate(StringSchema schema) {
+              return new StringVal("string");
+            }
+          }
+      );
+    }
 
     @Override
     protected SchemaVal createDifferentTypeSchemaVal() {
@@ -115,28 +132,6 @@ public class SchemaValGeneratorTemplateTest {
     @Override
     protected Class<StringSchema> getSchemaValClass() {
       return StringSchema.class;
-    }
-
-    @Override
-    protected List<? extends BadSchemaValGenerator<StringSchema, StringVal>> getBadGenerators() {
-      return Collections.emptyList();
-    }
-
-    @Override
-    protected List<? extends GoodSchemaValGenerator<StringSchema, StringVal>> getGoodGenerators() {
-      GoodSchemaValGenerator<StringSchema, StringVal> g = new GoodSchemaValGenerator<StringSchema, StringVal>() {
-
-        @Override
-        public boolean supports(Schema schema) {
-          return true;
-        }
-
-        @Override
-        public StringVal generate(StringSchema schema) {
-          return new StringVal("string");
-        }
-      };
-      return asList(g);
     }
 
     @Override

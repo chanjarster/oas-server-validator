@@ -3,9 +3,8 @@ package me.chanjar.oas.server.validator.core.valuegen.schema.email;
 import io.swagger.v3.oas.models.media.EmailSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import me.chanjar.oas.server.validator.core.value.schema.EmailVal;
-import me.chanjar.oas.server.validator.core.valuegen.schema.GoodSchemaValGenerator;
 
-public class GoodEmailValGenerator implements GoodSchemaValGenerator<EmailSchema, EmailVal> {
+public class GoodEmailValGenerator implements EmailValGenerator {
 
   private final String email;
 

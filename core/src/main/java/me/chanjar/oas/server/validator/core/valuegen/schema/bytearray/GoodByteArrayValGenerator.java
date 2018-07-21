@@ -3,7 +3,6 @@ package me.chanjar.oas.server.validator.core.valuegen.schema.bytearray;
 import io.swagger.v3.oas.models.media.ByteArraySchema;
 import io.swagger.v3.oas.models.media.Schema;
 import me.chanjar.oas.server.validator.core.value.schema.ByteArrayVal;
-import me.chanjar.oas.server.validator.core.valuegen.schema.GoodSchemaValGenerator;
 
 import java.util.Base64;
 
@@ -11,7 +10,7 @@ import java.util.Base64;
  * Related json schema validation properties: none
  * see: <a href="https://tools.ietf.org/html/draft-wright-json-schema-validation-00#section-5">json-schema-validation</a>
  */
-public class GoodByteArrayValGenerator implements GoodSchemaValGenerator<ByteArraySchema, ByteArrayVal> {
+public class GoodByteArrayValGenerator implements ByteArrayValGenerator {
 
   @Override
   public boolean supports(Schema schema) {

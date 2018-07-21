@@ -6,32 +6,21 @@ import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
 import me.chanjar.oas.server.validator.core.value.schema.StringVal;
 import me.chanjar.oas.server.validator.core.valuegen.schema.integer.*;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 /**
  * {@link IntegerVal} generator for {@link IntegerSchema}<br>
  * doc: <a href="https://tools.ietf.org/html/draft-wright-json-schema-validation-00#section-5">JSON Schema Validation</a>
  */
-public class IntegerValGenerator extends SchemaValGeneratorTemplate<IntegerSchema, IntegerVal> {
+public class IntegerValGenerationService extends SchemaValGenerationServiceTemplate<IntegerSchema, IntegerVal> {
 
-  private final List<GoodIntegerValGenerator> goodGenerators;
+  public IntegerValGenerationService() {
 
-  private final List<BadIntegerValGenerator> badGenerators;
+    // TODO move it to factory
+    addGoodGenerator(new GoodIntegerGenerator1());
+    addGoodGenerator(new GoodIntegerGenerator2());
+    addGoodGenerator(new GoodIntegerGenerator3());
 
-  public IntegerValGenerator() {
-
-    goodGenerators = Collections.unmodifiableList(Arrays.asList(
-        new GoodIntegerGenerator1(),
-        new GoodIntegerGenerator2(),
-        new GoodIntegerGenerator3()
-    ));
-
-    badGenerators = Collections.unmodifiableList(Arrays.asList(
-        new BadIntegerValGenerator1(),
-        new BadIntegerValGenerator2()
-    ));
+    addBadGenerator(new BadIntegerValGenerator1());
+    addBadGenerator(new BadIntegerValGenerator2());
 
   }
 
@@ -55,13 +44,4 @@ public class IntegerValGenerator extends SchemaValGeneratorTemplate<IntegerSchem
     return new IntegerVal(null);
   }
 
-  @Override
-  protected List<? extends BadSchemaValGenerator<IntegerSchema, IntegerVal>> getBadGenerators() {
-    return badGenerators;
-  }
-
-  @Override
-  protected List<? extends GoodSchemaValGenerator<IntegerSchema, IntegerVal>> getGoodGenerators() {
-    return goodGenerators;
-  }
 }

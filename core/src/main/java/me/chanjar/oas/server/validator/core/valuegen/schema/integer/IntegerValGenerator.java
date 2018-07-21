@@ -2,7 +2,7 @@ package me.chanjar.oas.server.validator.core.valuegen.schema.integer;
 
 import io.swagger.v3.oas.models.media.IntegerSchema;
 import me.chanjar.oas.server.validator.core.value.schema.IntegerVal;
-import me.chanjar.oas.server.validator.core.valuegen.schema.GoodSchemaValGenerator;
+import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerator;
 
 /**
  * Related json schema validation properties:
@@ -15,6 +15,6 @@ import me.chanjar.oas.server.validator.core.valuegen.schema.GoodSchemaValGenerat
  * </ol>
  * see: <a href="https://tools.ietf.org/html/draft-wright-json-schema-validation-00#section-5">json-schema-validation</a>
  */
-public interface GoodIntegerValGenerator extends GoodSchemaValGenerator<IntegerSchema, IntegerVal> {
+public interface IntegerValGenerator extends SchemaValGenerator<IntegerSchema, IntegerVal> {
 
 }
