@@ -15,9 +15,9 @@ public class IntegerValGenerationService extends SchemaValGenerationServiceTempl
   public IntegerValGenerationService() {
 
     // TODO move it to factory
-    addGoodGenerator(new GoodIntegerGenerator1());
-    addGoodGenerator(new GoodIntegerGenerator2());
-    addGoodGenerator(new GoodIntegerGenerator3());
+    addGoodGenerator(new GoodIntegerValGenerator1());
+    addGoodGenerator(new GoodIntegerValGenerator2());
+    addGoodGenerator(new GoodIntegerValGenerator3());
 
     addBadGenerator(new BadIntegerValGenerator1());
     addBadGenerator(new BadIntegerValGenerator2());

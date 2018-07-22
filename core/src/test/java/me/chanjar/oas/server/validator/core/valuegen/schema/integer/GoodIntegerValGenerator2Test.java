@@ -9,9 +9,9 @@ import java.math.BigDecimal;
 
 import static org.testng.Assert.assertEquals;
 
-public class GoodIntegerGenerator2Test {
+public class GoodIntegerValGenerator2Test {
 
-  private GoodIntegerGenerator2 goodIntegerGenerator2 = new GoodIntegerGenerator2();
+  private GoodIntegerValGenerator2 generator = new GoodIntegerValGenerator2();
 
   @DataProvider
   public Object[][] testSupportsData() {
@@ -25,7 +25,7 @@ public class GoodIntegerGenerator2Test {
 
   @Test(dataProvider = "testSupportsData")
   public void testSupports(IntegerSchema schema, boolean expected) {
-    assertEquals(goodIntegerGenerator2.supports(schema), expected);
+    assertEquals(generator.supports(schema), expected);
   }
 
   @DataProvider
@@ -89,7 +89,7 @@ public class GoodIntegerGenerator2Test {
 
   @Test(dataProvider = "testGenerateData")
   public void testGenerate(IntegerSchema schema, int expected) {
-    assertEquals(goodIntegerGenerator2.generate(schema), new IntegerVal(expected));
+    assertEquals(generator.generate(schema), new IntegerVal(expected));
   }
 
   private IntegerSchema createSchema(BigDecimal min, BigDecimal max) {
