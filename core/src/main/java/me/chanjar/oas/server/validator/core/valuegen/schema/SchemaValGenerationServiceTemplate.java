@@ -3,7 +3,6 @@ package me.chanjar.oas.server.validator.core.valuegen.schema;
 import io.swagger.v3.oas.models.media.Schema;
 import me.chanjar.oas.server.validator.core.value.schema.IgnoredVal;
 import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
-import me.chanjar.oas.server.validator.core.valuegen.SchemaValGenerationException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +39,7 @@ public abstract class SchemaValGenerationServiceTemplate<S extends Schema, V ext
       }
     }
 
-    throw new SchemaValGenerationException(
-        "Cannot generate good " + getSchemaValClass().getSimpleName() + " for schema: " + schema.toString());
-
+    return null;
   }
 
   @Override
@@ -68,10 +65,6 @@ public abstract class SchemaValGenerationServiceTemplate<S extends Schema, V ext
       result.add(createDifferentTypeSchemaVal());
     }
 
-    if (result.isEmpty()) {
-      throw new SchemaValGenerationException(
-          "Cannot generate good " + getSchemaValClass().getSimpleName() + "s for schema: " + schema.toString());
-    }
     return result;
 
   }
@@ -97,9 +90,7 @@ public abstract class SchemaValGenerationServiceTemplate<S extends Schema, V ext
       return createDifferentTypeSchemaVal();
     }
 
-    throw new SchemaValGenerationException(
-        "Cannot generate bad " + getSchemaValClass().getSimpleName() + " for schema: " + schema.toString());
-
+    return null;
   }
 
   @Override
@@ -126,11 +117,6 @@ public abstract class SchemaValGenerationServiceTemplate<S extends Schema, V ext
       result.add(createNullSchemaVal());
     }
 
-    if (result.isEmpty()) {
-      throw new SchemaValGenerationException(
-          "Cannot generate bad " + getSchemaValClass().getSimpleName() + "s for schema: " + schema.toString());
-    }
-
     return result;
 
   }
@@ -140,6 +126,5 @@ public abstract class SchemaValGenerationServiceTemplate<S extends Schema, V ext
   protected abstract V createNullSchemaVal();
 
   protected abstract Class<S> getSchemaValClass();
-
 
 }
