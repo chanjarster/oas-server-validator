@@ -8,7 +8,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
 
 public class GoodDateValGeneratorTest {
 
@@ -30,7 +29,7 @@ public class GoodDateValGeneratorTest {
   @Test
   public void testGenerate() {
     DateVal result = generator.generate(new DateSchema());
-    assertNotNull(result.getValue());
+    assertEquals(result.isNull(), false);
   }
 
 }

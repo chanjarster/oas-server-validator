@@ -8,7 +8,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
 
 public class GoodBooleanValGeneratorTest {
 
@@ -30,7 +29,7 @@ public class GoodBooleanValGeneratorTest {
   @Test
   public void testGenerate() {
     BooleanVal result = generator.generate(new BooleanSchema());
-    assertNotNull(result.getValue());
+    assertEquals(result.isNull(), false);
   }
 
 }

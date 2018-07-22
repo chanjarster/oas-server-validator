@@ -30,7 +30,7 @@ public class GoodByteArrayValGeneratorTest {
   @Test
   public void testGenerate() {
     ByteArrayVal result = generator.generate(new ByteArraySchema());
-    assertNotNull(result.getValue());
+    assertEquals(result.isNull(), false);
   }
 
 }

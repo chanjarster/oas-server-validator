@@ -8,7 +8,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
 
 public class GoodBinaryValGeneratorTest {
 
@@ -30,6 +29,6 @@ public class GoodBinaryValGeneratorTest {
   @Test
   public void testGenerate() {
     BinaryVal result = generator.generate(new BinarySchema());
-    assertNotNull(result.getValue());
+    assertEquals(result.isNull(), false);
   }
 }
