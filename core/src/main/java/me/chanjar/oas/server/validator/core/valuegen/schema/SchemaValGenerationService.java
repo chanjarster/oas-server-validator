@@ -13,7 +13,7 @@ public interface SchemaValGenerationService<S extends Schema, V extends SchemaVa
    * @param schema {@link Schema}
    * @return
    */
-  boolean supports(S schema);
+  boolean supports(Schema schema);
 
   /**
    * Generate one good {@link SchemaVal}, which satisfies spec

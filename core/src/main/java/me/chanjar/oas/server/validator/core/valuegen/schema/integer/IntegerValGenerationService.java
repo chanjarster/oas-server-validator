@@ -1,11 +1,11 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.integer;
 
 import io.swagger.v3.oas.models.media.IntegerSchema;
+import io.swagger.v3.oas.models.media.Schema;
 import me.chanjar.oas.server.validator.core.value.schema.IntegerVal;
 import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
 import me.chanjar.oas.server.validator.core.value.schema.StringVal;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerationServiceTemplate;
-import me.chanjar.oas.server.validator.core.valuegen.schema.integer.*;
 
 /**
  * {@link IntegerVal} generator for {@link IntegerSchema}<br>
@@ -26,7 +26,7 @@ public class IntegerValGenerationService extends SchemaValGenerationServiceTempl
   }
 
   @Override
-  public boolean supports(IntegerSchema schema) {
+  public boolean supports(Schema schema) {
     return IntegerSchemaSupport.supports(schema);
   }
 

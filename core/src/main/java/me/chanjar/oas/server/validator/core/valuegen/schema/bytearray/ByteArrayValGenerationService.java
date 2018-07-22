@@ -1,12 +1,11 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.bytearray;
 
 import io.swagger.v3.oas.models.media.ByteArraySchema;
+import io.swagger.v3.oas.models.media.Schema;
 import me.chanjar.oas.server.validator.core.value.schema.ByteArrayVal;
 import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
 import me.chanjar.oas.server.validator.core.value.schema.StringVal;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerationServiceTemplate;
-import me.chanjar.oas.server.validator.core.valuegen.schema.bytearray.ByteArraySchemaSupport;
-import me.chanjar.oas.server.validator.core.valuegen.schema.bytearray.GoodByteArrayValGenerator;
 
 /**
  * {@link ByteArrayVal} generator for {@link ByteArraySchema}<br>
@@ -21,7 +20,7 @@ public class ByteArrayValGenerationService extends SchemaValGenerationServiceTem
   }
 
   @Override
-  public boolean supports(ByteArraySchema schema) {
+  public boolean supports(Schema schema) {
     return ByteArraySchemaSupport.supports(schema);
   }
 

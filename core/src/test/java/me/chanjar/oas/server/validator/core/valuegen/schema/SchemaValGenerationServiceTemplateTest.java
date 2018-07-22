@@ -9,7 +9,6 @@ import me.chanjar.oas.server.validator.core.value.schema.StringVal;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.util.Collections;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -135,7 +134,7 @@ public class SchemaValGenerationServiceTemplateTest {
     }
 
     @Override
-    public boolean supports(StringSchema schema) {
+    public boolean supports(Schema schema) {
       return StringSchema.class.equals(schema.getClass());
     }
   }

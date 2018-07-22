@@ -1,12 +1,11 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.binary;
 
 import io.swagger.v3.oas.models.media.BinarySchema;
+import io.swagger.v3.oas.models.media.Schema;
 import me.chanjar.oas.server.validator.core.value.schema.BinaryVal;
 import me.chanjar.oas.server.validator.core.value.schema.IntegerVal;
 import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerationServiceTemplate;
-import me.chanjar.oas.server.validator.core.valuegen.schema.binary.BinarySchemaSupport;
-import me.chanjar.oas.server.validator.core.valuegen.schema.binary.GoodBinaryValGenerator;
 
 /**
  * {@link BinaryVal} generator for {@link BinarySchema}<br>
@@ -21,7 +20,7 @@ public class BinaryValGenerationService extends SchemaValGenerationServiceTempla
   }
 
   @Override
-  public boolean supports(BinarySchema schema) {
+  public boolean supports(Schema schema) {
     return BinarySchemaSupport.supports(schema);
   }
 

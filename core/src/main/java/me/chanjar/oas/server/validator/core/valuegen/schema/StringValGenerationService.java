@@ -1,5 +1,6 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema;
 
+import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import me.chanjar.oas.server.validator.core.value.schema.IntegerVal;
 import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
@@ -26,7 +27,7 @@ public class StringValGenerationService extends SchemaValGenerationServiceTempla
   }
 
   @Override
-  public boolean supports(StringSchema schema) {
+  public boolean supports(Schema schema) {
     return StringSchemaSupport.supports(schema);
   }
 
