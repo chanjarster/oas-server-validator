@@ -38,6 +38,10 @@ public abstract class SchemaVal<T> {
     return value;
   }
 
+  public boolean isNull() {
+    return value == null;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

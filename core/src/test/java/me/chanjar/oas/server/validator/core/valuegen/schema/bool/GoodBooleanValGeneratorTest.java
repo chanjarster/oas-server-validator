@@ -1,24 +1,24 @@
-package me.chanjar.oas.server.validator.core.valuegen.schema.binary;
+package me.chanjar.oas.server.validator.core.valuegen.schema.bool;
 
-import io.swagger.v3.oas.models.media.BinarySchema;
+import io.swagger.v3.oas.models.media.BooleanSchema;
 import io.swagger.v3.oas.models.media.IntegerSchema;
 import io.swagger.v3.oas.models.media.Schema;
-import me.chanjar.oas.server.validator.core.value.schema.BinaryVal;
+import me.chanjar.oas.server.validator.core.value.schema.BooleanVal;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
-public class GoodBinaryValGeneratorTest {
+public class GoodBooleanValGeneratorTest {
 
-  private GoodBinaryValGenerator generator = new GoodBinaryValGenerator();
+  private GoodBooleanValGenerator generator = new GoodBooleanValGenerator();
 
   @DataProvider
   public Object[][] testSupportsData() {
     return new Object[][] {
         new Object[] { new IntegerSchema(), false },
-        new Object[] { new BinarySchema(), true },
+        new Object[] { new BooleanSchema(), true },
     };
   }
 
@@ -29,7 +29,8 @@ public class GoodBinaryValGeneratorTest {
 
   @Test
   public void testGenerate() {
-    BinaryVal result = generator.generate(new BinarySchema());
+    BooleanVal result = generator.generate(new BooleanSchema());
     assertNotNull(result.getValue());
   }
+
 }

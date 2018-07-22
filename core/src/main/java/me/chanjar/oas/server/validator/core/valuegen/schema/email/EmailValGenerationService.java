@@ -1,9 +1,10 @@
-package me.chanjar.oas.server.validator.core.valuegen.schema;
+package me.chanjar.oas.server.validator.core.valuegen.schema.email;
 
 import io.swagger.v3.oas.models.media.EmailSchema;
 import me.chanjar.oas.server.validator.core.value.schema.EmailVal;
 import me.chanjar.oas.server.validator.core.value.schema.IntegerVal;
 import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
+import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerationServiceTemplate;
 import me.chanjar.oas.server.validator.core.valuegen.schema.email.BadEmailValGenerator;
 import me.chanjar.oas.server.validator.core.valuegen.schema.email.EmailSchemaSupport;
 import me.chanjar.oas.server.validator.core.valuegen.schema.email.GoodEmailValGenerator;

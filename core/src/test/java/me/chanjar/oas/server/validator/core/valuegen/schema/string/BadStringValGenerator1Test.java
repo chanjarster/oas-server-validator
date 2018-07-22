@@ -1,7 +1,6 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.string;
 
 import io.swagger.v3.oas.models.media.StringSchema;
-import me.chanjar.oas.server.validator.core.value.schema.StringVal;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
