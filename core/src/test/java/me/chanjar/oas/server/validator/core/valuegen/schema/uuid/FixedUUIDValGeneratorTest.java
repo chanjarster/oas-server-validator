@@ -1,32 +1,33 @@
-package me.chanjar.oas.server.validator.core.valuegen.schema.password;
+package me.chanjar.oas.server.validator.core.valuegen.schema.uuid;
 
-import io.swagger.v3.oas.models.media.PasswordSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
-import me.chanjar.oas.server.validator.core.value.schema.PasswordVal;
+import io.swagger.v3.oas.models.media.UUIDSchema;
+import me.chanjar.oas.server.validator.core.value.schema.UUIDVal;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
 
-public class GoodPasswordValGenerator1Test {
+public class FixedUUIDValGeneratorTest {
 
-  private GoodPasswordValGenerator1 generator = new GoodPasswordValGenerator1();
+  private FixedUUIDValGenerator generator = new FixedUUIDValGenerator("fixedValue");
 
   @DataProvider
   public Object[][] testSupportsData() {
 
     return new Object[][] {
         new Object[] { createSchema(null, null), true },
-        new Object[] { createSchema(1, null), false },
-        new Object[] { createSchema(null, 1), false },
+        new Object[] { createSchema(1, null), true },
+        new Object[] { createSchema(null, 1), true },
         new Object[] { new StringSchema(), false },
+
     };
 
   }
 
-  private PasswordSchema createSchema(Integer minLength, Integer maxLength) {
-    PasswordSchema stringSchema = new PasswordSchema();
+  private UUIDSchema createSchema(Integer minLength, Integer maxLength) {
+    UUIDSchema stringSchema = new UUIDSchema();
     stringSchema.setMinLength(minLength);
     stringSchema.setMaxLength(maxLength);
     return stringSchema;
@@ -40,7 +41,7 @@ public class GoodPasswordValGenerator1Test {
   @Test
   public void testGenerate() {
 
-    assertEquals(generator.generate(createSchema(null, null)), new PasswordVal("password"));
+    assertEquals(generator.generate(createSchema(null, null)), new UUIDVal("fixedValue"));
   }
-
+  
 }

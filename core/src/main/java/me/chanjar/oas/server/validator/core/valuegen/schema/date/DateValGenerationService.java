@@ -5,19 +5,13 @@ import io.swagger.v3.oas.models.media.Schema;
 import me.chanjar.oas.server.validator.core.value.schema.DateVal;
 import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
 import me.chanjar.oas.server.validator.core.value.schema.StringVal;
-import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerationServiceTemplate;
+import me.chanjar.oas.server.validator.core.valuegen.schema.PrimitiveSchemaValGenerationService;
 
 /**
  * {@link DateVal} generator for {@link DateSchema}<br>
  * see: <a href="https://tools.ietf.org/html/draft-wright-json-schema-validation-00#page-14">json-schema-validation</a>
  */
-public class DateValGenerationService extends SchemaValGenerationServiceTemplate<DateSchema, DateVal> {
-
-  public DateValGenerationService() {
-    // TODO move it to factory
-    addGoodGenerator(new GoodDateValGenerator());
-    // FIXME lack of bad generators
-  }
+public class DateValGenerationService extends PrimitiveSchemaValGenerationService<DateSchema, DateVal> {
 
   @Override
   public boolean supports(Schema schema) {

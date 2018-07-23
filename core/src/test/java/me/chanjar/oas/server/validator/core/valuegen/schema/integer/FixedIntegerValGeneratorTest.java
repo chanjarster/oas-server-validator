@@ -1,35 +1,36 @@
-package me.chanjar.oas.server.validator.core.valuegen.schema.string;
+package me.chanjar.oas.server.validator.core.valuegen.schema.integer;
 
 import io.swagger.v3.oas.models.media.IntegerSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
+import me.chanjar.oas.server.validator.core.value.schema.IntegerVal;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.math.BigDecimal;
+
 import static org.testng.Assert.assertEquals;
 
-public class GoodStringValGenerator3Test {
+public class FixedIntegerValGeneratorTest {
 
-  private GoodStringValGenerator3 generator = new GoodStringValGenerator3();
+  private FixedIntegerValGenerator generator = new FixedIntegerValGenerator(1);
 
   @DataProvider
   public Object[][] testSupportsData() {
 
     return new Object[][] {
-        new Object[] { createSchema(null, null), false },
+        new Object[] { createSchema(null, null), true },
+        new Object[] { createSchema(1, null), true },
         new Object[] { createSchema(null, 1), true },
+        new Object[] { new StringSchema(), false },
 
-        new Object[] { createSchema("pattern", null), false },
-        new Object[] { createSchema("pattern", 1), false },
-
-        new Object[] { new IntegerSchema(), false },
     };
 
   }
 
-  private StringSchema createSchema(String pattern, Integer maxLength) {
-    StringSchema stringSchema = new StringSchema();
-    stringSchema.setPattern(pattern);
+  private IntegerSchema createSchema(Integer minLength, Integer maxLength) {
+    IntegerSchema stringSchema = new IntegerSchema();
+    stringSchema.setMinLength(minLength);
     stringSchema.setMaxLength(maxLength);
     return stringSchema;
   }
@@ -42,7 +43,7 @@ public class GoodStringValGenerator3Test {
   @Test
   public void testGenerate() {
 
-    assertEquals(generator.generate(createSchema(null, 10)).getValue().length(), 10);
+    assertEquals(generator.generate(createSchema(null, null)), new IntegerVal(1));
   }
-
+  
 }

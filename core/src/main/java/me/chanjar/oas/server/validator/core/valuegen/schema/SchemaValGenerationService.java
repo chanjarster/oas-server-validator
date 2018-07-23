@@ -55,5 +55,5 @@ public interface SchemaValGenerationService<S extends Schema, V extends SchemaVa
    * @return
    */
   List<SchemaVal> generateBads(S schema, SchemaValCons cons, boolean typeSensitive);
-
+  
 }

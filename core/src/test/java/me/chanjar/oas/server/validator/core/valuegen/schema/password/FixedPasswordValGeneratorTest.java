@@ -3,29 +3,33 @@ package me.chanjar.oas.server.validator.core.valuegen.schema.password;
 import io.swagger.v3.oas.models.media.PasswordSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
+import me.chanjar.oas.server.validator.core.value.schema.PasswordVal;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.*;
 
-public class GoodPasswordValGenerator2Test {
+public class FixedPasswordValGeneratorTest {
 
-  private GoodPasswordValGenerator2 generator = new GoodPasswordValGenerator2();
+  private FixedPasswordValGenerator generator = new FixedPasswordValGenerator("fixedValue");
 
   @DataProvider
   public Object[][] testSupportsData() {
 
     return new Object[][] {
-        new Object[] { createSchema(null), false },
-        new Object[] { createSchema(1), true },
+        new Object[] { createSchema(null, null), true },
+        new Object[] { createSchema(1, null), true },
+        new Object[] { createSchema(null, 1), true },
         new Object[] { new StringSchema(), false },
+
     };
 
   }
 
-  private PasswordSchema createSchema(Integer minLength) {
+  private PasswordSchema createSchema(Integer minLength, Integer maxLength) {
     PasswordSchema stringSchema = new PasswordSchema();
     stringSchema.setMinLength(minLength);
+    stringSchema.setMaxLength(maxLength);
     return stringSchema;
   }
 
@@ -37,7 +41,7 @@ public class GoodPasswordValGenerator2Test {
   @Test
   public void testGenerate() {
 
-    assertEquals(generator.generate(createSchema(10)).getValue().length(), 10);
+    assertEquals(generator.generate(createSchema(null, null)), new PasswordVal("fixedValue"));
   }
-
+  
 }

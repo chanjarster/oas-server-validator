@@ -5,19 +5,13 @@ import io.swagger.v3.oas.models.media.Schema;
 import me.chanjar.oas.server.validator.core.value.schema.ByteArrayVal;
 import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
 import me.chanjar.oas.server.validator.core.value.schema.StringVal;
-import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerationServiceTemplate;
+import me.chanjar.oas.server.validator.core.valuegen.schema.PrimitiveSchemaValGenerationService;
 
 /**
  * {@link ByteArrayVal} generator for {@link ByteArraySchema}<br>
  * doc: <a href="https://tools.ietf.org/html/draft-wright-json-schema-validation-00#section-5">JSON Schema Validation</a>
  */
-public class ByteArrayValGenerationService extends SchemaValGenerationServiceTemplate<ByteArraySchema, ByteArrayVal> {
-
-  public ByteArrayValGenerationService() {
-    // TODO move it to factory
-    addGoodGenerator(new GoodByteArrayValGenerator());
-    // FIXME lack of bad generators
-  }
+public class ByteArrayValGenerationService extends PrimitiveSchemaValGenerationService<ByteArraySchema, ByteArrayVal> {
 
   @Override
   public boolean supports(Schema schema) {

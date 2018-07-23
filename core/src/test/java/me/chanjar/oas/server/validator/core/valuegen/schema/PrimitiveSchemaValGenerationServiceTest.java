@@ -14,7 +14,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static org.testng.Assert.assertEquals;
 
-public class SchemaValGenerationServiceTemplateTest {
+public class PrimitiveSchemaValGenerationServiceTest {
 
   private TestValGenerator generator = new TestValGenerator();
 
@@ -99,7 +99,7 @@ public class SchemaValGenerationServiceTemplateTest {
 
   }
 
-  public static class TestValGenerator extends SchemaValGenerationServiceTemplate<StringSchema, StringVal> {
+  public static class TestValGenerator extends PrimitiveSchemaValGenerationService<StringSchema, StringVal> {
 
     public TestValGenerator() {
       addGoodGenerator(

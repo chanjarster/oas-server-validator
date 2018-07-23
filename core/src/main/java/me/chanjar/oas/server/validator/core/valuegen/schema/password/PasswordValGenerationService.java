@@ -5,26 +5,14 @@ import io.swagger.v3.oas.models.media.Schema;
 import me.chanjar.oas.server.validator.core.value.schema.IntegerVal;
 import me.chanjar.oas.server.validator.core.value.schema.PasswordVal;
 import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
-import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerationServiceTemplate;
+import me.chanjar.oas.server.validator.core.valuegen.schema.PrimitiveSchemaValGenerationService;
 
 /**
  * {@link PasswordVal} generator for {@link PasswordSchema}<br>
  * Note: pattern not supported.<br>
  * doc: <a href="https://tools.ietf.org/html/draft-wright-json-schema-validation-00#section-5">JSON Schema Validation</a>
  */
-public class PasswordValGenerationService extends SchemaValGenerationServiceTemplate<PasswordSchema, PasswordVal> {
-
-  public PasswordValGenerationService() {
-
-    // TODO move it to factory
-    addGoodGenerator(new GoodPasswordValGenerator1());
-    addGoodGenerator(new GoodPasswordValGenerator2());
-    addGoodGenerator(new GoodPasswordValGenerator3());
-
-    addBadGenerator(new BadPasswordValGenerator1());
-    addBadGenerator(new BadPasswordValGenerator2());
-
-  }
+public class PasswordValGenerationService extends PrimitiveSchemaValGenerationService<PasswordSchema, PasswordVal> {
 
   @Override
   public boolean supports(Schema schema) {

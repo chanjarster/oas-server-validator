@@ -4,11 +4,11 @@ import io.swagger.v3.oas.models.media.EmailSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import me.chanjar.oas.server.validator.core.value.schema.EmailVal;
 
-public class BadEmailValGenerator implements EmailValGenerator {
+public class FixedEmailValGenerator implements EmailValGenerator {
 
   private final String email;
 
-  public BadEmailValGenerator(String email) {
+  public FixedEmailValGenerator(String email) {
     this.email = email;
   }
 

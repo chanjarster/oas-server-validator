@@ -12,6 +12,22 @@ import java.util.Objects;
  */
 public abstract class SchemaVal<T> {
 
+  /**
+   * <ol>
+   *   <li>{@link BinaryVal}</li>
+   *   <li>{@link BooleanVal}</li>
+   *   <li>{@link ByteArrayVal}</li>
+   *   <li>{@link DateTimeVal}</li>
+   *   <li>{@link DateVal}</li>
+   *   <li>{@link EmailVal}</li>
+   *   <li>{@link IntegerVal}</li>
+   *   <li>{@link NumberVal}</li>
+   *   <li>{@link PasswordVal}</li>
+   *   <li>{@link StringVal}</li>
+   *   <li>{@link UUIDVal}</li>
+   * </ol>
+   * @return
+   */
   public static final Class<? extends SchemaVal>[] getPrimitives() {
     return new Class[] {
         BinaryVal.class,

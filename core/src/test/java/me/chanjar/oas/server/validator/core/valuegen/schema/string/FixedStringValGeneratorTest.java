@@ -9,24 +9,26 @@ import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
 
-public class GoodStringValGenerator1Test {
+public class FixedStringValGeneratorTest {
 
-  private GoodStringValGenerator1 generator = new GoodStringValGenerator1();
+  private FixedStringValGenerator generator = new FixedStringValGenerator("fixedValue");
 
   @DataProvider
   public Object[][] testSupportsData() {
 
     return new Object[][] {
         new Object[] { createSchema(null, null, null), true },
-        new Object[] { createSchema(null, 1, null), false },
-        new Object[] { createSchema(null, null, 1), false },
-        new Object[] { createSchema(null, 1, 1), false },
+        new Object[] { createSchema(null, 1, null), true },
+        new Object[] { createSchema(null, null, 1), true },
+        new Object[] { createSchema(null, 1, 1), true },
 
-        new Object[] { createSchema("pattern", null, null), false },
-        new Object[] { createSchema("pattern", 1, null), false },
-        new Object[] { createSchema("pattern", null, 1), false },
-        new Object[] { createSchema("pattern", 1, 1), false },
+        new Object[] { createSchema("pattern", null, null), true },
+        new Object[] { createSchema("pattern", 1, null), true },
+        new Object[] { createSchema("pattern", null, 1), true },
+        new Object[] { createSchema("pattern", 1, 1), true },
+
         new Object[] { new IntegerSchema(), false },
+
     };
 
   }
@@ -47,6 +49,7 @@ public class GoodStringValGenerator1Test {
   @Test
   public void testGenerate() {
 
-    assertEquals(generator.generate(createSchema(null, null, null)), new StringVal("string"));
+    assertEquals(generator.generate(createSchema(null, null, null)), new StringVal("fixedValue"));
   }
+  
 }

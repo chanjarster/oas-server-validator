@@ -5,25 +5,13 @@ import io.swagger.v3.oas.models.media.Schema;
 import me.chanjar.oas.server.validator.core.value.schema.IntegerVal;
 import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
 import me.chanjar.oas.server.validator.core.value.schema.StringVal;
-import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerationServiceTemplate;
+import me.chanjar.oas.server.validator.core.valuegen.schema.PrimitiveSchemaValGenerationService;
 
 /**
  * {@link IntegerVal} generator for {@link IntegerSchema}<br>
  * doc: <a href="https://tools.ietf.org/html/draft-wright-json-schema-validation-00#section-5">JSON Schema Validation</a>
  */
-public class IntegerValGenerationService extends SchemaValGenerationServiceTemplate<IntegerSchema, IntegerVal> {
-
-  public IntegerValGenerationService() {
-
-    // TODO move it to factory
-    addGoodGenerator(new GoodIntegerValGenerator1());
-    addGoodGenerator(new GoodIntegerValGenerator2());
-    addGoodGenerator(new GoodIntegerValGenerator3());
-
-    addBadGenerator(new BadIntegerValGenerator1());
-    addBadGenerator(new BadIntegerValGenerator2());
-
-  }
+public class IntegerValGenerationService extends PrimitiveSchemaValGenerationService<IntegerSchema, IntegerVal> {
 
   @Override
   public boolean supports(Schema schema) {

@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
 
-public class BadEmailValGeneratorTest {
+public class FixedEmailValGeneratorTest {
 
   @DataProvider
   public Object[][] testSupportsData() {
@@ -23,13 +23,13 @@ public class BadEmailValGeneratorTest {
 
   @Test(dataProvider = "testSupportsData")
   public void testSupports(Schema schema, boolean expected) {
-    BadEmailValGenerator generator = new BadEmailValGenerator("abc.com");
+    FixedEmailValGenerator generator = new FixedEmailValGenerator("abc.com");
     assertEquals(generator.supports(schema), expected);
   }
 
   @Test
   public void testGenerate() {
-    BadEmailValGenerator generator = new BadEmailValGenerator("abc.com");
+    FixedEmailValGenerator generator = new FixedEmailValGenerator("abc.com");
     EmailVal val = generator.generate(new EmailSchema());
     assertEquals(val.getValue(), "abc.com");
   }

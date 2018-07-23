@@ -1,13 +1,31 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema;
 
 import io.swagger.v3.oas.models.media.Schema;
-import me.chanjar.oas.server.validator.core.value.schema.IgnoredVal;
-import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
+import me.chanjar.oas.server.validator.core.value.schema.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class SchemaValGenerationServiceTemplate<S extends Schema, V extends SchemaVal>
+/**
+ * SchemaValGenerationService for primitive {@link SchemaVal}s.
+ * <ol>
+ * <li>{@link BinaryVal}</li>
+ * <li>{@link BooleanVal}</li>
+ * <li>{@link ByteArrayVal}</li>
+ * <li>{@link DateTimeVal}</li>
+ * <li>{@link DateVal}</li>
+ * <li>{@link EmailVal}</li>
+ * <li>{@link IntegerVal}</li>
+ * <li>{@link NumberVal}</li>
+ * <li>{@link PasswordVal}</li>
+ * <li>{@link StringVal}</li>
+ * <li>{@link UUIDVal}</li>
+ * </ol>
+ *
+ * @param <S>
+ * @param <V>
+ */
+public abstract class PrimitiveSchemaValGenerationService<S extends Schema, V extends SchemaVal>
     implements SchemaValGenerationService<S, V> {
 
   private List<SchemaValGenerator<S, V>> goodGenerators = new ArrayList<>();
