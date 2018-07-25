@@ -1,5 +1,12 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.password;
 
+import me.chanjar.oas.server.validator.core.value.schema.PasswordVal;
+import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerator;
+import me.chanjar.oas.server.validator.core.valuegen.schema.special.IgnoredValGenerator;
+import me.chanjar.oas.server.validator.core.valuegen.schema.special.NullValGenerator;
+
+import static me.chanjar.oas.server.validator.core.valuegen.schema.PrimitiveSchemaValGenerationServiceFactoryHelper.addGenerators;
+
 public abstract class PasswordValGenerationServiceFactory {
 
   private PasswordValGenerationServiceFactory() {
@@ -7,67 +14,78 @@ public abstract class PasswordValGenerationServiceFactory {
   }
 
   /**
-   * Create a default {@link PasswordValGenerationService}.
+   * Create a {@link PasswordValGenerationService} with {@link SchemaValGenerator}s
+   *
+   * @param generator
+   * @param generators
+   * @return
+   */
+  public static PasswordValGenerationService password(SchemaValGenerator generator,
+      SchemaValGenerator... generators) {
+    PasswordValGenerationService service = new PasswordValGenerationService();
+    addGenerators(service, generator, generators);
+    return service;
+  }
+
+  /**
+   * Create a default good {@link PasswordValGenerationService}.
    * <p>
    * Good Generators:
    * <ol>
    * <li>{@link GoodPasswordValGenerator1}</li>
    * <li>{@link GoodPasswordValGenerator2}</li>
    * <li>{@link GoodPasswordValGenerator3}</li>
+   * <li>{@link IgnoredValGenerator} in good mode</li>
+   * <li>{@link NullValGenerator} in good mode</li>
    * </ol>
    * </p>
+   *
+   * @return
+   */
+  public static PasswordValGenerationService goodPassword() {
+    return password(
+        new GoodPasswordValGenerator1(),
+        new GoodPasswordValGenerator2(),
+        new GoodPasswordValGenerator3(),
+        new IgnoredValGenerator(true),
+        new NullValGenerator(true)
+    );
+  }
+
+  /**
+   * Create a default bad {@link PasswordValGenerationService}.
    * <p>
    * Bad Generators:
    * <ol>
    * <li>{@link BadPasswordValGenerator1}</li>
    * <li>{@link BadPasswordValGenerator2}</li>
+   * <li>{@link IgnoredValGenerator} in bad mode</li>
+   * <li>{@link NullValGenerator} in bad mode</li>
    * </ol>
    * </p>
    *
    * @return
    */
-  public static PasswordValGenerationService password() {
-    PasswordValGenerationService service = new PasswordValGenerationService();
+  public static PasswordValGenerationService badPassword() {
+    return password(
+        new BadPasswordValGenerator1(),
+        new BadPasswordValGenerator2(),
+        new IgnoredValGenerator(false),
+        new NullValGenerator(false)
+    );
 
-    service.addGoodGenerator(new GoodPasswordValGenerator1());
-    service.addGoodGenerator(new GoodPasswordValGenerator2());
-    service.addGoodGenerator(new GoodPasswordValGenerator3());
-
-    service.addBadGenerator(new BadPasswordValGenerator1());
-    service.addBadGenerator(new BadPasswordValGenerator2());
-
-    return service;
   }
 
   /**
-   * Create a {@link PasswordValGenerationService} with good {@link FixedPasswordValGenerator}s
+   * Create a {@link PasswordValGenerationService} with fixed values
    *
    * @param value
    * @param values
    * @return
    */
-  public static PasswordValGenerationService passwordWithGood(String value, String... values) {
+  public static PasswordValGenerationService fixedPassword(String value, String... values) {
     PasswordValGenerationService service = new PasswordValGenerationService();
-    service.addGoodGenerator(new FixedPasswordValGenerator(value));
-    for (String v : values) {
-      service.addGoodGenerator(new FixedPasswordValGenerator(v));
-    }
-    return service;
-  }
-
-  /**
-   * Create a {@link PasswordValGenerationService} with bad {@link FixedPasswordValGenerator}s
-   *
-   * @param value
-   * @param values
-   * @return
-   */
-  public static PasswordValGenerationService passwordWithBad(String value, String... values) {
-    PasswordValGenerationService service = new PasswordValGenerationService();
-    service.addBadGenerator(new FixedPasswordValGenerator(value));
-    for (String v : values) {
-      service.addBadGenerator(new FixedPasswordValGenerator(v));
-    }
+    addGenerators(service, v -> new PasswordVal(v), value, values);
     return service;
   }
 

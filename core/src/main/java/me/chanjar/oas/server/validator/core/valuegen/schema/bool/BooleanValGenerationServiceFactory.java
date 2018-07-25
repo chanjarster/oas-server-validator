@@ -1,5 +1,10 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.bool;
 
+import me.chanjar.oas.server.validator.core.value.schema.BooleanVal;
+import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerator;
+
+import static me.chanjar.oas.server.validator.core.valuegen.schema.PrimitiveSchemaValGenerationServiceFactoryHelper.addGenerators;
+
 public abstract class BooleanValGenerationServiceFactory {
 
   private BooleanValGenerationServiceFactory() {
@@ -7,57 +12,45 @@ public abstract class BooleanValGenerationServiceFactory {
   }
 
   /**
-   * Create a default {@link BooleanValGenerationService}.
+   * Create a {@link BooleanValGenerationService} with {@link SchemaValGenerator}s
+   *
+   * @param generator
+   * @param generators
+   * @return
+   */
+  public static BooleanValGenerationService bool(SchemaValGenerator generator,
+      SchemaValGenerator... generators) {
+    BooleanValGenerationService service = new BooleanValGenerationService();
+    addGenerators(service, generator, generators);
+    return service;
+  }
+
+  /**
+   * Create a default good {@link BooleanValGenerationService}.
    * <p>
-   * Good Generators:
+   * Generators:
    * <ol>
    * <li>{@link GoodBooleanValGenerator}</li>
    * </ol>
    * </p>
-   * <p>
-   * Bad Generators:
-   * <ol>
-   * <li>None</li>
-   * </ol>
    * </p>
    *
    * @return
    */
-  public static BooleanValGenerationService bool() {
-    BooleanValGenerationService service = new BooleanValGenerationService();
-    service.addGoodGenerator(new GoodBooleanValGenerator());
-    return service;
+  public static BooleanValGenerationService goodBool() {
+    return bool(new GoodBooleanValGenerator());
   }
 
   /**
-   * Create a {@link BooleanValGenerationService} with good {@link FixedBooleanValGenerator}s
+   * Create a {@link BooleanValGenerationService} with fixed values
    *
    * @param value
    * @param values
    * @return
    */
-  public static BooleanValGenerationService boolWithGood(Boolean value, Boolean... values) {
+  public static BooleanValGenerationService fixedBool(Boolean value, Boolean... values) {
     BooleanValGenerationService service = new BooleanValGenerationService();
-    service.addGoodGenerator(new FixedBooleanValGenerator(value));
-    for (Boolean v : values) {
-      service.addGoodGenerator(new FixedBooleanValGenerator(v));
-    }
-    return service;
-  }
-
-  /**
-   * Create a {@link BooleanValGenerationService} with bad {@link FixedBooleanValGenerator}s
-   *
-   * @param value
-   * @param values
-   * @return
-   */
-  public static BooleanValGenerationService boolWithBad(Boolean value, Boolean... values) {
-    BooleanValGenerationService service = new BooleanValGenerationService();
-    service.addBadGenerator(new FixedBooleanValGenerator(value));
-    for (Boolean v : values) {
-      service.addBadGenerator(new FixedBooleanValGenerator(v));
-    }
+    addGenerators(service, d -> new BooleanVal(d), value, values);
     return service;
   }
 

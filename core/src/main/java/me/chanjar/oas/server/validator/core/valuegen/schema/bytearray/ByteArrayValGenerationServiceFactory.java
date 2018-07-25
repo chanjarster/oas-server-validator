@@ -1,5 +1,10 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.bytearray;
 
+import me.chanjar.oas.server.validator.core.value.schema.ByteArrayVal;
+import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerator;
+
+import static me.chanjar.oas.server.validator.core.valuegen.schema.PrimitiveSchemaValGenerationServiceFactoryHelper.addGenerators;
+
 public abstract class ByteArrayValGenerationServiceFactory {
 
   private ByteArrayValGenerationServiceFactory() {
@@ -7,57 +12,44 @@ public abstract class ByteArrayValGenerationServiceFactory {
   }
 
   /**
-   * Create a default {@link ByteArrayValGenerationService}.
+   * Create a {@link ByteArrayValGenerationService} with {@link SchemaValGenerator}s
+   *
+   * @param generator
+   * @param generators
+   * @return
+   */
+  public static ByteArrayValGenerationService byteArray(SchemaValGenerator generator,
+      SchemaValGenerator... generators) {
+    ByteArrayValGenerationService service = new ByteArrayValGenerationService();
+    addGenerators(service, generator, generators);
+    return service;
+  }
+
+  /**
+   * Create a default good {@link ByteArrayValGenerationService}.
    * <p>
-   * Good Generators:
+   * Generators:
    * <ol>
    * <li>{@link GoodByteArrayValGenerator}</li>
    * </ol>
    * </p>
-   * <p>
-   * Bad Generators:
-   * <ol>
-   * <li>None</li>
-   * </ol>
-   * </p>
    *
    * @return
    */
-  public static ByteArrayValGenerationService byteArray() {
-    ByteArrayValGenerationService service = new ByteArrayValGenerationService();
-    service.addGoodGenerator(new GoodByteArrayValGenerator());
-    return service;
+  public static ByteArrayValGenerationService goodByteArray() {
+    return byteArray(new GoodByteArrayValGenerator());
   }
 
   /**
-   * Create a {@link ByteArrayValGenerationService} with good {@link FixedByteArrayValGenerator}s
+   * Create a {@link ByteArrayValGenerationService} with fixed values
    *
    * @param value
    * @param values
    * @return
    */
-  public static ByteArrayValGenerationService byteArrayWithGood(Byte[] value, Byte[]... values) {
+  public static ByteArrayValGenerationService fixedByteArray(Byte[] value, Byte[]... values) {
     ByteArrayValGenerationService service = new ByteArrayValGenerationService();
-    service.addGoodGenerator(new FixedByteArrayValGenerator(value));
-    for (Byte[] v : values) {
-      service.addGoodGenerator(new FixedByteArrayValGenerator(v));
-    }
-    return service;
-  }
-
-  /**
-   * Create a {@link ByteArrayValGenerationService} with bad {@link FixedByteArrayValGenerator}s
-   *
-   * @param value
-   * @param values
-   * @return
-   */
-  public static ByteArrayValGenerationService byteArrayWithBad(Byte[] value, Byte[]... values) {
-    ByteArrayValGenerationService service = new ByteArrayValGenerationService();
-    service.addBadGenerator(new FixedByteArrayValGenerator(value));
-    for (Byte[] v : values) {
-      service.addBadGenerator(new FixedByteArrayValGenerator(v));
-    }
+    addGenerators(service, v -> new ByteArrayVal(v), value, values);
     return service;
   }
 

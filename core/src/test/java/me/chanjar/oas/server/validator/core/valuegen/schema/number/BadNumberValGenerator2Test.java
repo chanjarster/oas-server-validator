@@ -25,7 +25,7 @@ public class BadNumberValGenerator2Test {
 
   @Test(dataProvider = "testSupportsData")
   public void testSupports(NumberSchema schema, boolean expected) {
-    assertEquals(generator.supports(schema), expected);
+    assertEquals(generator.supports(schema, null), expected);
   }
 
   @DataProvider
@@ -59,7 +59,8 @@ public class BadNumberValGenerator2Test {
   @Test(dataProvider = "testGenerateData")
   public void testGenerate(NumberSchema schema, Double expected) {
     assertEquals(
-        generator.generate(schema).getValue().compareTo(new NumberVal(BigDecimal.valueOf(expected)).getValue()), 0);
+        generator.generate(schema, null).getValue().compareTo(new NumberVal(BigDecimal.valueOf(expected)).getValue()),
+        0);
   }
 
   private NumberSchema createSchema(BigDecimal min, BigDecimal max) {

@@ -1,5 +1,10 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.binary;
 
+import me.chanjar.oas.server.validator.core.value.schema.BinaryVal;
+import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerator;
+
+import static me.chanjar.oas.server.validator.core.valuegen.schema.PrimitiveSchemaValGenerationServiceFactoryHelper.addGenerators;
+
 public abstract class BinaryValGenerationServiceFactory {
 
   private BinaryValGenerationServiceFactory() {
@@ -7,57 +12,44 @@ public abstract class BinaryValGenerationServiceFactory {
   }
 
   /**
-   * Create a default {@link BinaryValGenerationService}.
+   * Create a {@link BinaryValGenerationService} with {@link SchemaValGenerator}s
+   *
+   * @param generator
+   * @param generators
+   * @return
+   */
+  public static BinaryValGenerationService binary(SchemaValGenerator generator,
+      SchemaValGenerator... generators) {
+    BinaryValGenerationService service = new BinaryValGenerationService();
+    addGenerators(service, generator, generators);
+    return service;
+  }
+
+  /**
+   * Create a default good {@link BinaryValGenerationService}.
    * <p>
-   * Good Generators:
+   * Generators:
    * <ol>
    * <li>{@link GoodBinaryValGenerator}</li>
    * </ol>
    * </p>
-   * <p>
-   * Bad Generators:
-   * <ol>
-   * <li>None</li>
-   * </ol>
-   * </p>
    *
    * @return
    */
-  public static BinaryValGenerationService binary() {
-    BinaryValGenerationService service = new BinaryValGenerationService();
-    service.addGoodGenerator(new GoodBinaryValGenerator());
-    return service;
+  public static BinaryValGenerationService goodBinary() {
+    return binary(new GoodBinaryValGenerator());
   }
 
   /**
-   * Create a {@link BinaryValGenerationService} with good {@link FixedBinaryValGenerator}s
+   * Create a {@link BinaryValGenerationService} with fixed values
    *
    * @param value
    * @param values
    * @return
    */
-  public static BinaryValGenerationService binaryWithGood(String value, String... values) {
+  public static BinaryValGenerationService fixedBinary(String value, String... values) {
     BinaryValGenerationService service = new BinaryValGenerationService();
-    service.addGoodGenerator(new FixedBinaryValGenerator(value));
-    for (String v : values) {
-      service.addGoodGenerator(new FixedBinaryValGenerator(v));
-    }
-    return service;
-  }
-
-  /**
-   * Create a {@link BinaryValGenerationService} with bad {@link FixedBinaryValGenerator}s
-   *
-   * @param value
-   * @param values
-   * @return
-   */
-  public static BinaryValGenerationService binaryWithBad(String value, String... values) {
-    BinaryValGenerationService service = new BinaryValGenerationService();
-    service.addBadGenerator(new FixedBinaryValGenerator(value));
-    for (String v : values) {
-      service.addBadGenerator(new FixedBinaryValGenerator(v));
-    }
+    addGenerators(service, d -> new BinaryVal(d), value, values);
     return service;
   }
 

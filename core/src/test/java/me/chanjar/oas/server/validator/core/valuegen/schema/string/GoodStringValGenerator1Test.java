@@ -41,12 +41,12 @@ public class GoodStringValGenerator1Test {
 
   @Test(dataProvider = "testSupportsData")
   public void testSupports(Schema schema, boolean expected) {
-    assertEquals(generator.supports(schema), expected);
+    assertEquals(generator.supports(schema, null), expected);
   }
 
   @Test
   public void testGenerate() {
 
-    assertEquals(generator.generate(createSchema(null, null, null)), new StringVal("string"));
+    assertEquals(generator.generate(createSchema(null, null, null), null), new StringVal("string"));
   }
 }

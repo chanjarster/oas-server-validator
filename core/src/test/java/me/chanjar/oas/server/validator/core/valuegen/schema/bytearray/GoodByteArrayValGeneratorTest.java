@@ -8,7 +8,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
 
 public class GoodByteArrayValGeneratorTest {
 
@@ -24,12 +23,12 @@ public class GoodByteArrayValGeneratorTest {
 
   @Test(dataProvider = "testSupportsData")
   public void testSupports(Schema schema, boolean expected) {
-    assertEquals(generator.supports(schema), expected);
+    assertEquals(generator.supports(schema, null), expected);
   }
 
   @Test
   public void testGenerate() {
-    ByteArrayVal result = generator.generate(new ByteArraySchema());
+    ByteArrayVal result = generator.generate(new ByteArraySchema(), null);
     assertEquals(result.isNull(), false);
   }
 

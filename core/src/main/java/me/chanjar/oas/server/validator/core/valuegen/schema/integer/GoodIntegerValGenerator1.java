@@ -3,6 +3,7 @@ package me.chanjar.oas.server.validator.core.valuegen.schema.integer;
 import io.swagger.v3.oas.models.media.IntegerSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import me.chanjar.oas.server.validator.core.value.schema.IntegerVal;
+import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValCons;
 
 /**
  * Supports:
@@ -14,7 +15,7 @@ import me.chanjar.oas.server.validator.core.value.schema.IntegerVal;
  */
 public class GoodIntegerValGenerator1 implements IntegerValGenerator {
   @Override
-  public boolean supports(Schema schema) {
+  public boolean supports(Schema schema, SchemaValCons cons) {
 
     return IntegerSchemaSupport.supports(schema)
         && schema.getMaximum() == null
@@ -22,7 +23,8 @@ public class GoodIntegerValGenerator1 implements IntegerValGenerator {
   }
 
   @Override
-  public IntegerVal generate(IntegerSchema schema) {
+  public IntegerVal generate(IntegerSchema schema,
+      SchemaValCons cons) {
     return new IntegerVal(0);
   }
 }

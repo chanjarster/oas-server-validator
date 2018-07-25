@@ -1,6 +1,10 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.email;
 
-import java.util.Arrays;
+import me.chanjar.oas.server.validator.core.value.schema.EmailVal;
+import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerator;
+import me.chanjar.oas.server.validator.core.valuegen.schema.string.StringValGenerationService;
+
+import static me.chanjar.oas.server.validator.core.valuegen.schema.PrimitiveSchemaValGenerationServiceFactoryHelper.addGenerators;
 
 public abstract class EmailValGenerationServiceFactory {
 
@@ -9,9 +13,23 @@ public abstract class EmailValGenerationServiceFactory {
   }
 
   /**
-   * Create a default {@link EmailValGenerationService}.
+   * Create a {@link EmailValGenerationService} with {@link SchemaValGenerator}s
+   *
+   * @param generator
+   * @param generators
+   * @return
+   */
+  public static EmailValGenerationService string(SchemaValGenerator generator,
+      SchemaValGenerator... generators) {
+    EmailValGenerationService service = new EmailValGenerationService();
+    addGenerators(service, generator, generators);
+    return service;
+  }
+
+  /**
+   * Create a default good {@link EmailValGenerationService}.
    * <p>
-   * Good Generators:
+   * Generators:
    * <ol>
    * <li>email@domain.com</li>
    * <li>firstname.lastname@domain.com</li>
@@ -28,8 +46,33 @@ public abstract class EmailValGenerationServiceFactory {
    * <li>firstname-lastname@domain.com</li>
    * </ol>
    * </p>
+   *
+   * @return
+   */
+  public static EmailValGenerationService goodEmail() {
+
+    return fixedEmail(
+        "email@domain.com",
+        "firstname.lastname@domain.com",
+        "email@subdomain.domain.com",
+        "firstname+lastname@domain.com",
+        "email@123.123.123.123",
+        "email@[123.123.123.123]",
+        "\"email\"@domain.com",
+        "1234567890@domain.com",
+        "email@domain-one.com",
+        "_______@domain.com",
+        "email@domain.name",
+        "email@domain.co.jp",
+        "firstname-lastname@domain.com"
+    );
+
+  }
+
+  /**
+   * Create a default bad {@link EmailValGenerationService}.
    * <p>
-   * Bad Generators:
+   * Generators:
    * <ol>
    * <li>plainaddress</li>
    * <li>#@%^%#$@#$@#.com</li>
@@ -51,28 +94,9 @@ public abstract class EmailValGenerationServiceFactory {
    *
    * @return
    */
-  public static EmailValGenerationService email() {
+  public static EmailValGenerationService badEmail() {
 
-    EmailValGenerationService service = new EmailValGenerationService();
-
-    String[] goodEmails = new String[] {
-        "email@domain.com",
-        "firstname.lastname@domain.com",
-        "email@subdomain.domain.com",
-        "firstname+lastname@domain.com",
-        "email@123.123.123.123",
-        "email@[123.123.123.123]",
-        "\"email\"@domain.com",
-        "1234567890@domain.com",
-        "email@domain-one.com",
-        "_______@domain.com",
-        "email@domain.name",
-        "email@domain.co.jp",
-        "firstname-lastname@domain.com"
-    };
-    Arrays.stream(goodEmails).forEach(email -> service.addGoodGenerator(new FixedEmailValGenerator(email)));
-
-    String[] badEmails = new String[] {
+    return fixedEmail(
         "plainaddress",
         "#@%^%#$@#$@#.com",
         "@domain.com",
@@ -88,41 +112,20 @@ public abstract class EmailValGenerationServiceFactory {
         "email@-domain.com",
         "email@111.222.333.44444",
         "email@domain..com"
-    };
-    Arrays.stream(badEmails).forEach(email -> service.addBadGenerator(new FixedEmailValGenerator(email)));
+    );
 
-    return service;
   }
 
   /**
-   * Create a {@link EmailValGenerationService} with good {@link FixedEmailValGenerator}s
+   * Create a {@link StringValGenerationService} with fixed values
    *
    * @param value
    * @param values
    * @return
    */
-  public static EmailValGenerationService eamilWithGood(String value, String... values) {
+  public static EmailValGenerationService fixedEmail(String value, String... values) {
     EmailValGenerationService service = new EmailValGenerationService();
-    service.addGoodGenerator(new FixedEmailValGenerator(value));
-    for (String v : values) {
-      service.addGoodGenerator(new FixedEmailValGenerator(v));
-    }
-    return service;
-  }
-
-  /**
-   * Create a {@link EmailValGenerationService} with bad {@link FixedEmailValGenerator}s
-   *
-   * @param value
-   * @param values
-   * @return
-   */
-  public static EmailValGenerationService eamilWithBad(String value, String... values) {
-    EmailValGenerationService service = new EmailValGenerationService();
-    service.addBadGenerator(new FixedEmailValGenerator(value));
-    for (String v : values) {
-      service.addBadGenerator(new FixedEmailValGenerator(v));
-    }
+    addGenerators(service, d -> new EmailVal(d), value, values);
     return service;
   }
 

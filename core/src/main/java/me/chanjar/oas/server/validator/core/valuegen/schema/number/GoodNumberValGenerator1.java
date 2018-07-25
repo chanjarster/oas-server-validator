@@ -3,6 +3,7 @@ package me.chanjar.oas.server.validator.core.valuegen.schema.number;
 import io.swagger.v3.oas.models.media.NumberSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import me.chanjar.oas.server.validator.core.value.schema.NumberVal;
+import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValCons;
 
 import java.math.BigDecimal;
 
@@ -16,7 +17,7 @@ import java.math.BigDecimal;
  */
 public class GoodNumberValGenerator1 implements NumberValGenerator {
   @Override
-  public boolean supports(Schema schema) {
+  public boolean supports(Schema schema, SchemaValCons cons) {
 
     return NumberSchemaSupport.supports(schema)
         && schema.getMaximum() == null
@@ -24,7 +25,8 @@ public class GoodNumberValGenerator1 implements NumberValGenerator {
   }
 
   @Override
-  public NumberVal generate(NumberSchema schema) {
+  public NumberVal generate(NumberSchema schema,
+      SchemaValCons cons) {
     return new NumberVal(BigDecimal.ZERO);
   }
 }

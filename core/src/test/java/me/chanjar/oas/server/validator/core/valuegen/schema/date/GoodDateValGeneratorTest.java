@@ -23,12 +23,12 @@ public class GoodDateValGeneratorTest {
 
   @Test(dataProvider = "testSupportsData")
   public void testSupports(Schema schema, boolean expected) {
-    assertEquals(generator.supports(schema), expected);
+    assertEquals(generator.supports(schema, null), expected);
   }
 
   @Test
   public void testGenerate() {
-    DateVal result = generator.generate(new DateSchema());
+    DateVal result = generator.generate(new DateSchema(), null);
     assertEquals(result.isNull(), false);
   }
 

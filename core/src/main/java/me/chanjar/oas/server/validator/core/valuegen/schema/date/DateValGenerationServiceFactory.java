@@ -1,6 +1,11 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.date;
 
+import me.chanjar.oas.server.validator.core.value.schema.DateVal;
+import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerator;
+
 import java.util.Date;
+
+import static me.chanjar.oas.server.validator.core.valuegen.schema.PrimitiveSchemaValGenerationServiceFactoryHelper.addGenerators;
 
 public abstract class DateValGenerationServiceFactory {
 
@@ -8,61 +13,46 @@ public abstract class DateValGenerationServiceFactory {
     // singleton
   }
 
+  /**
+   * Create a {@link DateValGenerationService} with {@link SchemaValGenerator}s
+   *
+   * @param generator
+   * @param generators
+   * @return
+   */
+  public static DateValGenerationService date(SchemaValGenerator generator,
+      SchemaValGenerator... generators) {
+    DateValGenerationService service = new DateValGenerationService();
+    addGenerators(service, generator, generators);
+    return service;
+  }
 
   /**
-   * Create a default {@link DateValGenerationService}.
+   * Create a default good {@link DateValGenerationService}.
    * <p>
-   * Good Generators:
+   * Generators:
    * <ol>
    * <li>{@link GoodDateValGenerator}</li>
    * </ol>
    * </p>
-   * <p>
-   * Bad Generators:
-   * <ol>
-   * <li>None</li>
-   * </ol>
-   * </p>
    *
    * @return
    */
-  public static DateValGenerationService date() {
-    DateValGenerationService service = new DateValGenerationService();
-    service.addGoodGenerator(new GoodDateValGenerator());
-    return service;
+  public static DateValGenerationService goodDate() {
+    return date(new GoodDateValGenerator());
   }
 
   /**
-   * Create a {@link DateValGenerationService} with good {@link FixedDateValGenerator}s
+   * Create a {@link DateValGenerationService} with fixed values
    *
    * @param value
    * @param values
    * @return
    */
-  public static DateValGenerationService dateWithGood(Date value, Date... values) {
+  public static DateValGenerationService fixedDate(Date value, Date... values) {
     DateValGenerationService service = new DateValGenerationService();
-    service.addGoodGenerator(new FixedDateValGenerator(value));
-    for (Date v : values) {
-      service.addGoodGenerator(new FixedDateValGenerator(v));
-    }
+    addGenerators(service, d -> new DateVal(d), value, values);
     return service;
   }
-
-  /**
-   * Create a {@link DateValGenerationService} with bad {@link FixedDateValGenerator}s
-   *
-   * @param value
-   * @param values
-   * @return
-   */
-  public static DateValGenerationService dateWithBad(Date value, Date... values) {
-    DateValGenerationService service = new DateValGenerationService();
-    service.addBadGenerator(new FixedDateValGenerator(value));
-    for (Date v : values) {
-      service.addBadGenerator(new FixedDateValGenerator(v));
-    }
-    return service;
-  }
-
 
 }

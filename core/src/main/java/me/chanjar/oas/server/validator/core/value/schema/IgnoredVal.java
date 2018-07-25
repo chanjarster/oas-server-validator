@@ -10,7 +10,7 @@ public class IgnoredVal extends SchemaVal {
   public static final IgnoredVal INSTANCE = new IgnoredVal();
 
   private IgnoredVal() {
-    super(null);
+    super(IgnoredVal.class);
   }
 
 }

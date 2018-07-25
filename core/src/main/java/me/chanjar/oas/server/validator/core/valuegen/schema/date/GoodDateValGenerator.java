@@ -3,6 +3,7 @@ package me.chanjar.oas.server.validator.core.valuegen.schema.date;
 import io.swagger.v3.oas.models.media.DateSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import me.chanjar.oas.server.validator.core.value.schema.DateVal;
+import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValCons;
 
 import java.util.Date;
 
@@ -13,12 +14,12 @@ import java.util.Date;
 public class GoodDateValGenerator implements DateValGenerator {
 
   @Override
-  public boolean supports(Schema schema) {
+  public boolean supports(Schema schema, SchemaValCons cons) {
     return DateSchemaSupport.supports(schema);
   }
 
   @Override
-  public DateVal generate(DateSchema schema) {
+  public DateVal generate(DateSchema schema, SchemaValCons cons) {
     return new DateVal(new Date());
   }
 }

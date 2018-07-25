@@ -4,6 +4,7 @@ import io.swagger.v3.oas.models.media.IntegerSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import me.chanjar.oas.server.validator.core.utils.BigDecimalUtils;
 import me.chanjar.oas.server.validator.core.value.schema.IntegerVal;
+import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValCons;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -19,12 +20,13 @@ import java.math.RoundingMode;
 public class BadIntegerValGenerator2 implements IntegerValGenerator {
 
   @Override
-  public boolean supports(Schema schema) {
+  public boolean supports(Schema schema, SchemaValCons cons) {
     return IntegerSchemaSupport.supports(schema) && schema.getMaximum() != null;
   }
 
   @Override
-  public IntegerVal generate(IntegerSchema schema) {
+  public IntegerVal generate(IntegerSchema schema,
+      SchemaValCons cons) {
 
     BigDecimal max = schema.getMaximum();
     BigDecimal result;

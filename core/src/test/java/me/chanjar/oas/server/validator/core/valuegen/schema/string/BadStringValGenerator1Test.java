@@ -35,13 +35,13 @@ public class BadStringValGenerator1Test {
 
   @Test(dataProvider = "testSupportsData")
   public void testSupports(Schema schema, boolean expected) {
-    assertEquals(generator.supports(schema), expected);
+    assertEquals(generator.supports(schema, null), expected);
   }
 
   @Test
   public void testGenerate() {
 
-    assertEquals(generator.generate(createSchema(null, 10)).getValue().length(), 9);
+    assertEquals(generator.generate(createSchema(null, 10), null).getValue().length(), 9);
   }
 
 }

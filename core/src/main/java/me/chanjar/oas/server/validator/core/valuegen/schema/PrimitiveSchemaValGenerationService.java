@@ -6,6 +6,8 @@ import me.chanjar.oas.server.validator.core.value.schema.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 /**
  * SchemaValGenerationService for primitive {@link SchemaVal}s.
  * <ol>
@@ -23,126 +25,39 @@ import java.util.List;
  * </ol>
  *
  * @param <S>
- * @param <V>
  */
-public abstract class PrimitiveSchemaValGenerationService<S extends Schema, V extends SchemaVal>
-    implements SchemaValGenerationService<S, V> {
+public abstract class PrimitiveSchemaValGenerationService<S extends Schema>
+    implements SchemaValGenerationService<S> {
 
-  private List<SchemaValGenerator<S, V>> goodGenerators = new ArrayList<>();
-
-  private List<SchemaValGenerator<S, V>> badGenerators = new ArrayList<>();
-
-  public void addGoodGenerator(SchemaValGenerator<S, V> schemaValGenerator) {
-    goodGenerators.add(schemaValGenerator);
-  }
-
-  public void addBadGenerator(SchemaValGenerator<S, V> schemaValGenerator) {
-    badGenerators.add(schemaValGenerator);
-  }
-
-  public void addGoodGenerators(List<? extends SchemaValGenerator<S, V>> schemaValGenerators) {
-    goodGenerators.addAll(schemaValGenerators);
-  }
-
-  public void addBadGenerators(List<? extends SchemaValGenerator<S, V>> schemaValGenerators) {
-    badGenerators.addAll(schemaValGenerators);
-  }
+  private List<SchemaValGenerator> generators = new ArrayList<>();
 
   @Override
-  public V generateGood(S schema) {
+  public SchemaVal generateOne(S schema, SchemaValCons cons) {
 
-    for (SchemaValGenerator<S, V> goodSchemaValGenerator : goodGenerators) {
-      if (goodSchemaValGenerator.supports(schema)) {
-        return goodSchemaValGenerator.generate(schema);
-      }
-    }
-
-    return null;
-  }
-
-  @Override
-  public List<SchemaVal> generateGoods(S schema, SchemaValCons cons, boolean typeSensitive) {
-
-    List<SchemaVal> result = new ArrayList<>();
-
-    for (SchemaValGenerator<S, V> goodSchemaValGenerator : goodGenerators) {
-      if (goodSchemaValGenerator.supports(schema)) {
-        result.add(goodSchemaValGenerator.generate(schema));
-      }
-    }
-
-    if (!cons.isRequired()) {
-      result.add(IgnoredVal.INSTANCE);
-    }
-
-    if (cons.isNullable()) {
-      result.add(createNullSchemaVal());
-    }
-
-    if (!typeSensitive) {
-      result.add(createDifferentTypeSchemaVal());
-    }
-
-    return result;
+    return generators.stream()
+        .filter(g -> g.supports(schema, cons))
+        .findFirst()
+        .map(g -> g.generate(schema, cons))
+        .orElse(null);
 
   }
 
   @Override
-  public SchemaVal generateBad(S schema, SchemaValCons cons, boolean typeSensitive) {
+  public List<SchemaVal> generateAll(S schema, SchemaValCons cons) {
 
-    for (SchemaValGenerator<S, V> badSchemaValGenerator : badGenerators) {
-      if (badSchemaValGenerator.supports(schema)) {
-        return badSchemaValGenerator.generate(schema);
-      }
-    }
-
-    if (cons.isRequired()) {
-      return IgnoredVal.INSTANCE;
-    }
-
-    if (!cons.isNullable()) {
-      return createNullSchemaVal();
-    }
-
-    if (typeSensitive) {
-      return createDifferentTypeSchemaVal();
-    }
-
-    return null;
-  }
-
-  @Override
-  public List<SchemaVal> generateBads(S schema, SchemaValCons cons,
-      boolean typeSensitive) {
-
-    List<SchemaVal> result = new ArrayList<>();
-
-    for (SchemaValGenerator<S, V> badSchemaValGenerator : badGenerators) {
-      if (badSchemaValGenerator.supports(schema)) {
-        result.add(badSchemaValGenerator.generate(schema));
-      }
-    }
-
-    if (typeSensitive) {
-      result.add(createDifferentTypeSchemaVal());
-    }
-
-    if (cons.isRequired()) {
-      result.add(IgnoredVal.INSTANCE);
-    }
-
-    if (!cons.isNullable()) {
-      result.add(createNullSchemaVal());
-    }
-
-    return result;
+    return generators.stream()
+        .filter(g -> g.supports(schema, cons))
+        .map(g -> g.generate(schema, cons))
+        .collect(toList());
 
   }
 
-  protected abstract SchemaVal createDifferentTypeSchemaVal();
+  public void addGenerator(SchemaValGenerator schemaValGenerator) {
+    generators.add(schemaValGenerator);
+  }
 
-  protected abstract V createNullSchemaVal();
-
-  protected abstract Class<S> getSchemaValClass();
+  public void addGenerators(List<? extends SchemaValGenerator> schemaValGenerators) {
+    generators.addAll(schemaValGenerators);
+  }
 
 }

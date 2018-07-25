@@ -3,7 +3,6 @@ package me.chanjar.oas.server.validator.core.valuegen.schema.string;
 import io.swagger.v3.oas.models.media.IntegerSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
-import me.chanjar.oas.server.validator.core.value.schema.StringVal;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -36,13 +35,13 @@ public class BadStringValGenerator2Test {
 
   @Test(dataProvider = "testSupportsData")
   public void testSupports(Schema schema, boolean expected) {
-    assertEquals(generator.supports(schema), expected);
+    assertEquals(generator.supports(schema, null), expected);
   }
 
   @Test
   public void testGenerate() {
 
-    assertEquals(generator.generate(createSchema(null, 10)).getValue().length(), 11);
+    assertEquals(generator.generate(createSchema(null, 10), null).getValue().length(), 11);
   }
 
 }

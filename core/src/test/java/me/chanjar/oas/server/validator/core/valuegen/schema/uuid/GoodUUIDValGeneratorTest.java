@@ -27,13 +27,13 @@ public class GoodUUIDValGeneratorTest {
 
   @Test(dataProvider = "testSupportsData")
   public void testSupports(Schema schema, boolean expected) {
-    assertEquals(generator.supports(schema), expected);
+    assertEquals(generator.supports(schema, null), expected);
   }
 
   @Test
   public void testGenerate() {
     assertTrue(Pattern.matches("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}",
-        generator.generate(new UUIDSchema()).getValue()));
+        generator.generate(new UUIDSchema(), null).getValue()));
   }
 
 }

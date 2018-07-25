@@ -1,5 +1,10 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.uuid;
 
+import me.chanjar.oas.server.validator.core.value.schema.UUIDVal;
+import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerator;
+
+import static me.chanjar.oas.server.validator.core.valuegen.schema.PrimitiveSchemaValGenerationServiceFactoryHelper.addGenerators;
+
 public abstract class UUIDValGenerationServiceFactory {
 
   private UUIDValGenerationServiceFactory() {
@@ -7,57 +12,44 @@ public abstract class UUIDValGenerationServiceFactory {
   }
 
   /**
-   * Create a default {@link UUIDValGenerationService}.
+   * Create a {@link UUIDValGenerationService} with {@link SchemaValGenerator}s
+   *
+   * @param generator
+   * @param generators
+   * @return
+   */
+  public static UUIDValGenerationService binary(SchemaValGenerator generator,
+      SchemaValGenerator... generators) {
+    UUIDValGenerationService service = new UUIDValGenerationService();
+    addGenerators(service, generator, generators);
+    return service;
+  }
+
+  /**
+   * Create a default good {@link UUIDValGenerationService}.
    * <p>
-   * Good Generators:
+   * Generators:
    * <ol>
    * <li>{@link GoodUUIDValGenerator}</li>
    * </ol>
    * </p>
-   * <p>
-   * Bad Generators:
-   * <ol>
-   * <li>None</li>
-   * </ol>
-   * </p>
    *
    * @return
    */
-  public static UUIDValGenerationService uuid() {
-    UUIDValGenerationService service = new UUIDValGenerationService();
-    service.addGoodGenerator(new GoodUUIDValGenerator());
-    return service;
+  public static UUIDValGenerationService goodUUID() {
+    return binary(new GoodUUIDValGenerator());
   }
 
   /**
-   * Create a {@link UUIDValGenerationService} with good {@link FixedUUIDValGenerator}s
+   * Create a {@link UUIDValGenerationService} with fixed values
    *
    * @param value
    * @param values
    * @return
    */
-  public static UUIDValGenerationService stringWithGood(String value, String... values) {
+  public static UUIDValGenerationService fixedUUID(String value, String... values) {
     UUIDValGenerationService service = new UUIDValGenerationService();
-    service.addGoodGenerator(new FixedUUIDValGenerator(value));
-    for (String v : values) {
-      service.addGoodGenerator(new FixedUUIDValGenerator(v));
-    }
-    return service;
-  }
-
-  /**
-   * Create a {@link UUIDValGenerationService} with bad {@link FixedUUIDValGenerator}s
-   *
-   * @param value
-   * @param values
-   * @return
-   */
-  public static UUIDValGenerationService stringWithBad(String value, String... values) {
-    UUIDValGenerationService service = new UUIDValGenerationService();
-    service.addBadGenerator(new FixedUUIDValGenerator(value));
-    for (String v : values) {
-      service.addBadGenerator(new FixedUUIDValGenerator(v));
-    }
+    addGenerators(service, d -> new UUIDVal(d), value, values);
     return service;
   }
 
