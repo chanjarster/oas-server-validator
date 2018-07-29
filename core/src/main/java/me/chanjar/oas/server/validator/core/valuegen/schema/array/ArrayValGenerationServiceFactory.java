@@ -1,5 +1,6 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.array;
 
+import me.chanjar.oas.server.validator.core.value.schema.ArrayVal;
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.IgnoredValGenerator;
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.NullValGenerator;
 
@@ -22,5 +23,10 @@ public abstract class ArrayValGenerationServiceFactory {
     // TODO
     service.addGenerators(Arrays.asList(new NullValGenerator(false), new IgnoredValGenerator(false)));
     return service;
+  }
+
+  public static ArrayValGenerationService fixedArray(ArrayVal value, ArrayVal... values) {
+    // TODO
+    return null;
   }
 }
