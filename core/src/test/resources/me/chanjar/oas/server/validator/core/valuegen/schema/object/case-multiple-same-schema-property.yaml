@@ -1,0 +1,30 @@
+openapi: 3.0.0
+info:
+  version: 'v1'
+  title: 'object-generation-test'
+paths: 
+  /fake-url:
+    get:
+      responses:
+          200:
+            description: 'success'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/TestObject'
+components:
+  schemas:
+    TestObject:
+      type: object
+      required:
+        - stringVal1
+        - stringVal2
+        - stringVal3
+      properties:
+        stringVal1:
+          type: string
+        stringVal2:
+          type: string
+        stringVal3:
+          type: string
+

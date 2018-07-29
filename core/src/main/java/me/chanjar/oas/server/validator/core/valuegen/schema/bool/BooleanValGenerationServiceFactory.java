@@ -2,6 +2,8 @@ package me.chanjar.oas.server.validator.core.valuegen.schema.bool;
 
 import me.chanjar.oas.server.validator.core.value.schema.BooleanVal;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerator;
+import me.chanjar.oas.server.validator.core.valuegen.schema.special.IgnoredValGenerator;
+import me.chanjar.oas.server.validator.core.valuegen.schema.special.NullValGenerator;
 
 import static me.chanjar.oas.server.validator.core.valuegen.schema.PrimitiveSchemaValGenerationServiceFactoryHelper.addGenerators;
 
@@ -38,7 +40,7 @@ public abstract class BooleanValGenerationServiceFactory {
    * @return
    */
   public static BooleanValGenerationService goodBool() {
-    return bool(new GoodBooleanValGenerator());
+    return bool(new GoodBooleanValGenerator(), new NullValGenerator(true), new IgnoredValGenerator(true));
   }
 
   /**

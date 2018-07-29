@@ -2,6 +2,8 @@ package me.chanjar.oas.server.validator.core.valuegen.schema.date;
 
 import me.chanjar.oas.server.validator.core.value.schema.DateVal;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerator;
+import me.chanjar.oas.server.validator.core.valuegen.schema.special.IgnoredValGenerator;
+import me.chanjar.oas.server.validator.core.valuegen.schema.special.NullValGenerator;
 
 import java.util.Date;
 
@@ -39,7 +41,7 @@ public abstract class DateValGenerationServiceFactory {
    * @return
    */
   public static DateValGenerationService goodDate() {
-    return date(new GoodDateValGenerator());
+    return date(new GoodDateValGenerator(), new NullValGenerator(true), new IgnoredValGenerator(true));
   }
 
   /**

@@ -1,7 +1,21 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.object;
 
 import me.chanjar.oas.server.validator.core.value.schema.ObjectVal;
+import me.chanjar.oas.server.validator.core.valuegen.schema.array.ArrayValGenerationServiceFactory;
+import me.chanjar.oas.server.validator.core.valuegen.schema.binary.BinaryValGenerationServiceFactory;
+import me.chanjar.oas.server.validator.core.valuegen.schema.bool.BooleanValGenerationServiceFactory;
+import me.chanjar.oas.server.validator.core.valuegen.schema.bytearray.ByteArrayValGenerationServiceFactory;
+import me.chanjar.oas.server.validator.core.valuegen.schema.date.DateValGenerationServiceFactory;
+import me.chanjar.oas.server.validator.core.valuegen.schema.datetime.DateTimeValGenerationServiceFactory;
+import me.chanjar.oas.server.validator.core.valuegen.schema.email.EmailValGenerationServiceFactory;
+import me.chanjar.oas.server.validator.core.valuegen.schema.integer.IntegerValGenerationServiceFactory;
+import me.chanjar.oas.server.validator.core.valuegen.schema.number.NumberValGenerationServiceFactory;
+import me.chanjar.oas.server.validator.core.valuegen.schema.password.PasswordValGenerationServiceFactory;
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.FixedSchemaValGenerator;
+import me.chanjar.oas.server.validator.core.valuegen.schema.special.IgnoredValGenerator;
+import me.chanjar.oas.server.validator.core.valuegen.schema.special.NullValGenerator;
+import me.chanjar.oas.server.validator.core.valuegen.schema.string.StringValGenerationServiceFactory;
+import me.chanjar.oas.server.validator.core.valuegen.schema.uuid.UUIDValGenerationServiceFactory;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Arrays;
@@ -32,32 +46,65 @@ public abstract class ObjectValGenerationServiceFactory {
   }
 
   /**
-   * Create a default good {@link ObjectValGenerationService}.
+   * Create a default good {@link ObjectValGenerationService} with other primitive schema val generation services:
+   * <ol>
+   * <li>{@link ArrayValGenerationServiceFactory#goodArray}</li>
+   * <li>{@link BinaryValGenerationServiceFactory#goodBinary}</li>
+   * <li>{@link BooleanValGenerationServiceFactory#goodBool}</li>
+   * <li>{@link ByteArrayValGenerationServiceFactory#goodByteArray}</li>
+   * <li>{@link DateValGenerationServiceFactory#goodDate}</li>
+   * <li>{@link DateTimeValGenerationServiceFactory#goodDateTime}</li>
+   * <li>{@link EmailValGenerationServiceFactory#goodEmail}</li>
+   * <li>{@link IntegerValGenerationServiceFactory#goodInteger}</li>
+   * <li>{@link NumberValGenerationServiceFactory#goodNumber}</li>
+   * <li>{@link PasswordValGenerationServiceFactory#goodPassword}</li>
+   * <li>{@link StringValGenerationServiceFactory#goodString}</li>
+   * <li>{@link UUIDValGenerationServiceFactory#goodUUID}</li>
+   * <li>register self as object val generation service</li>
+   * </ol>
    *
    * @return
    */
   public static ObjectValGenerationService goodObject() {
     DefaultObjectValGenerationService service =
         new DefaultObjectValGenerationService("GoodObjectValGenerationService");
-    service.registerGenerationService(goodArray());
-    service.registerGenerationService(goodBinary());
-    service.registerGenerationService(goodBool());
-    service.registerGenerationService(goodByteArray());
-    service.registerGenerationService(goodDate());
-    service.registerGenerationService(goodDateTime());
-    service.registerGenerationService(goodEmail());
-    service.registerGenerationService(goodInteger());
-    service.registerGenerationService(goodNumber());
-    service.registerGenerationService(goodPassword());
-    service.registerGenerationService(goodString());
-    service.registerGenerationService(goodUUID());
+    service.addPropertyGenerationService(goodArray());
+    service.addPropertyGenerationService(goodBinary());
+    service.addPropertyGenerationService(goodBool());
+    service.addPropertyGenerationService(goodByteArray());
+    service.addPropertyGenerationService(goodDate());
+    service.addPropertyGenerationService(goodDateTime());
+    service.addPropertyGenerationService(goodEmail());
+    service.addPropertyGenerationService(goodInteger());
+    service.addPropertyGenerationService(goodNumber());
+    service.addPropertyGenerationService(goodPassword());
+    service.addPropertyGenerationService(goodString());
+    service.addPropertyGenerationService(goodUUID());
     // register self as ObjectVal generator
-    service.registerGenerationService(service);
+    service.addPropertyGenerationService(service);
+
+    service.addSchemaValGenerator(new IgnoredValGenerator(true));
+    service.addSchemaValGenerator(new NullValGenerator(true));
     return service;
   }
 
   /**
-   * Create a default bad {@link ObjectValGenerationService}.
+   * Create a default bad {@link ObjectValGenerationService} with other primitive schema val generation services:
+   * <ol>
+   * <li>{@link ArrayValGenerationServiceFactory#badArray}</li>
+   * <li>{@link BinaryValGenerationServiceFactory#goodBinary}, because of no bad generation service</li>
+   * <li>{@link BooleanValGenerationServiceFactory#goodBool}, because of no bad generation service</li>
+   * <li>{@link ByteArrayValGenerationServiceFactory#goodByteArray}, because of no bad generation service</li>
+   * <li>{@link DateValGenerationServiceFactory#goodDate}, because of no bad generation service</li>
+   * <li>{@link DateTimeValGenerationServiceFactory#goodDateTime}, because of no bad generation service</li>
+   * <li>{@link EmailValGenerationServiceFactory#badEmail}</li>
+   * <li>{@link IntegerValGenerationServiceFactory#badInteger}</li>
+   * <li>{@link NumberValGenerationServiceFactory#badNumber}</li>
+   * <li>{@link PasswordValGenerationServiceFactory#badPassword}</li>
+   * <li>{@link StringValGenerationServiceFactory#badString}</li>
+   * <li>{@link UUIDValGenerationServiceFactory#goodUUID}, because of no bad generation service</li>
+   * <li>register self as object val generation service</li>
+   * </ol>
    *
    * @return
    */
@@ -65,21 +112,23 @@ public abstract class ObjectValGenerationServiceFactory {
     DefaultObjectValGenerationService service =
         new DefaultObjectValGenerationService("BadObjectValGenerationService", goodObject());
 
-    service.registerGenerationService(badArray());
-    service.registerGenerationService(goodBinary());
-    service.registerGenerationService(goodBool());
-    service.registerGenerationService(goodByteArray());
-    service.registerGenerationService(goodDate());
-    service.registerGenerationService(goodDateTime());
-    service.registerGenerationService(badEmail());
-    service.registerGenerationService(badInteger());
-    service.registerGenerationService(badNumber());
-    service.registerGenerationService(badPassword());
-    service.registerGenerationService(badString());
-    service.registerGenerationService(goodUUID());
+    service.addPropertyGenerationService(badArray());
+    service.addPropertyGenerationService(goodBinary());
+    service.addPropertyGenerationService(goodBool());
+    service.addPropertyGenerationService(goodByteArray());
+    service.addPropertyGenerationService(goodDate());
+    service.addPropertyGenerationService(goodDateTime());
+    service.addPropertyGenerationService(badEmail());
+    service.addPropertyGenerationService(badInteger());
+    service.addPropertyGenerationService(badNumber());
+    service.addPropertyGenerationService(badPassword());
+    service.addPropertyGenerationService(badString());
+    service.addPropertyGenerationService(goodUUID());
     // register self as ObjectVal generator
-    service.registerGenerationService(service);
+    service.addPropertyGenerationService(service);
 
+    service.addSchemaValGenerator(new IgnoredValGenerator(true));
+    service.addSchemaValGenerator(new NullValGenerator(true));
     return service;
   }
 
@@ -92,7 +141,7 @@ public abstract class ObjectValGenerationServiceFactory {
    */
   public static ObjectValGenerationService fixedObject(ObjectVal value, ObjectVal... values) {
 
-    SimpleObjectValGenerationService service = new SimpleObjectValGenerationService();
+    FixedObjectValGenerationService service = new FixedObjectValGenerationService();
     service.addGenerator(new FixedSchemaValGenerator(value));
     if (ArrayUtils.isNotEmpty(values)) {
       Arrays.stream(values)

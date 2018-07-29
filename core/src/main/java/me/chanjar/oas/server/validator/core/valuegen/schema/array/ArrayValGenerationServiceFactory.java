@@ -1,5 +1,10 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.array;
 
+import me.chanjar.oas.server.validator.core.valuegen.schema.special.IgnoredValGenerator;
+import me.chanjar.oas.server.validator.core.valuegen.schema.special.NullValGenerator;
+
+import java.util.Arrays;
+
 public abstract class ArrayValGenerationServiceFactory {
   private ArrayValGenerationServiceFactory() {
     // singleton
@@ -8,12 +13,14 @@ public abstract class ArrayValGenerationServiceFactory {
   public static ArrayValGenerationService goodArray() {
     ArrayValGenerationService service = new ArrayValGenerationService();
     // TODO
+    service.addGenerators(Arrays.asList(new NullValGenerator(true), new IgnoredValGenerator(true)));
     return service;
   }
 
   public static ArrayValGenerationService badArray() {
-
+    ArrayValGenerationService service = new ArrayValGenerationService();
     // TODO
-    return null;
+    service.addGenerators(Arrays.asList(new NullValGenerator(false), new IgnoredValGenerator(false)));
+    return service;
   }
 }

@@ -2,6 +2,8 @@ package me.chanjar.oas.server.validator.core.valuegen.schema.uuid;
 
 import me.chanjar.oas.server.validator.core.value.schema.UUIDVal;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerator;
+import me.chanjar.oas.server.validator.core.valuegen.schema.special.IgnoredValGenerator;
+import me.chanjar.oas.server.validator.core.valuegen.schema.special.NullValGenerator;
 
 import static me.chanjar.oas.server.validator.core.valuegen.schema.PrimitiveSchemaValGenerationServiceFactoryHelper.addGenerators;
 
@@ -18,7 +20,7 @@ public abstract class UUIDValGenerationServiceFactory {
    * @param generators
    * @return
    */
-  public static UUIDValGenerationService binary(SchemaValGenerator generator,
+  public static UUIDValGenerationService uuid(SchemaValGenerator generator,
       SchemaValGenerator... generators) {
     UUIDValGenerationService service = new UUIDValGenerationService();
     addGenerators(service, generator, generators);
@@ -37,7 +39,7 @@ public abstract class UUIDValGenerationServiceFactory {
    * @return
    */
   public static UUIDValGenerationService goodUUID() {
-    return binary(new GoodUUIDValGenerator());
+    return uuid(new GoodUUIDValGenerator(), new NullValGenerator(true), new IgnoredValGenerator(true));
   }
 
   /**

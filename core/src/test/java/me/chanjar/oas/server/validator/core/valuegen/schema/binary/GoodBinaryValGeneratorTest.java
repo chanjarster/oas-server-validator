@@ -4,11 +4,14 @@ import io.swagger.v3.oas.models.media.BinarySchema;
 import io.swagger.v3.oas.models.media.IntegerSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import me.chanjar.oas.server.validator.core.value.schema.BinaryVal;
+import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValCons;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
+import static org.testng.Assert.assertNotNull;
 
 public class GoodBinaryValGeneratorTest {
 
@@ -30,6 +33,7 @@ public class GoodBinaryValGeneratorTest {
   @Test
   public void testGenerate() {
     BinaryVal result = generator.generate(new BinarySchema(), null);
-    assertEquals(result.isNull(), false);
+    assertNotNull(result.getValue());
+    assertNotEquals(result, SchemaVal.NULL_VAL);
   }
 }

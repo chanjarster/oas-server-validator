@@ -4,10 +4,13 @@ import io.swagger.v3.oas.models.media.ByteArraySchema;
 import io.swagger.v3.oas.models.media.IntegerSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import me.chanjar.oas.server.validator.core.value.schema.ByteArrayVal;
+import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
+import static org.testng.Assert.assertNotNull;
 
 public class GoodByteArrayValGeneratorTest {
 
@@ -29,7 +32,8 @@ public class GoodByteArrayValGeneratorTest {
   @Test
   public void testGenerate() {
     ByteArrayVal result = generator.generate(new ByteArraySchema(), null);
-    assertEquals(result.isNull(), false);
+    assertNotNull(result.getValue());
+    assertNotEquals(result, SchemaVal.NULL_VAL);
   }
 
 }

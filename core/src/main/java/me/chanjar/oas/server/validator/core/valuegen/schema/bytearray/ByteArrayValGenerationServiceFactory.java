@@ -2,6 +2,8 @@ package me.chanjar.oas.server.validator.core.valuegen.schema.bytearray;
 
 import me.chanjar.oas.server.validator.core.value.schema.ByteArrayVal;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerator;
+import me.chanjar.oas.server.validator.core.valuegen.schema.special.IgnoredValGenerator;
+import me.chanjar.oas.server.validator.core.valuegen.schema.special.NullValGenerator;
 
 import static me.chanjar.oas.server.validator.core.valuegen.schema.PrimitiveSchemaValGenerationServiceFactoryHelper.addGenerators;
 
@@ -37,7 +39,7 @@ public abstract class ByteArrayValGenerationServiceFactory {
    * @return
    */
   public static ByteArrayValGenerationService goodByteArray() {
-    return byteArray(new GoodByteArrayValGenerator());
+    return byteArray(new GoodByteArrayValGenerator(), new NullValGenerator(true), new IgnoredValGenerator(true));
   }
 
   /**

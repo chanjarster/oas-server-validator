@@ -4,7 +4,7 @@ import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValCons;
-import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerator;
+import me.chanjar.oas.server.validator.core.valuegen.schema.special.FixedSchemaValGenerator;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.text.MessageFormat;
@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class SimpleObjectValGenerationService implements ObjectValGenerationService {
+public class FixedObjectValGenerationService implements ObjectValGenerationService {
 
-  private final List<SchemaValGenerator> generators = new ArrayList<>();
+  private final List<FixedSchemaValGenerator> generators = new ArrayList<>();
 
   private final String name = "FixedObjectValGenerationService";
 
@@ -61,7 +61,7 @@ public class SimpleObjectValGenerationService implements ObjectValGenerationServ
   /**
    * @param generator
    */
-  public void addGenerator(SchemaValGenerator generator) {
+  public void addGenerator(FixedSchemaValGenerator generator) {
     generators.add(generator);
   }
 
@@ -69,7 +69,7 @@ public class SimpleObjectValGenerationService implements ObjectValGenerationServ
    * @param generator
    * @param generators
    */
-  public void addGenerators(SchemaValGenerator generator, SchemaValGenerator... generators) {
+  public void addGenerators(FixedSchemaValGenerator generator, FixedSchemaValGenerator... generators) {
     this.generators.add(generator);
     if (ArrayUtils.isNotEmpty(generators)) {
       this.generators.addAll(Arrays.asList(generator));

@@ -1,0 +1,70 @@
+openapi: 3.0.0
+info:
+  version: 'v1'
+  title: 'object-generation-test'
+paths: 
+  /fake-url:
+    get:
+      responses:
+          200:
+            description: 'success'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/TestObject'
+components:
+  schemas:
+    TestObject:
+      type: object
+      required:
+        - binaryVal
+        - booleanVal
+        - byteArrayVal
+        - dateVal
+        - dateTimeVal
+        - emailVal
+        - integerVal
+        - numberVal
+        - passwordVal
+        - stringVal
+        - uuidVal
+        - objectVal
+      properties:
+        binaryVal:
+          type: string
+          format: binary
+        booleanVal:
+          type: boolean
+        byteArrayVal:
+          type: string
+          format: byte
+        dateVal:
+          type: string
+          format: date
+        dateTimeVal:
+          type: string
+          format: 'date-time'
+        emailVal:
+          type: string
+          format: email
+        integerVal:
+          type: integer
+        numberVal:
+          type: number
+        passwordVal:
+          type: string
+          format: password
+        stringVal:
+          type: string
+        uuidVal:
+          type: string
+          format: uuid
+        objectVal:
+          type: object
+          required:
+            - integerVal
+          properties:
+            integerVal:
+              type: integer
+
+

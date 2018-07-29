@@ -13,6 +13,28 @@ import java.util.Objects;
 public abstract class SchemaVal<T> {
 
   /**
+   * A special SchemaVal which means it is a null value.
+   */
+  public static final SchemaVal NULL_VAL = new SchemaVal<Object>("NULL_VAL") {
+    @Override
+    public String toString() {
+      return "SchemaVal[NULL_VAL]";
+    }
+  };
+
+  /**
+   * A special SchemaVal which means it should be ignored.
+   * <p>For example, if a QueryParameterVal contains IgnoredVal, it should not be used to build query parameter</p>
+   * <p>If a ObjectVal contains a property of IgnoredVal, the property should be ignored before being serialized to json</p>
+   */
+  public static final SchemaVal IGNORED_VAL = new SchemaVal<Object>("IGNORED_VAL") {
+    @Override
+    public String toString() {
+      return "SchemaVal[IGNORED_VAL]";
+    }
+  };
+
+  /**
    * <ol>
    *   <li>{@link BinaryVal}</li>
    *   <li>{@link BooleanVal}</li>
@@ -47,15 +69,14 @@ public abstract class SchemaVal<T> {
   private final T value;
 
   public SchemaVal(T value) {
+    if (value == null) {
+      throw new RuntimeException("value cannot be null");
+    }
     this.value = value;
   }
 
   public T getValue() {
     return value;
-  }
-
-  public boolean isNull() {
-    return value == null;
   }
 
   @Override

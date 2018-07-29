@@ -2,16 +2,15 @@ package me.chanjar.oas.server.validator.core.valuegen.schema.special;
 
 import io.swagger.v3.oas.models.media.Schema;
 import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
-import me.chanjar.oas.server.validator.core.value.schema.StringVal;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValCons;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerator;
+
+import static me.chanjar.oas.server.validator.core.value.schema.SchemaVal.NULL_VAL;
 
 /**
  * A null {@link SchemaVal} generator
  */
 public class NullValGenerator implements SchemaValGenerator<Schema, SchemaVal> {
-
-  private static final StringVal NULL_VAL = new StringVal(null);
 
   private final boolean goodMode;
 

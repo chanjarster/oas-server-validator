@@ -2,6 +2,8 @@ package me.chanjar.oas.server.validator.core.valuegen.schema.binary;
 
 import me.chanjar.oas.server.validator.core.value.schema.BinaryVal;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerator;
+import me.chanjar.oas.server.validator.core.valuegen.schema.special.IgnoredValGenerator;
+import me.chanjar.oas.server.validator.core.valuegen.schema.special.NullValGenerator;
 
 import static me.chanjar.oas.server.validator.core.valuegen.schema.PrimitiveSchemaValGenerationServiceFactoryHelper.addGenerators;
 
@@ -37,7 +39,7 @@ public abstract class BinaryValGenerationServiceFactory {
    * @return
    */
   public static BinaryValGenerationService goodBinary() {
-    return binary(new GoodBinaryValGenerator());
+    return binary(new GoodBinaryValGenerator(), new NullValGenerator(true), new IgnoredValGenerator(true));
   }
 
   /**

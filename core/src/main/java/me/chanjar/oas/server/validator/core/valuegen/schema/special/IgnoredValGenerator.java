@@ -1,11 +1,11 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.special;
 
 import io.swagger.v3.oas.models.media.Schema;
-import me.chanjar.oas.server.validator.core.value.schema.IgnoredVal;
+import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValCons;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerator;
 
-public class IgnoredValGenerator implements SchemaValGenerator<Schema, IgnoredVal> {
+public class IgnoredValGenerator implements SchemaValGenerator<Schema, SchemaVal> {
 
   private final boolean goodMode;
 
@@ -34,11 +34,11 @@ public class IgnoredValGenerator implements SchemaValGenerator<Schema, IgnoredVa
   /**
    * @param schema
    * @param cons
-   * @return {@link IgnoredVal#INSTANCE}
+   * @return {@link SchemaVal#IGNORED_VAL}
    */
   @Override
-  public IgnoredVal generate(Schema schema, SchemaValCons cons) {
-    return IgnoredVal.INSTANCE;
+  public SchemaVal generate(Schema schema, SchemaValCons cons) {
+    return SchemaVal.IGNORED_VAL;
   }
 
 }

@@ -2,7 +2,11 @@ package me.chanjar.oas.server.validator.core.valuegen.schema.email;
 
 import me.chanjar.oas.server.validator.core.value.schema.EmailVal;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerator;
+import me.chanjar.oas.server.validator.core.valuegen.schema.special.IgnoredValGenerator;
+import me.chanjar.oas.server.validator.core.valuegen.schema.special.NullValGenerator;
 import me.chanjar.oas.server.validator.core.valuegen.schema.string.StringValGenerationService;
+
+import java.util.Arrays;
 
 import static me.chanjar.oas.server.validator.core.valuegen.schema.PrimitiveSchemaValGenerationServiceFactoryHelper.addGenerators;
 
@@ -51,7 +55,7 @@ public abstract class EmailValGenerationServiceFactory {
    */
   public static EmailValGenerationService goodEmail() {
 
-    return fixedEmail(
+    EmailValGenerationService service = fixedEmail(
         "email@domain.com",
         "firstname.lastname@domain.com",
         "email@subdomain.domain.com",
@@ -66,6 +70,8 @@ public abstract class EmailValGenerationServiceFactory {
         "email@domain.co.jp",
         "firstname-lastname@domain.com"
     );
+    service.addGenerators(Arrays.asList(new NullValGenerator(true), new IgnoredValGenerator(true)));
+    return service;
 
   }
 
@@ -96,7 +102,7 @@ public abstract class EmailValGenerationServiceFactory {
    */
   public static EmailValGenerationService badEmail() {
 
-    return fixedEmail(
+    EmailValGenerationService service = fixedEmail(
         "plainaddress",
         "#@%^%#$@#$@#.com",
         "@domain.com",
@@ -113,6 +119,8 @@ public abstract class EmailValGenerationServiceFactory {
         "email@111.222.333.44444",
         "email@domain..com"
     );
+    service.addGenerators(Arrays.asList(new NullValGenerator(false), new IgnoredValGenerator(false)));
+    return service;
 
   }
 

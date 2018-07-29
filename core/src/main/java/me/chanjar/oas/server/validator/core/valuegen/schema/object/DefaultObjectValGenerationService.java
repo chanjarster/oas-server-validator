@@ -17,22 +17,32 @@ public class DefaultObjectValGenerationService implements ObjectValGenerationSer
 
   private final String name;
 
-  private final List<SchemaValGenerationService> schemaValGenerationServices = new ArrayList<>();
+  private final List<SchemaValGenerationService> generationServices = new ArrayList<>();
 
-  private final Map<String, SchemaValGenerationService> propertySchemaValGenerationService = new HashMap<>();
+  private final Map<String, SchemaValGenerationService> propertyGenerationService = new HashMap<>();
 
-  private final List<SchemaValGenerator> generators = new ArrayList<>();
+  private final List<SchemaValGenerator> schemaValGenerators = new ArrayList<>();
 
   /**
    * Used to get property default schema vals
    */
   private final ObjectValGenerationService defaultGenerationService;
 
+  /**
+   *
+   * @param name
+   */
   public DefaultObjectValGenerationService(String name) {
     this.name = name;
     defaultGenerationService = this;
   }
 
+  /**
+   *
+   * @param name
+   * @param defaultGenerationService A {@link ObjectValGenerationService} used to generate
+   *                                 default {@link ObjectVal}. It's used in {@link #generateAll(ObjectSchema, SchemaValCons)}
+   */
   public DefaultObjectValGenerationService(String name,
       ObjectValGenerationService defaultGenerationService) {
     this.name = name;
@@ -49,35 +59,45 @@ public class DefaultObjectValGenerationService implements ObjectValGenerationSer
 
     Map<String, SchemaVal> resultMap = new HashMap<>();
 
-    for (Map.Entry<String, Schema> entry : schema.getProperties().entrySet()) {
-      String propertyName = entry.getKey();
-      Schema propertySchema = entry.getValue();
+    if (schema.getProperties() != null) {
 
-      SchemaValGenerationService generationService = getGenerationService(propertySchema);
-      SchemaValCons schemaValCons = new SchemaValCons(
-          schema.getRequired().contains(propertyName),
-          Boolean.TRUE.equals(propertySchema.getNullable()));
+      for (Map.Entry<String, Schema> entry : schema.getProperties().entrySet()) {
+        String propertyName = entry.getKey();
+        Schema propertySchema = entry.getValue();
 
-      SchemaVal schemaVal;
+        SchemaValGenerationService generationService = findGenerationService(propertyName, propertySchema);
+        if (generationService == null) {
+          throw new ObjectValGenerationException(
+              errorNoPropertyGenerationService("ONE", schema, propertyName, propertySchema)
+          );
+        }
+        SchemaValCons schemaValCons = new SchemaValCons(
+            schema.getRequired() != null && schema.getRequired().contains(propertyName),
+            Boolean.TRUE.equals(propertySchema.getNullable()));
 
-      try {
-        schemaVal = generationService.generateOne(propertySchema, schemaValCons);
-      } catch (Exception ex) {
-        throw new ObjectValGenerationException(
-            errorPropertyExceptionRaised("ONE", schema, propertyName, propertySchema), ex);
+        SchemaVal schemaVal;
+
+        try {
+          schemaVal = generationService.generateOne(propertySchema, schemaValCons);
+        } catch (Exception ex) {
+          throw new ObjectValGenerationException(
+              errorPropertyExceptionRaised("ONE", schema, propertyName, propertySchema), ex);
+        }
+
+        if (schemaVal == null) {
+          throw new ObjectValGenerationException(
+              errorPropertyNoneGenerated("ONE", schema, propertyName, propertySchema));
+        }
+        resultMap.put(propertyName, schemaVal);
       }
 
-      if (schemaVal == null) {
-        throw new ObjectValGenerationException(errorPropertyNoneGenerated("ONE", schema, propertyName, propertySchema));
-      }
-      resultMap.put(propertyName, schemaVal);
     }
 
     if (!resultMap.isEmpty()) {
       return new ObjectVal(resultMap);
     }
 
-    return generators.stream()
+    return schemaValGenerators.stream()
         .filter(g -> g.supports(schema, cons))
         .findFirst()
         .map(g -> g.generate(schema, cons))
@@ -91,55 +111,65 @@ public class DefaultObjectValGenerationService implements ObjectValGenerationSer
     Map<String, List<SchemaVal>> propertySchemaVals = new HashMap<>();
 
     Map<String, Schema> properties = schema.getProperties();
-    for (Map.Entry<String, Schema> entry : properties.entrySet()) {
-      String propertyName = entry.getKey();
-      Schema propertySchema = entry.getValue();
 
-      SchemaValGenerationService generationService = getGenerationService(propertySchema);
-      SchemaValCons propertySchemaValCons = new SchemaValCons(
-          schema.getRequired().contains(propertyName),
-          Boolean.TRUE.equals(propertySchema.getNullable()));
-      List<SchemaVal> values;
+    List<SchemaVal> result = new ArrayList<>();
 
-      try {
-        values = generationService.generateAll(propertySchema, propertySchemaValCons);
-      } catch (Exception ex) {
+    if (schema.getProperties() != null) {
+
+      for (Map.Entry<String, Schema> entry : properties.entrySet()) {
+        String propertyName = entry.getKey();
+        Schema propertySchema = entry.getValue();
+
+        SchemaValGenerationService generationService = findGenerationService(propertyName, propertySchema);
+        if (generationService == null) {
+          throw new ObjectValGenerationException(
+              errorNoPropertyGenerationService("ALL", schema, propertyName, propertySchema)
+          );
+        }
+
+        SchemaValCons propertySchemaValCons = new SchemaValCons(
+            schema.getRequired() != null && schema.getRequired().contains(propertyName),
+            Boolean.TRUE.equals(propertySchema.getNullable()));
+        List<SchemaVal> values;
+
+        try {
+          values = generationService.generateAll(propertySchema, propertySchemaValCons);
+        } catch (Exception ex) {
+          throw new ObjectValGenerationException(
+              errorPropertyExceptionRaised("ALL", schema, propertyName, propertySchema), ex);
+        }
+
+        if (CollectionUtils.isEmpty(values)) {
+          throw new ObjectValGenerationException(
+              errorPropertyNoneGenerated("ALL", schema, propertyName, propertySchema));
+        }
+        propertySchemaVals.put(propertyName, values);
+
+      }
+
+      Map<String, SchemaVal> defaultPropertySchemaVal = getDefaultPropertySchemaVal(schema, cons);
+
+      if (!defaultPropertySchemaVal.keySet().equals(properties.keySet())) {
         throw new ObjectValGenerationException(
-            errorPropertyExceptionRaised("ALL", schema, propertyName, propertySchema), ex);
+            error("Default property SchemaVal doesn\'t contains all properties", "ALL", schema));
       }
 
-      if (CollectionUtils.isEmpty(values)) {
-        throw new ObjectValGenerationException(errorPropertyNoneGenerated("ALL", schema, propertyName, propertySchema));
-      }
-      propertySchemaVals.put(propertyName, values);
+      result.addAll(permutate(propertySchemaVals, defaultPropertySchemaVal));
 
     }
 
-    Map<String, SchemaVal> defaultPropertySchemaVal = getDefaultPropertySchemaVal(schema, cons);
 
-    if (!defaultPropertySchemaVal.keySet().equals(properties.keySet())) {
-      throw new ObjectValGenerationException(
-          error("Default property SchemaVal doesn\'t contains all properties", "ALL", schema));
-    }
-
-    List<SchemaVal> result = new ArrayList<>(
-        permutate(propertySchemaVals, defaultPropertySchemaVal));
-
-    generators.stream()
+    schemaValGenerators.stream()
         .filter(g -> g.supports(schema, cons))
         .map(g -> g.generate(schema, cons))
         .forEach(v -> result.add(v));
-
-    if (result.isEmpty()) {
-      throw new ObjectValGenerationException(errorNoneGenerated("ALL", schema));
-    }
 
     return result;
   }
 
   protected Map<String, SchemaVal> getDefaultPropertySchemaVal(ObjectSchema schema, SchemaValCons cons) {
     SchemaVal schemaVal = defaultGenerationService.generateOne(schema, cons);
-    if (ObjectVal.class.equals(schemaVal)) {
+    if (ObjectVal.class.equals(schemaVal.getClass())) {
       return new HashMap<>(((ObjectVal) schemaVal).getValue());
     }
     return Collections.emptyMap();
@@ -191,18 +221,19 @@ public class DefaultObjectValGenerationService implements ObjectValGenerationSer
             message, name, mode, objectSchema.toString());
   }
 
-  private String errorNoneGenerated(String mode, ObjectSchema objectSchema) {
-    return MessageFormat
-        .format(
-            "Nothing generated for ObjectSchema. Service:[{0}], Mode:[{1}], ObjectSchema:[{2}]",
-            name, mode, objectSchema.toString());
-  }
-
   private String errorPropertyNoneGenerated(String mode, ObjectSchema objectSchema, String propertyName,
       Schema propertySchema) {
     return MessageFormat
         .format(
             "Nothing generated for property. Service:[{0}], Mode:[{1}], ObjectSchema:[{2}], Property:[{3}], PropertySchema:[{4}]",
+            name, mode, objectSchema.toString(), propertyName, propertySchema.toString());
+  }
+
+  private String errorNoPropertyGenerationService(String mode, ObjectSchema objectSchema, String propertyName,
+      Schema propertySchema) {
+    return MessageFormat
+        .format(
+            "No suitable SchemaValGenerationService for PropertySchema. Service:[{0}], Mode:[{1}], ObjectSchema:[{2}], Property:[{3}], PropertySchema:[{4}]",
             name, mode, objectSchema.toString(), propertyName, propertySchema.toString());
   }
 
@@ -214,9 +245,14 @@ public class DefaultObjectValGenerationService implements ObjectValGenerationSer
             name, mode, objectSchema.toString(), propertyName, propertySchema.toString());
   }
 
-  private SchemaValGenerationService getGenerationService(Schema schema) {
+  private SchemaValGenerationService findGenerationService(String propertyName, Schema schema) {
 
-    return schemaValGenerationServices.stream()
+    SchemaValGenerationService generationService = propertyGenerationService.get(propertyName);
+    if (generationService != null) {
+      return generationService;
+    }
+
+    return generationServices.stream()
         .filter(service -> service.supports(schema))
         .findFirst()
         .orElse(null);
@@ -228,35 +264,49 @@ public class DefaultObjectValGenerationService implements ObjectValGenerationSer
    *
    * @param schemaValGenerationService
    */
-  public void registerGenerationService(SchemaValGenerationService schemaValGenerationService) {
-    this.schemaValGenerationServices.add(schemaValGenerationService);
+  public void addPropertyGenerationService(SchemaValGenerationService schemaValGenerationService) {
+    this.generationServices.add(schemaValGenerationService);
   }
 
   /**
-   * Register a {@link SchemaValGenerationService} for a specific property
+   * Register multiple {@link SchemaValGenerationService}
+   *
+   * @param schemaValGenerationService
+   * @param schemaValGenerationServices
+   */
+  public void addPropertyGenerationServices(SchemaValGenerationService schemaValGenerationService,
+      SchemaValGenerationService... schemaValGenerationServices) {
+    addPropertyGenerationService(schemaValGenerationService);
+    if (ArrayUtils.isNotEmpty(schemaValGenerationServices)) {
+      Arrays.stream(schemaValGenerationServices).forEach(s -> addPropertyGenerationService(s));
+    }
+  }
+
+  /**
+   * Register a {@link SchemaValGenerationService} for a specific property name
    *
    * @param propertyName
    * @param schemaValGenerationService
    */
-  public void registerGenerationService(String propertyName, SchemaValGenerationService schemaValGenerationService) {
-    this.propertySchemaValGenerationService.putIfAbsent(propertyName, schemaValGenerationService);
+  public void addPropertyGenerationService(String propertyName, SchemaValGenerationService schemaValGenerationService) {
+    this.propertyGenerationService.putIfAbsent(propertyName, schemaValGenerationService);
   }
 
   /**
    * @param generator
    */
-  public void addGenerator(SchemaValGenerator generator) {
-    generators.add(generator);
+  public void addSchemaValGenerator(SchemaValGenerator generator) {
+    schemaValGenerators.add(generator);
   }
 
   /**
    * @param generator
    * @param generators
    */
-  public void addGenerators(SchemaValGenerator generator, SchemaValGenerator... generators) {
-    this.generators.add(generator);
+  public void addSchemaValGenerators(SchemaValGenerator generator, SchemaValGenerator... generators) {
+    this.schemaValGenerators.add(generator);
     if (ArrayUtils.isNotEmpty(generators)) {
-      this.generators.addAll(Arrays.asList(generator));
+      this.schemaValGenerators.addAll(Arrays.asList(generator));
     }
   }
 

@@ -22,6 +22,6 @@ public class GoodBinaryValGenerator implements BinaryValGenerator {
   @Override
   public BinaryVal generate(BinarySchema schema,
       SchemaValCons cons) {
-    return new BinaryVal(Base64.getEncoder().encodeToString(RandomStringUtils.random(100).getBytes()));
+    return new BinaryVal(Base64.getEncoder().encodeToString(RandomStringUtils.random(20).getBytes()));
   }
 }

@@ -1,7 +1,7 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.special;
 
 import io.swagger.v3.oas.models.media.Schema;
-import me.chanjar.oas.server.validator.core.value.schema.IgnoredVal;
+import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValCons;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -45,7 +45,7 @@ public class IgnoredValGeneratorTest {
   @Test
   public void testGenerate() {
     IgnoredValGenerator generator = new IgnoredValGenerator(true);
-    assertEquals(generator.generate(null, null), IgnoredVal.INSTANCE);
+    assertEquals(generator.generate(null, null), SchemaVal.IGNORED_VAL);
   }
 
 }
