@@ -83,8 +83,7 @@ public abstract class ObjectValGenerationServiceFactory {
     // register self as ObjectVal generator
     service.addPropertyGenerationService(service);
 
-    service.addSchemaValGenerator(new IgnoredValGenerator(true));
-    service.addSchemaValGenerator(new NullValGenerator(true));
+    service.addSchemaValGenerators(new IgnoredValGenerator(true), new NullValGenerator(true));
     return service;
   }
 
@@ -127,8 +126,7 @@ public abstract class ObjectValGenerationServiceFactory {
     // register self as ObjectVal generator
     service.addPropertyGenerationService(service);
 
-    service.addSchemaValGenerator(new IgnoredValGenerator(true));
-    service.addSchemaValGenerator(new NullValGenerator(true));
+    service.addSchemaValGenerators(new IgnoredValGenerator(false), new NullValGenerator(false));
     return service;
   }
 
