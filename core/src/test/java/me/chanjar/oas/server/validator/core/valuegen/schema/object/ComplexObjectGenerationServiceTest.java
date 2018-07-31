@@ -8,7 +8,6 @@ import me.chanjar.oas.server.validator.core.loader.OpenAPIV3Loader;
 import me.chanjar.oas.server.validator.core.value.schema.*;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValCons;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerationService;
-import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerator;
 import org.apache.commons.lang3.ArrayUtils;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -21,11 +20,11 @@ import static me.chanjar.oas.server.validator.core.valuegen.schema.object.Object
 import static me.chanjar.oas.server.validator.core.valuegen.schema.string.StringValGenerationServiceFactory.fixedString;
 import static org.testng.Assert.*;
 
-public class DefaultObjectGenerationServiceTest {
+public class ComplexObjectGenerationServiceTest {
 
   @Test
   public void testSupports() {
-    DefaultObjectValGenerationService service = new DefaultObjectValGenerationService(
+    ComplexObjectValGenerationService service = new ComplexObjectValGenerationService(
         "DefaultObjectValGenerationService");
     assertEquals(service.supports(new ObjectSchema()), true);
     assertEquals(service.supports(new StringSchema()), false);
@@ -258,14 +257,14 @@ public class DefaultObjectGenerationServiceTest {
   @Test
   public void testGenerateAll_algorithm_1() {
 
-    DefaultObjectValGenerationService defaultService = new DefaultObjectValGenerationService("algo-test-default");
+    ComplexObjectValGenerationService defaultService = new ComplexObjectValGenerationService("algo-test-default");
     defaultService.addPropertyGenerationServices(
         fixedString("abc", "def"),
         fixedInteger(1),
         defaultService
     );
 
-    DefaultObjectValGenerationService testedService = new DefaultObjectValGenerationService("algo-test",
+    ComplexObjectValGenerationService testedService = new ComplexObjectValGenerationService("algo-test",
         defaultService);
 
     testedService.addPropertyGenerationServices(
@@ -316,7 +315,7 @@ public class DefaultObjectGenerationServiceTest {
   @Test
   public void testGenerateAll_algorithm_2() {
 
-    DefaultObjectValGenerationService testedService = new DefaultObjectValGenerationService("algo-test");
+    ComplexObjectValGenerationService testedService = new ComplexObjectValGenerationService("algo-test");
 
     testedService.addPropertyGenerationServices(
         fixedString("abc", "def"),
@@ -350,7 +349,7 @@ public class DefaultObjectGenerationServiceTest {
 
     ObjectSchema objectSchema = loadObjectSchema("case-one-property-bool.yaml");
 
-    DefaultObjectValGenerationService service = new DefaultObjectValGenerationService("default");
+    ComplexObjectValGenerationService service = new ComplexObjectValGenerationService("default");
     service.addPropertyGenerationService(fixedBool(false));
     service.addPropertyGenerationService("prop", fixedBool(true));
 
@@ -364,7 +363,7 @@ public class DefaultObjectGenerationServiceTest {
 
     ObjectSchema objectSchema = loadObjectSchema("case-one-property-bool.yaml");
 
-    DefaultObjectValGenerationService service = new DefaultObjectValGenerationService("default");
+    ComplexObjectValGenerationService service = new ComplexObjectValGenerationService("default");
     service.addPropertyGenerationService(fixedBool(false));
     service.addPropertyGenerationService("prop", fixedBool(true, false));
 
@@ -391,7 +390,7 @@ public class DefaultObjectGenerationServiceTest {
 
     ObjectSchema objectSchema = loadObjectSchema("case-one-property-bool.yaml");
 
-    ObjectValGenerationService service = new DefaultObjectValGenerationService("exception-test");
+    ObjectValGenerationService service = new ComplexObjectValGenerationService("exception-test");
     service.generateOne(objectSchema, new SchemaValCons(true, false));
 
   }
@@ -401,7 +400,7 @@ public class DefaultObjectGenerationServiceTest {
 
     ObjectSchema objectSchema = loadObjectSchema("case-one-property-bool.yaml");
 
-    ObjectValGenerationService service = new DefaultObjectValGenerationService("exception-test");
+    ObjectValGenerationService service = new ComplexObjectValGenerationService("exception-test");
     service.generateAll(objectSchema, new SchemaValCons(true, false));
 
   }
@@ -411,7 +410,7 @@ public class DefaultObjectGenerationServiceTest {
 
     ObjectSchema objectSchema = loadObjectSchema("case-one-property-bool.yaml");
 
-    DefaultObjectValGenerationService service = new DefaultObjectValGenerationService("exception-test");
+    ComplexObjectValGenerationService service = new ComplexObjectValGenerationService("exception-test");
     service.addPropertyGenerationService(new ExceptionSchemaValGenerationService());
     service.generateOne(objectSchema, new SchemaValCons(true, false));
 
@@ -422,7 +421,7 @@ public class DefaultObjectGenerationServiceTest {
 
     ObjectSchema objectSchema = loadObjectSchema("case-one-property-bool.yaml");
 
-    DefaultObjectValGenerationService service = new DefaultObjectValGenerationService("exception-test");
+    ComplexObjectValGenerationService service = new ComplexObjectValGenerationService("exception-test");
     service.addPropertyGenerationService(new ExceptionSchemaValGenerationService());
     service.generateAll(objectSchema, new SchemaValCons(true, false));
 

@@ -1,13 +1,15 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.date;
 
 import me.chanjar.oas.server.validator.core.value.schema.DateVal;
+import me.chanjar.oas.server.validator.core.value.schema.StringVal;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerator;
+import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper;
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.IgnoredValGenerator;
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.NullValGenerator;
 
 import java.util.Date;
 
-import static me.chanjar.oas.server.validator.core.valuegen.schema.PrimitiveSchemaValGenerationServiceFactoryHelper.addGenerators;
+import static me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper.addGeneratorsFor;
 
 public abstract class DateValGenerationServiceFactory {
 
@@ -25,7 +27,7 @@ public abstract class DateValGenerationServiceFactory {
   public static DateValGenerationService date(SchemaValGenerator generator,
       SchemaValGenerator... generators) {
     DateValGenerationService service = new DateValGenerationService();
-    addGenerators(service, generator, generators);
+    SchemaValGeneratorHolderHelper.addGeneratorsFor(service, generator, generators);
     return service;
   }
 
@@ -35,6 +37,8 @@ public abstract class DateValGenerationServiceFactory {
    * Generators:
    * <ol>
    * <li>{@link GoodDateValGenerator}</li>
+   * <li>{@link NullValGenerator}, good mode</li>
+   * <li>{@link IgnoredValGenerator}, good mode</li>
    * </ol>
    * </p>
    *
@@ -42,6 +46,27 @@ public abstract class DateValGenerationServiceFactory {
    */
   public static DateValGenerationService goodDate() {
     return date(new GoodDateValGenerator(), new NullValGenerator(true), new IgnoredValGenerator(true));
+  }
+
+  /**
+   * Create a default bad {@link DateValGenerationService}.
+   * <p>
+   * Generators:
+   * <ol>
+   * <li>hijklm</li>
+   * <li>uvwxyz</li>
+   * <li>{@link NullValGenerator}, bad mode</li>
+   * <li>{@link IgnoredValGenerator}, bad mode</li>
+   * </ol>
+   * </p>
+   *
+   * @return
+   */
+  public static DateValGenerationService badDate() {
+    DateValGenerationService service = new DateValGenerationService();
+    addGeneratorsFor(service, d -> new StringVal(d), "hijklm", "uvwxyz");
+    addGeneratorsFor(service, new NullValGenerator(false), new IgnoredValGenerator(false));
+    return service;
   }
 
   /**
@@ -53,7 +78,7 @@ public abstract class DateValGenerationServiceFactory {
    */
   public static DateValGenerationService fixedDate(Date value, Date... values) {
     DateValGenerationService service = new DateValGenerationService();
-    addGenerators(service, d -> new DateVal(d), value, values);
+    addGeneratorsFor(service, d -> new DateVal(d), value, values);
     return service;
   }
 

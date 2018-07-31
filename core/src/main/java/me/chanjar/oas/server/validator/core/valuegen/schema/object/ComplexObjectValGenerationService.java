@@ -13,7 +13,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import java.text.MessageFormat;
 import java.util.*;
 
-public class DefaultObjectValGenerationService implements ObjectValGenerationService {
+public class ComplexObjectValGenerationService implements ObjectValGenerationService {
 
   private final String name;
 
@@ -32,7 +32,7 @@ public class DefaultObjectValGenerationService implements ObjectValGenerationSer
    *
    * @param name
    */
-  public DefaultObjectValGenerationService(String name) {
+  public ComplexObjectValGenerationService(String name) {
     this.name = name;
     defaultGenerationService = this;
   }
@@ -43,7 +43,7 @@ public class DefaultObjectValGenerationService implements ObjectValGenerationSer
    * @param defaultGenerationService A {@link ObjectValGenerationService} used to generate
    *                                 default {@link ObjectVal}. It's used in {@link #generateAll(ObjectSchema, SchemaValCons)}
    */
-  public DefaultObjectValGenerationService(String name,
+  public ComplexObjectValGenerationService(String name,
       ObjectValGenerationService defaultGenerationService) {
     this.name = name;
     this.defaultGenerationService = defaultGenerationService;

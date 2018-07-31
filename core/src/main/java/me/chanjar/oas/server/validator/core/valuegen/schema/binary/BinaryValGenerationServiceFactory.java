@@ -2,10 +2,11 @@ package me.chanjar.oas.server.validator.core.valuegen.schema.binary;
 
 import me.chanjar.oas.server.validator.core.value.schema.BinaryVal;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerator;
+import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper;
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.IgnoredValGenerator;
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.NullValGenerator;
 
-import static me.chanjar.oas.server.validator.core.valuegen.schema.PrimitiveSchemaValGenerationServiceFactoryHelper.addGenerators;
+import static me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper.addGeneratorsFor;
 
 public abstract class BinaryValGenerationServiceFactory {
 
@@ -23,7 +24,7 @@ public abstract class BinaryValGenerationServiceFactory {
   public static BinaryValGenerationService binary(SchemaValGenerator generator,
       SchemaValGenerator... generators) {
     BinaryValGenerationService service = new BinaryValGenerationService();
-    addGenerators(service, generator, generators);
+    SchemaValGeneratorHolderHelper.addGeneratorsFor(service, generator, generators);
     return service;
   }
 
@@ -33,6 +34,8 @@ public abstract class BinaryValGenerationServiceFactory {
    * Generators:
    * <ol>
    * <li>{@link GoodBinaryValGenerator}</li>
+   * <li>{@link NullValGenerator}, good mode</li>
+   * <li>{@link IgnoredValGenerator}, good mode</li>
    * </ol>
    * </p>
    *
@@ -40,6 +43,26 @@ public abstract class BinaryValGenerationServiceFactory {
    */
   public static BinaryValGenerationService goodBinary() {
     return binary(new GoodBinaryValGenerator(), new NullValGenerator(true), new IgnoredValGenerator(true));
+  }
+
+  /**
+   * Create a default bad {@link BinaryValGenerationService}.
+   * <p>
+   * Generates:
+   * <ol>
+   * <li>abcdefg</li>
+   * <li>uvwxyz</li>
+   * <li>{@link NullValGenerator}, bad mode</li>
+   * <li>{@link IgnoredValGenerator}, bad mode</li>
+   * </ol>
+   * </p>
+   *
+   * @return
+   */
+  public static BinaryValGenerationService badBinary() {
+    BinaryValGenerationService service = fixedBinary("abcdefg", "uvwxyz");
+    addGeneratorsFor(service, new NullValGenerator(false), new IgnoredValGenerator(false));
+    return service;
   }
 
   /**
@@ -51,7 +74,7 @@ public abstract class BinaryValGenerationServiceFactory {
    */
   public static BinaryValGenerationService fixedBinary(String value, String... values) {
     BinaryValGenerationService service = new BinaryValGenerationService();
-    addGenerators(service, d -> new BinaryVal(d), value, values);
+    addGeneratorsFor(service, d -> new BinaryVal(d), value, values);
     return service;
   }
 

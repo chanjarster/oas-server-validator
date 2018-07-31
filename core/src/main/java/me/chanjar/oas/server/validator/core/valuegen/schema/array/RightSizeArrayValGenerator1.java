@@ -11,7 +11,7 @@ import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValCons;
  * <li><a href="https://tools.ietf.org/html/draft-wright-json-schema-validation-00#section-5.10">maximum</a> == null</li>
  * </ol>
  */
-public class GoodArrayValGenerator1 extends ArrayValGeneratorTemplate {
+public class RightSizeArrayValGenerator1 extends ArrayValGeneratorTemplate {
 
   @Override
   public boolean supports(Schema schema, SchemaValCons cons) {

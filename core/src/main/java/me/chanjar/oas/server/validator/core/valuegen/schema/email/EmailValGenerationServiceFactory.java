@@ -1,6 +1,7 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.email;
 
 import me.chanjar.oas.server.validator.core.value.schema.EmailVal;
+import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerator;
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.IgnoredValGenerator;
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.NullValGenerator;
@@ -8,7 +9,7 @@ import me.chanjar.oas.server.validator.core.valuegen.schema.string.StringValGene
 
 import java.util.Arrays;
 
-import static me.chanjar.oas.server.validator.core.valuegen.schema.PrimitiveSchemaValGenerationServiceFactoryHelper.addGenerators;
+import static me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper.addGeneratorsFor;
 
 public abstract class EmailValGenerationServiceFactory {
 
@@ -26,7 +27,7 @@ public abstract class EmailValGenerationServiceFactory {
   public static EmailValGenerationService string(SchemaValGenerator generator,
       SchemaValGenerator... generators) {
     EmailValGenerationService service = new EmailValGenerationService();
-    addGenerators(service, generator, generators);
+    SchemaValGeneratorHolderHelper.addGeneratorsFor(service, generator, generators);
     return service;
   }
 
@@ -133,7 +134,7 @@ public abstract class EmailValGenerationServiceFactory {
    */
   public static EmailValGenerationService fixedEmail(String value, String... values) {
     EmailValGenerationService service = new EmailValGenerationService();
-    addGenerators(service, d -> new EmailVal(d), value, values);
+    addGeneratorsFor(service, d -> new EmailVal(d), value, values);
     return service;
   }
 

@@ -1,11 +1,12 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.string;
 
 import me.chanjar.oas.server.validator.core.value.schema.StringVal;
+import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerator;
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.IgnoredValGenerator;
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.NullValGenerator;
 
-import static me.chanjar.oas.server.validator.core.valuegen.schema.PrimitiveSchemaValGenerationServiceFactoryHelper.addGenerators;
+import static me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper.addGeneratorsFor;
 
 public abstract class StringValGenerationServiceFactory {
 
@@ -23,7 +24,7 @@ public abstract class StringValGenerationServiceFactory {
   public static StringValGenerationService string(SchemaValGenerator generator,
       SchemaValGenerator... generators) {
     StringValGenerationService service = new StringValGenerationService();
-    addGenerators(service, generator, generators);
+    SchemaValGeneratorHolderHelper.addGeneratorsFor(service, generator, generators);
     return service;
   }
 
@@ -89,7 +90,7 @@ public abstract class StringValGenerationServiceFactory {
    */
   public static StringValGenerationService fixedString(String value, String... values) {
     StringValGenerationService service = new StringValGenerationService();
-    addGenerators(service, d -> new StringVal(d), value, values);
+    addGeneratorsFor(service, d -> new StringVal(d), value, values);
     return service;
   }
 

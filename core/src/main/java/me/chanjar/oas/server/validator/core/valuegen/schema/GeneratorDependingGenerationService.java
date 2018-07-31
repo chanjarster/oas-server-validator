@@ -1,33 +1,22 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema;
 
 import io.swagger.v3.oas.models.media.Schema;
-import me.chanjar.oas.server.validator.core.value.schema.*;
+import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 
 /**
- * SchemaValGenerationService for primitive {@link SchemaVal}s.
- * <ol>
- * <li>{@link BinaryVal}</li>
- * <li>{@link BooleanVal}</li>
- * <li>{@link ByteArrayVal}</li>
- * <li>{@link DateTimeVal}</li>
- * <li>{@link DateVal}</li>
- * <li>{@link EmailVal}</li>
- * <li>{@link IntegerVal}</li>
- * <li>{@link NumberVal}</li>
- * <li>{@link PasswordVal}</li>
- * <li>{@link StringVal}</li>
- * <li>{@link UUIDVal}</li>
- * </ol>
+ * a {@link SchemaValGenerationService} which totally depends on {@link SchemaValGenerator}s
  *
  * @param <S>
  */
-public abstract class PrimitiveSchemaValGenerationService<S extends Schema>
-    implements SchemaValGenerationService<S> {
+public abstract class GeneratorDependingGenerationService<S extends Schema>
+    implements SchemaValGenerationService<S>, SchemaValGeneratorHolder {
 
   private List<SchemaValGenerator> generators = new ArrayList<>();
 
@@ -52,10 +41,22 @@ public abstract class PrimitiveSchemaValGenerationService<S extends Schema>
 
   }
 
+  @Override
   public void addGenerator(SchemaValGenerator schemaValGenerator) {
     generators.add(schemaValGenerator);
   }
 
+  @Override
+  public void addGenerators(SchemaValGenerator schemaValGenerator, SchemaValGenerator... schemaValGenerators) {
+
+    generators.add(schemaValGenerator);
+    if (ArrayUtils.isNotEmpty(schemaValGenerators)) {
+      addGenerators(asList(schemaValGenerators));
+    }
+
+  }
+
+  @Override
   public void addGenerators(List<? extends SchemaValGenerator> schemaValGenerators) {
     generators.addAll(schemaValGenerators);
   }

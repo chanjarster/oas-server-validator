@@ -1,11 +1,13 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.bytearray;
 
 import me.chanjar.oas.server.validator.core.value.schema.ByteArrayVal;
+import me.chanjar.oas.server.validator.core.value.schema.StringVal;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerator;
+import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper;
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.IgnoredValGenerator;
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.NullValGenerator;
 
-import static me.chanjar.oas.server.validator.core.valuegen.schema.PrimitiveSchemaValGenerationServiceFactoryHelper.addGenerators;
+import static me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper.addGeneratorsFor;
 
 public abstract class ByteArrayValGenerationServiceFactory {
 
@@ -23,7 +25,7 @@ public abstract class ByteArrayValGenerationServiceFactory {
   public static ByteArrayValGenerationService byteArray(SchemaValGenerator generator,
       SchemaValGenerator... generators) {
     ByteArrayValGenerationService service = new ByteArrayValGenerationService();
-    addGenerators(service, generator, generators);
+    SchemaValGeneratorHolderHelper.addGeneratorsFor(service, generator, generators);
     return service;
   }
 
@@ -33,6 +35,8 @@ public abstract class ByteArrayValGenerationServiceFactory {
    * Generators:
    * <ol>
    * <li>{@link GoodByteArrayValGenerator}</li>
+   * <li>{@link NullValGenerator}, good mode</li>
+   * <li>{@link IgnoredValGenerator}, good mode</li>
    * </ol>
    * </p>
    *
@@ -40,6 +44,27 @@ public abstract class ByteArrayValGenerationServiceFactory {
    */
   public static ByteArrayValGenerationService goodByteArray() {
     return byteArray(new GoodByteArrayValGenerator(), new NullValGenerator(true), new IgnoredValGenerator(true));
+  }
+
+  /**
+   * Create a default bad {@link ByteArrayValGenerationService}.
+   * <p>
+   * Generators:
+   * <ol>
+   * <li>hijklm</li>
+   * <li>uvwxyz</li>
+   * <li>{@link NullValGenerator}, bad mode</li>
+   * <li>{@link IgnoredValGenerator}, bad mode</li>
+   * </ol>
+   * </p>
+   *
+   * @return
+   */
+  public static ByteArrayValGenerationService badByteArray() {
+    ByteArrayValGenerationService service = new ByteArrayValGenerationService();
+    addGeneratorsFor(service, d -> new StringVal(d), "hijklm", "uvwxyz");
+    addGeneratorsFor(service, new NullValGenerator(false), new IgnoredValGenerator(false));
+    return service;
   }
 
   /**
@@ -51,7 +76,7 @@ public abstract class ByteArrayValGenerationServiceFactory {
    */
   public static ByteArrayValGenerationService fixedByteArray(Byte[] value, Byte[]... values) {
     ByteArrayValGenerationService service = new ByteArrayValGenerationService();
-    addGenerators(service, v -> new ByteArrayVal(v), value, values);
+    addGeneratorsFor(service, v -> new ByteArrayVal(v), value, values);
     return service;
   }
 

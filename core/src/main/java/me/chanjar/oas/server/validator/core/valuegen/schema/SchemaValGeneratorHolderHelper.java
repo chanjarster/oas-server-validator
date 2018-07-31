@@ -7,13 +7,13 @@ import org.apache.commons.lang3.ArrayUtils;
 import java.util.Arrays;
 import java.util.function.Function;
 
-public abstract class PrimitiveSchemaValGenerationServiceFactoryHelper {
+public abstract class SchemaValGeneratorHolderHelper {
 
-  private PrimitiveSchemaValGenerationServiceFactoryHelper() {
+  private SchemaValGeneratorHolderHelper() {
     // singleton
   }
 
-  public static void addGenerators(PrimitiveSchemaValGenerationService service,
+  public static void addGeneratorsFor(SchemaValGeneratorHolder service,
       SchemaValGenerator generator,
       SchemaValGenerator... generators) {
     service.addGenerator(generator);
@@ -22,7 +22,7 @@ public abstract class PrimitiveSchemaValGenerationServiceFactoryHelper {
     }
   }
 
-  public static <T> void addGenerators(PrimitiveSchemaValGenerationService service,
+  public static <T> void addGeneratorsFor(SchemaValGeneratorHolder service,
       Function<T, SchemaVal> schemaValConstructor,
       T value, T... values) {
     service.addGenerator(new FixedSchemaValGenerator(schemaValConstructor.apply(value)));
@@ -32,4 +32,5 @@ public abstract class PrimitiveSchemaValGenerationServiceFactoryHelper {
           .forEach(g -> service.addGenerator(new FixedSchemaValGenerator(g)));
     }
   }
+
 }

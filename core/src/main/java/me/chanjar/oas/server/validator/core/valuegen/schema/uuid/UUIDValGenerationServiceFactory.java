@@ -1,11 +1,13 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.uuid;
 
+import me.chanjar.oas.server.validator.core.value.schema.StringVal;
 import me.chanjar.oas.server.validator.core.value.schema.UUIDVal;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerator;
+import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper;
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.IgnoredValGenerator;
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.NullValGenerator;
 
-import static me.chanjar.oas.server.validator.core.valuegen.schema.PrimitiveSchemaValGenerationServiceFactoryHelper.addGenerators;
+import static me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper.addGeneratorsFor;
 
 public abstract class UUIDValGenerationServiceFactory {
 
@@ -23,7 +25,7 @@ public abstract class UUIDValGenerationServiceFactory {
   public static UUIDValGenerationService uuid(SchemaValGenerator generator,
       SchemaValGenerator... generators) {
     UUIDValGenerationService service = new UUIDValGenerationService();
-    addGenerators(service, generator, generators);
+    SchemaValGeneratorHolderHelper.addGeneratorsFor(service, generator, generators);
     return service;
   }
 
@@ -33,6 +35,8 @@ public abstract class UUIDValGenerationServiceFactory {
    * Generators:
    * <ol>
    * <li>{@link GoodUUIDValGenerator}</li>
+   * <li>{@link NullValGenerator}, good mode</li>
+   * <li>{@link IgnoredValGenerator}, good mode</li>
    * </ol>
    * </p>
    *
@@ -40,6 +44,27 @@ public abstract class UUIDValGenerationServiceFactory {
    */
   public static UUIDValGenerationService goodUUID() {
     return uuid(new GoodUUIDValGenerator(), new NullValGenerator(true), new IgnoredValGenerator(true));
+  }
+
+  /**
+   * Create a default bad {@link UUIDValGenerationService}.
+   * <p>
+   * Generators:
+   * <ol>
+   * <li>hijklm</li>
+   * <li>uvwxyz</li>
+   * <li>{@link NullValGenerator}, bad mode</li>
+   * <li>{@link IgnoredValGenerator}, bad mode</li>
+   * </ol>
+   * </p>
+   *
+   * @return
+   */
+  public static UUIDValGenerationService badUUID() {
+    UUIDValGenerationService service = new UUIDValGenerationService();
+    addGeneratorsFor(service, d -> new StringVal(d), "hijklm", "uvwxyz");
+    addGeneratorsFor(service, new NullValGenerator(false), new IgnoredValGenerator(false));
+    return service;
   }
 
   /**
@@ -51,7 +76,7 @@ public abstract class UUIDValGenerationServiceFactory {
    */
   public static UUIDValGenerationService fixedUUID(String value, String... values) {
     UUIDValGenerationService service = new UUIDValGenerationService();
-    addGenerators(service, d -> new UUIDVal(d), value, values);
+    addGeneratorsFor(service, d -> new UUIDVal(d), value, values);
     return service;
   }
 

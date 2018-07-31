@@ -1,13 +1,14 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.number;
 
 import me.chanjar.oas.server.validator.core.value.schema.NumberVal;
+import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerator;
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.IgnoredValGenerator;
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.NullValGenerator;
 
 import java.math.BigDecimal;
 
-import static me.chanjar.oas.server.validator.core.valuegen.schema.PrimitiveSchemaValGenerationServiceFactoryHelper.addGenerators;
+import static me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper.addGeneratorsFor;
 
 public abstract class NumberValGenerationServiceFactory {
 
@@ -25,7 +26,7 @@ public abstract class NumberValGenerationServiceFactory {
   public static NumberValGenerationService number(SchemaValGenerator generator,
       SchemaValGenerator... generators) {
     NumberValGenerationService service = new NumberValGenerationService();
-    addGenerators(service, generator, generators);
+    SchemaValGeneratorHolderHelper.addGeneratorsFor(service, generator, generators);
     return service;
   }
 
@@ -91,7 +92,7 @@ public abstract class NumberValGenerationServiceFactory {
   public static NumberValGenerationService fixedNumber(BigDecimal value, BigDecimal... values) {
 
     NumberValGenerationService service = new NumberValGenerationService();
-    addGenerators(service, v -> new NumberVal(v), value, values);
+    addGeneratorsFor(service, v -> new NumberVal(v), value, values);
     return service;
   }
 

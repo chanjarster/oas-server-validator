@@ -24,7 +24,7 @@ public class FixedObjectValGenerationServiceTest {
 
   @Test
   public void testSupports() {
-    FixedObjectValGenerationService service = new FixedObjectValGenerationService();
+    SimpleObjectValGenerationService service = new SimpleObjectValGenerationService();
     assertEquals(service.supports(new ObjectSchema()), true);
     assertEquals(service.supports(new StringSchema()), false);
   }
