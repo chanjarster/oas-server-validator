@@ -1,6 +1,7 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.object;
 
 import me.chanjar.oas.server.validator.core.value.schema.ObjectVal;
+import me.chanjar.oas.server.validator.core.valuegen.schema.array.ArrayValGenerationService;
 import me.chanjar.oas.server.validator.core.valuegen.schema.array.ArrayValGenerationServiceFactory;
 import me.chanjar.oas.server.validator.core.valuegen.schema.binary.BinaryValGenerationServiceFactory;
 import me.chanjar.oas.server.validator.core.valuegen.schema.bool.BooleanValGenerationServiceFactory;
@@ -20,7 +21,8 @@ import java.util.function.Function;
 
 import static me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper.addGeneratorsFor;
 import static me.chanjar.oas.server.validator.core.valuegen.schema.array.ArrayValGenerationServiceFactory.badArray;
-import static me.chanjar.oas.server.validator.core.valuegen.schema.array.ArrayValGenerationServiceFactory.goodArray;
+import static me.chanjar.oas.server.validator.core.valuegen.schema.array.ArrayValGenerationServiceFactory.badArrayWithoutObject;
+import static me.chanjar.oas.server.validator.core.valuegen.schema.array.ArrayValGenerationServiceFactory.goodArrayWithoutObject;
 import static me.chanjar.oas.server.validator.core.valuegen.schema.binary.BinaryValGenerationServiceFactory.badBinary;
 import static me.chanjar.oas.server.validator.core.valuegen.schema.binary.BinaryValGenerationServiceFactory.goodBinary;
 import static me.chanjar.oas.server.validator.core.valuegen.schema.bool.BooleanValGenerationServiceFactory.badBool;
@@ -71,10 +73,26 @@ public abstract class ObjectValGenerationServiceFactory {
    * @return
    */
   public static ObjectValGenerationService goodObject() {
+
+    ComplexObjectValGenerationService service = goodObjectWithoutArray();
+
+    ArrayValGenerationService goodArray = goodArrayWithoutObject();
+    goodArray.registerObjectGenerationService(service);
+    service.addPropertyGenerationService(goodArray);
+
+    return service;
+  }
+
+  /**
+   * same as {@link #goodObject()} but without {@link ArrayValGenerationServiceFactory}
+   *
+   * @return
+   */
+  public static ComplexObjectValGenerationService goodObjectWithoutArray() {
     ComplexObjectValGenerationService service =
         new ComplexObjectValGenerationService("GoodObjectValGenerationService");
+
     service.addPropertyGenerationServices(
-        goodArray(),
         goodBinary(),
         goodBool(),
         goodByteArray(),
@@ -115,11 +133,25 @@ public abstract class ObjectValGenerationServiceFactory {
    * @return
    */
   public static ObjectValGenerationService badObject() {
+    ComplexObjectValGenerationService service = badObjectWithoutArray();
+
+    ArrayValGenerationService badArray = badArrayWithoutObject();
+    badArray.registerObjectGenerationService(service);
+    service.addPropertyGenerationService(service);
+
+    return service;
+  }
+
+  /**
+   * same as {@link #badObject()} but without {@link ArrayValGenerationServiceFactory}
+   *
+   * @return
+   */
+  public static ComplexObjectValGenerationService badObjectWithoutArray() {
     ComplexObjectValGenerationService service =
         new ComplexObjectValGenerationService("BadObjectValGenerationService", goodObject());
 
     service.addPropertyGenerationServices(
-        badArray(),
         badBinary(),
         badBool(),
         badByteArray(),

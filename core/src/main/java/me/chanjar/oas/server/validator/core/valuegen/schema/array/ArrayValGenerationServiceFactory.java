@@ -4,7 +4,8 @@ import me.chanjar.oas.server.validator.core.value.schema.ArrayVal;
 import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerationService;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerator;
-import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper;
+import me.chanjar.oas.server.validator.core.valuegen.schema.object.ComplexObjectValGenerationService;
+import me.chanjar.oas.server.validator.core.valuegen.schema.object.ObjectValGenerationService;
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.IgnoredValGenerator;
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.NullValGenerator;
 
@@ -25,6 +26,8 @@ import static me.chanjar.oas.server.validator.core.valuegen.schema.integer.Integ
 import static me.chanjar.oas.server.validator.core.valuegen.schema.integer.IntegerValGenerationServiceFactory.goodInteger;
 import static me.chanjar.oas.server.validator.core.valuegen.schema.number.NumberValGenerationServiceFactory.badNumber;
 import static me.chanjar.oas.server.validator.core.valuegen.schema.number.NumberValGenerationServiceFactory.goodNumber;
+import static me.chanjar.oas.server.validator.core.valuegen.schema.object.ObjectValGenerationServiceFactory.badObjectWithoutArray;
+import static me.chanjar.oas.server.validator.core.valuegen.schema.object.ObjectValGenerationServiceFactory.goodObjectWithoutArray;
 import static me.chanjar.oas.server.validator.core.valuegen.schema.password.PasswordValGenerationServiceFactory.badPassword;
 import static me.chanjar.oas.server.validator.core.valuegen.schema.password.PasswordValGenerationServiceFactory.goodPassword;
 import static me.chanjar.oas.server.validator.core.valuegen.schema.string.StringValGenerationServiceFactory.badString;
@@ -57,9 +60,9 @@ public abstract class ArrayValGenerationServiceFactory {
    * <p>
    * Generators:
    * <ol>
-   * <li>{@link RightSizeArrayValGenerator1}</li>
-   * <li>{@link RightSizeArrayValGenerator2}</li>
-   * <li>{@link RightSizeArrayValGenerator3}</li>
+   * <li>{@link RightSizeArrayValGenerator1}, with good {@link SchemaValGenerationService}s</li>
+   * <li>{@link RightSizeArrayValGenerator2}, with good {@link SchemaValGenerationService}s</li>
+   * <li>{@link RightSizeArrayValGenerator3}, with good {@link SchemaValGenerationService}s</li>
    * <li>{@link IgnoredValGenerator} in good mode</li>
    * <li>{@link NullValGenerator} in good mode</li>
    * </ol>
@@ -71,13 +74,38 @@ public abstract class ArrayValGenerationServiceFactory {
 
     ArrayValGenerationService arrayValGenerationService = new ArrayValGenerationService();
 
+    ComplexObjectValGenerationService goodObject = goodObjectWithoutArray();
+    goodObject.addPropertyGenerationService(arrayValGenerationService);
+
     arrayValGenerationService.addGenerators(
         // right array size & right array item schema
-        registerGoodGenerationServices(new RightSizeArrayValGenerator1(), arrayValGenerationService),
-        registerGoodGenerationServices(new RightSizeArrayValGenerator2(), arrayValGenerationService),
-        registerGoodGenerationServices(new RightSizeArrayValGenerator3(), arrayValGenerationService)
+        registerGoods(new RightSizeArrayValGenerator1(), arrayValGenerationService, goodObject),
+        registerGoods(new RightSizeArrayValGenerator2(), arrayValGenerationService, goodObject),
+        registerGoods(new RightSizeArrayValGenerator3(), arrayValGenerationService, goodObject)
     );
     addGeneratorsFor(arrayValGenerationService, new IgnoredValGenerator(true), new NullValGenerator(true));
+
+    return arrayValGenerationService;
+
+  }
+
+  /**
+   * same as {@link #goodArray()} but without {@link ObjectValGenerationService}
+   *
+   * @return
+   */
+  public static ArrayValGenerationService goodArrayWithoutObject() {
+
+    ArrayValGenerationService arrayValGenerationService = new ArrayValGenerationService();
+
+    arrayValGenerationService.addGenerators(
+        // right array size & right array item schema
+        registerGoods(new RightSizeArrayValGenerator1(), arrayValGenerationService, null),
+        registerGoods(new RightSizeArrayValGenerator2(), arrayValGenerationService, null),
+        registerGoods(new RightSizeArrayValGenerator3(), arrayValGenerationService, null)
+    );
+    addGeneratorsFor(arrayValGenerationService, new IgnoredValGenerator(true), new NullValGenerator(true));
+
     return arrayValGenerationService;
 
   }
@@ -101,14 +129,44 @@ public abstract class ArrayValGenerationServiceFactory {
    */
   public static ArrayValGenerationService badArray() {
     ArrayValGenerationService arrayValGenerationService = new ArrayValGenerationService();
+
+    ComplexObjectValGenerationService goodObject = goodObjectWithoutArray();
+    goodObject.addPropertyGenerationService(arrayValGenerationService);
+
+    ComplexObjectValGenerationService badObject = badObjectWithoutArray();
+    badObject.addPropertyGenerationService(arrayValGenerationService);
+
     arrayValGenerationService.addGenerators(
         // wrong array size & right array item schema
-        registerGoodGenerationServices(new WrongSizeArrayValGenerator1(), arrayValGenerationService),
-        registerGoodGenerationServices(new WrongSizeArrayValGenerator2(), arrayValGenerationService),
+        registerGoods(new WrongSizeArrayValGenerator1(), arrayValGenerationService, goodObject),
+        registerGoods(new WrongSizeArrayValGenerator2(), arrayValGenerationService, goodObject),
         // right array size & wrong array item schema
-        registerBadGenerationServices(new RightSizeArrayValGenerator1(), arrayValGenerationService),
-        registerBadGenerationServices(new RightSizeArrayValGenerator2(), arrayValGenerationService),
-        registerBadGenerationServices(new RightSizeArrayValGenerator3(), arrayValGenerationService)
+        registerBads(new RightSizeArrayValGenerator1(), arrayValGenerationService, badObject),
+        registerBads(new RightSizeArrayValGenerator2(), arrayValGenerationService, badObject),
+        registerBads(new RightSizeArrayValGenerator3(), arrayValGenerationService, badObject)
+    );
+
+    addGeneratorsFor(arrayValGenerationService, new IgnoredValGenerator(false), new NullValGenerator(false));
+    return arrayValGenerationService;
+  }
+
+  /**
+   * same as {@link #badArray()} but without {@link ObjectValGenerationService}
+   *
+   * @return
+   */
+  public static ArrayValGenerationService badArrayWithoutObject() {
+
+    ArrayValGenerationService arrayValGenerationService = new ArrayValGenerationService();
+
+    arrayValGenerationService.addGenerators(
+        // wrong array size & right array item schema
+        registerGoods(new WrongSizeArrayValGenerator1(), arrayValGenerationService, null),
+        registerGoods(new WrongSizeArrayValGenerator2(), arrayValGenerationService, null),
+        // right array size & wrong array item schema
+        registerBads(new RightSizeArrayValGenerator1(), arrayValGenerationService, null),
+        registerBads(new RightSizeArrayValGenerator2(), arrayValGenerationService, null),
+        registerBads(new RightSizeArrayValGenerator3(), arrayValGenerationService, null)
     );
 
     addGeneratorsFor(arrayValGenerationService, new IgnoredValGenerator(false), new NullValGenerator(false));
@@ -135,8 +193,8 @@ public abstract class ArrayValGenerationServiceFactory {
    * @param arrayValGenerationService
    * @return
    */
-  private static ArrayValGenerator registerGoodGenerationServices(ArrayValGeneratorTemplate generatorTemplate,
-      ArrayValGenerationService arrayValGenerationService) {
+  public static ArrayValGenerator registerGoods(ArrayValGeneratorTemplate generatorTemplate,
+      ArrayValGenerationService arrayValGenerationService, ObjectValGenerationService goodObject) {
     generatorTemplate.addItemGenerationServices(
         goodBinary(),
         goodBool(),
@@ -152,6 +210,11 @@ public abstract class ArrayValGenerationServiceFactory {
         // support nested array
         arrayValGenerationService
     );
+
+    if (goodObject != null) {
+      generatorTemplate.addItemGenerationService(goodObject);
+    }
+
     return generatorTemplate;
   }
 
@@ -162,8 +225,8 @@ public abstract class ArrayValGenerationServiceFactory {
    * @param arrayValGenerationService
    * @return
    */
-  private static ArrayValGenerator registerBadGenerationServices(ArrayValGeneratorTemplate generatorTemplate,
-      ArrayValGenerationService arrayValGenerationService) {
+  public static ArrayValGenerator registerBads(ArrayValGeneratorTemplate generatorTemplate,
+      ArrayValGenerationService arrayValGenerationService, ObjectValGenerationService badObject) {
     generatorTemplate.addItemGenerationServices(
         badBinary(),
         badBool(),
@@ -179,6 +242,11 @@ public abstract class ArrayValGenerationServiceFactory {
         // support nested array
         arrayValGenerationService
     );
+
+    if (badObject != null) {
+      generatorTemplate.addItemGenerationService(badObject);
+    }
+
     return generatorTemplate;
   }
 

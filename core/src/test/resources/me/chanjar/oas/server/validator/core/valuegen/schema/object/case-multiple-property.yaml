@@ -17,6 +17,7 @@ components:
     TestObject:
       type: object
       required:
+        - arrayVal
         - binaryVal
         - booleanVal
         - byteArrayVal
@@ -30,6 +31,10 @@ components:
         - uuidVal
         - objectVal
       properties:
+        arrayVal:
+          type: array
+          items:
+            type: string
         binaryVal:
           type: string
           format: binary

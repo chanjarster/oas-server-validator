@@ -10,6 +10,7 @@ import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValCons;
  * <li><a href="https://tools.ietf.org/html/draft-wright-json-schema-validation-00#section-5.11">minimum</a> == null</li>
  * <li><a href="https://tools.ietf.org/html/draft-wright-json-schema-validation-00#section-5.10">maximum</a> == null</li>
  * </ol>
+ * Create a array with size: 1
  */
 public class RightSizeArrayValGenerator1 extends ArrayValGeneratorTemplate {
 

@@ -306,7 +306,7 @@ public class ComplexObjectValGenerationService implements ObjectValGenerationSer
   public void addSchemaValGenerators(SchemaValGenerator generator, SchemaValGenerator... generators) {
     this.schemaValGenerators.add(generator);
     if (ArrayUtils.isNotEmpty(generators)) {
-      this.schemaValGenerators.addAll(Arrays.asList(generator));
+      this.schemaValGenerators.addAll(Arrays.asList(generators));
     }
   }
 

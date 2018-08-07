@@ -8,6 +8,7 @@ import me.chanjar.oas.server.validator.core.valuegen.schema.special.NullValGener
 
 import static me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper.addGeneratorsFor;
 
+// TODO unit test
 public abstract class BinaryValGenerationServiceFactory {
 
   private BinaryValGenerationServiceFactory() {

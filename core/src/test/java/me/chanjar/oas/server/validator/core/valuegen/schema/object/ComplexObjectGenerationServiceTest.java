@@ -120,7 +120,7 @@ public class ComplexObjectGenerationServiceTest {
         new Object[] { "case-one-property-string.yaml", StringVal.class },
         new Object[] { "case-one-property-uuid.yaml", UUIDVal.class },
         new Object[] { "case-one-property-object.yaml", ObjectVal.class },
-        // TODO new Object[] { "case-one-property-array.yaml", ArrayVal.class },
+        new Object[] { "case-one-property-array.yaml", ArrayVal.class },
     };
   }
 
@@ -167,8 +167,7 @@ public class ComplexObjectGenerationServiceTest {
     assertEquals(objectVal.getValue().get("passwordVal").getClass(), PasswordVal.class);
     assertEquals(objectVal.getValue().get("stringVal").getClass(), StringVal.class);
     assertEquals(objectVal.getValue().get("uuidVal").getClass(), UUIDVal.class);
-
-    // TODO assertEquals(objectVal.getValue().get("arrayVal").getClass(), ArrayVal.class);
+    assertEquals(objectVal.getValue().get("arrayVal").getClass(), ArrayVal.class);
     assertEquals(objectVal.getValue().get("objectVal").getClass(), ObjectVal.class);
     assertEquals(((ObjectVal) objectVal.getValue().get("objectVal")).getValue().get("integerVal").getClass(),
         IntegerVal.class);
@@ -198,8 +197,7 @@ public class ComplexObjectGenerationServiceTest {
       assertEquals(objectVal.getValue().get("passwordVal").getClass(), PasswordVal.class);
       assertEquals(objectVal.getValue().get("stringVal").getClass(), StringVal.class);
       assertEquals(objectVal.getValue().get("uuidVal").getClass(), UUIDVal.class);
-
-      // TODO assertEquals(objectVal.getValue().get("arrayVal").getClass(), ArrayVal.class);
+      assertEquals(objectVal.getValue().get("arrayVal").getClass(), ArrayVal.class);
       assertEquals(objectVal.getValue().get("objectVal").getClass(), ObjectVal.class);
       assertEquals(((ObjectVal) objectVal.getValue().get("objectVal")).getValue().get("integerVal").getClass(),
           IntegerVal.class);
@@ -326,7 +324,7 @@ public class ComplexObjectGenerationServiceTest {
     ObjectSchema objectSchema = loadObjectSchema("case-algorithm.yaml");
     List<SchemaVal> schemaVals = testedService.generateAll(objectSchema, new SchemaValCons(true, false));
 
-    assertEquals(schemaVals.size(), 3);
+    assertEquals(schemaVals.size(), 2);
     assertEquals(new HashSet<>(schemaVals), new HashSet<>(Arrays.asList(
         new ObjectVal(
             (Map) ArrayUtils.toMap(new Object[][] {
@@ -381,7 +379,6 @@ public class ComplexObjectGenerationServiceTest {
             })
         )
     )));
-
 
   }
 

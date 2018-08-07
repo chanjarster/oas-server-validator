@@ -18,7 +18,7 @@ import static java.util.stream.Collectors.toList;
 public abstract class GeneratorDependingGenerationService<S extends Schema>
     implements SchemaValGenerationService<S>, SchemaValGeneratorHolder {
 
-  private List<SchemaValGenerator> generators = new ArrayList<>();
+  protected List<SchemaValGenerator> generators = new ArrayList<>();
 
   @Override
   public SchemaVal generateOne(S schema, SchemaValCons cons) {
