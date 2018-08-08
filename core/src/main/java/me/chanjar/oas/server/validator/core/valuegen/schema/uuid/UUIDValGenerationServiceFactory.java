@@ -7,7 +7,7 @@ import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHo
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.IgnoredValGenerator;
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.NullValGenerator;
 
-import static me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper.addGeneratorsFor;
+import static me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper.addGeneratorsTo;
 
 public abstract class UUIDValGenerationServiceFactory {
 
@@ -25,7 +25,7 @@ public abstract class UUIDValGenerationServiceFactory {
   public static UUIDValGenerationService uuid(SchemaValGenerator generator,
       SchemaValGenerator... generators) {
     UUIDValGenerationService service = new UUIDValGenerationService();
-    SchemaValGeneratorHolderHelper.addGeneratorsFor(service, generator, generators);
+    SchemaValGeneratorHolderHelper.addGeneratorsTo(service, generator, generators);
     return service;
   }
 
@@ -62,8 +62,8 @@ public abstract class UUIDValGenerationServiceFactory {
    */
   public static UUIDValGenerationService badUUID() {
     UUIDValGenerationService service = new UUIDValGenerationService();
-    addGeneratorsFor(service, d -> new StringVal(d), "hijklm", "uvwxyz");
-    addGeneratorsFor(service, new NullValGenerator(false), new IgnoredValGenerator(false));
+    SchemaValGeneratorHolderHelper.addGeneratorsTo(service, d -> new StringVal(d), "hijklm", "uvwxyz");
+    addGeneratorsTo(service, new NullValGenerator(false), new IgnoredValGenerator(false));
     return service;
   }
 
@@ -76,7 +76,7 @@ public abstract class UUIDValGenerationServiceFactory {
    */
   public static UUIDValGenerationService fixedUUID(String value, String... values) {
     UUIDValGenerationService service = new UUIDValGenerationService();
-    addGeneratorsFor(service, d -> new UUIDVal(d), value, values);
+    SchemaValGeneratorHolderHelper.addGeneratorsTo(service, d -> new UUIDVal(d), value, values);
     return service;
   }
 

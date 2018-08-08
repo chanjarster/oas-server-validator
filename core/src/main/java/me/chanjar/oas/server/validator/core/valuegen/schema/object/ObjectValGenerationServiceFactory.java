@@ -1,6 +1,7 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.object;
 
 import me.chanjar.oas.server.validator.core.value.schema.ObjectVal;
+import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper;
 import me.chanjar.oas.server.validator.core.valuegen.schema.array.ArrayValGenerationService;
 import me.chanjar.oas.server.validator.core.valuegen.schema.array.ArrayValGenerationServiceFactory;
 import me.chanjar.oas.server.validator.core.valuegen.schema.binary.BinaryValGenerationServiceFactory;
@@ -19,8 +20,7 @@ import me.chanjar.oas.server.validator.core.valuegen.schema.uuid.UUIDValGenerati
 
 import java.util.function.Function;
 
-import static me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper.addGeneratorsFor;
-import static me.chanjar.oas.server.validator.core.valuegen.schema.array.ArrayValGenerationServiceFactory.badArray;
+import static me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper.addGeneratorsTo;
 import static me.chanjar.oas.server.validator.core.valuegen.schema.array.ArrayValGenerationServiceFactory.badArrayWithoutObject;
 import static me.chanjar.oas.server.validator.core.valuegen.schema.array.ArrayValGenerationServiceFactory.goodArrayWithoutObject;
 import static me.chanjar.oas.server.validator.core.valuegen.schema.binary.BinaryValGenerationServiceFactory.badBinary;
@@ -181,7 +181,7 @@ public abstract class ObjectValGenerationServiceFactory {
   public static ObjectValGenerationService fixedObject(ObjectVal value, ObjectVal... values) {
 
     SimpleObjectValGenerationService service = new SimpleObjectValGenerationService();
-    addGeneratorsFor(service, Function.identity(), value, values);
+    SchemaValGeneratorHolderHelper.addGeneratorsTo(service, Function.identity(), value, values);
     return service;
   }
 

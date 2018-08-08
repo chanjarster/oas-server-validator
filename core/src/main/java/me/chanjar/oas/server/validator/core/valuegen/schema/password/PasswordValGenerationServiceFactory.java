@@ -6,7 +6,7 @@ import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerator;
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.IgnoredValGenerator;
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.NullValGenerator;
 
-import static me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper.addGeneratorsFor;
+import static me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper.addGeneratorsTo;
 
 public abstract class PasswordValGenerationServiceFactory {
 
@@ -24,7 +24,7 @@ public abstract class PasswordValGenerationServiceFactory {
   public static PasswordValGenerationService password(SchemaValGenerator generator,
       SchemaValGenerator... generators) {
     PasswordValGenerationService service = new PasswordValGenerationService();
-    SchemaValGeneratorHolderHelper.addGeneratorsFor(service, generator, generators);
+    SchemaValGeneratorHolderHelper.addGeneratorsTo(service, generator, generators);
     return service;
   }
 
@@ -86,7 +86,7 @@ public abstract class PasswordValGenerationServiceFactory {
    */
   public static PasswordValGenerationService fixedPassword(String value, String... values) {
     PasswordValGenerationService service = new PasswordValGenerationService();
-    addGeneratorsFor(service, v -> new PasswordVal(v), value, values);
+    SchemaValGeneratorHolderHelper.addGeneratorsTo(service, v -> new PasswordVal(v), value, values);
     return service;
   }
 

@@ -9,7 +9,7 @@ import me.chanjar.oas.server.validator.core.valuegen.schema.special.NullValGener
 
 import java.util.Date;
 
-import static me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper.addGeneratorsFor;
+import static me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper.addGeneratorsTo;
 
 public abstract class DateTimeValGenerationServiceFactory {
 
@@ -27,7 +27,7 @@ public abstract class DateTimeValGenerationServiceFactory {
   public static DateTimeValGenerationService dateTime(SchemaValGenerator generator,
       SchemaValGenerator... generators) {
     DateTimeValGenerationService service = new DateTimeValGenerationService();
-    SchemaValGeneratorHolderHelper.addGeneratorsFor(service, generator, generators);
+    SchemaValGeneratorHolderHelper.addGeneratorsTo(service, generator, generators);
     return service;
   }
 
@@ -64,8 +64,8 @@ public abstract class DateTimeValGenerationServiceFactory {
    */
   public static DateTimeValGenerationService badDateTime() {
     DateTimeValGenerationService service = new DateTimeValGenerationService();
-    addGeneratorsFor(service, d -> new StringVal(d), "hijklm", "uvwxyz");
-    addGeneratorsFor(service, new NullValGenerator(false), new IgnoredValGenerator(false));
+    SchemaValGeneratorHolderHelper.addGeneratorsTo(service, d -> new StringVal(d), "hijklm", "uvwxyz");
+    addGeneratorsTo(service, new NullValGenerator(false), new IgnoredValGenerator(false));
     return service;
   }
 
@@ -78,7 +78,7 @@ public abstract class DateTimeValGenerationServiceFactory {
    */
   public static DateTimeValGenerationService fixedDateTime(Date value, Date... values) {
     DateTimeValGenerationService service = new DateTimeValGenerationService();
-    addGeneratorsFor(service, d -> new DateTimeVal(d), value, values);
+    SchemaValGeneratorHolderHelper.addGeneratorsTo(service, d -> new DateTimeVal(d), value, values);
     return service;
   }
 

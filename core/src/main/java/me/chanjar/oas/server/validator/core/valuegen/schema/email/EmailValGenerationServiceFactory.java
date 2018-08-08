@@ -9,7 +9,7 @@ import me.chanjar.oas.server.validator.core.valuegen.schema.string.StringValGene
 
 import java.util.Arrays;
 
-import static me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper.addGeneratorsFor;
+import static me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper.addGeneratorsTo;
 
 public abstract class EmailValGenerationServiceFactory {
 
@@ -27,7 +27,7 @@ public abstract class EmailValGenerationServiceFactory {
   public static EmailValGenerationService string(SchemaValGenerator generator,
       SchemaValGenerator... generators) {
     EmailValGenerationService service = new EmailValGenerationService();
-    SchemaValGeneratorHolderHelper.addGeneratorsFor(service, generator, generators);
+    SchemaValGeneratorHolderHelper.addGeneratorsTo(service, generator, generators);
     return service;
   }
 
@@ -134,7 +134,7 @@ public abstract class EmailValGenerationServiceFactory {
    */
   public static EmailValGenerationService fixedEmail(String value, String... values) {
     EmailValGenerationService service = new EmailValGenerationService();
-    addGeneratorsFor(service, d -> new EmailVal(d), value, values);
+    SchemaValGeneratorHolderHelper.addGeneratorsTo(service, d -> new EmailVal(d), value, values);
     return service;
   }
 

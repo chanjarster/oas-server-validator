@@ -4,12 +4,13 @@ import me.chanjar.oas.server.validator.core.value.schema.ArrayVal;
 import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerationService;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerator;
+import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper;
 import me.chanjar.oas.server.validator.core.valuegen.schema.object.ComplexObjectValGenerationService;
 import me.chanjar.oas.server.validator.core.valuegen.schema.object.ObjectValGenerationService;
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.IgnoredValGenerator;
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.NullValGenerator;
 
-import static me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper.addGeneratorsFor;
+import static me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper.addGeneratorsTo;
 import static me.chanjar.oas.server.validator.core.valuegen.schema.binary.BinaryValGenerationServiceFactory.badBinary;
 import static me.chanjar.oas.server.validator.core.valuegen.schema.binary.BinaryValGenerationServiceFactory.goodBinary;
 import static me.chanjar.oas.server.validator.core.valuegen.schema.bool.BooleanValGenerationServiceFactory.badBool;
@@ -51,7 +52,7 @@ public abstract class ArrayValGenerationServiceFactory {
   public static ArrayValGenerationService array(SchemaValGenerator generator,
       SchemaValGenerator... generators) {
     ArrayValGenerationService service = new ArrayValGenerationService();
-    addGeneratorsFor(service, generator, generators);
+    addGeneratorsTo(service, generator, generators);
     return service;
   }
 
@@ -83,7 +84,7 @@ public abstract class ArrayValGenerationServiceFactory {
         registerGoods(new RightSizeArrayValGenerator2(), arrayValGenerationService, goodObject),
         registerGoods(new RightSizeArrayValGenerator3(), arrayValGenerationService, goodObject)
     );
-    addGeneratorsFor(arrayValGenerationService, new IgnoredValGenerator(true), new NullValGenerator(true));
+    addGeneratorsTo(arrayValGenerationService, new IgnoredValGenerator(true), new NullValGenerator(true));
 
     return arrayValGenerationService;
 
@@ -104,7 +105,7 @@ public abstract class ArrayValGenerationServiceFactory {
         registerGoods(new RightSizeArrayValGenerator2(), arrayValGenerationService, null),
         registerGoods(new RightSizeArrayValGenerator3(), arrayValGenerationService, null)
     );
-    addGeneratorsFor(arrayValGenerationService, new IgnoredValGenerator(true), new NullValGenerator(true));
+    addGeneratorsTo(arrayValGenerationService, new IgnoredValGenerator(true), new NullValGenerator(true));
 
     return arrayValGenerationService;
 
@@ -146,7 +147,7 @@ public abstract class ArrayValGenerationServiceFactory {
         registerBads(new RightSizeArrayValGenerator3(), arrayValGenerationService, badObject)
     );
 
-    addGeneratorsFor(arrayValGenerationService, new IgnoredValGenerator(false), new NullValGenerator(false));
+    addGeneratorsTo(arrayValGenerationService, new IgnoredValGenerator(false), new NullValGenerator(false));
     return arrayValGenerationService;
   }
 
@@ -169,7 +170,7 @@ public abstract class ArrayValGenerationServiceFactory {
         registerBads(new RightSizeArrayValGenerator3(), arrayValGenerationService, null)
     );
 
-    addGeneratorsFor(arrayValGenerationService, new IgnoredValGenerator(false), new NullValGenerator(false));
+    addGeneratorsTo(arrayValGenerationService, new IgnoredValGenerator(false), new NullValGenerator(false));
     return arrayValGenerationService;
   }
 
@@ -182,7 +183,7 @@ public abstract class ArrayValGenerationServiceFactory {
    */
   public static ArrayValGenerationService fixedArray(SchemaVal[] value, SchemaVal[]... values) {
     ArrayValGenerationService service = new ArrayValGenerationService();
-    addGeneratorsFor(service, v -> new ArrayVal(v), value, values);
+    SchemaValGeneratorHolderHelper.addGeneratorsTo(service, v -> new ArrayVal(v), value, values);
     return service;
   }
 

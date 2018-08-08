@@ -8,16 +8,16 @@ import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
 
-public class RightSizeArrayValGenerator1Test extends ArrayValGeneratorTestBase {
+public class RightSizeArrayValGenerator3Test extends ArrayValGeneratorTestBase {
 
   @DataProvider
   public Object[][] testSupportsData() {
 
     return new Object[][] {
-        new Object[] { createArraySchema(null, null), true },
+        new Object[] { createArraySchema(null, null), false },
         new Object[] { createArraySchema(1, null), false },
-        new Object[] { createArraySchema(null, 1), false },
-        new Object[] { createArraySchema(1, 1), false },
+        new Object[] { createArraySchema(null, 1), true },
+        new Object[] { createArraySchema(1, 1), true },
         new Object[] { new StringSchema(), false },
     };
 
@@ -36,17 +36,17 @@ public class RightSizeArrayValGenerator1Test extends ArrayValGeneratorTestBase {
 
   @Override
   protected Integer getMaxItems() {
-    return null;
+    return 2;
   }
 
   @Override
   protected ArrayValGeneratorTemplate createGenerator() {
-    return new RightSizeArrayValGenerator1();
+    return new RightSizeArrayValGenerator3();
   }
 
   @Override
   protected int getExpectedArraySize(ArraySchema arraySchema) {
-    return 1;
+    return arraySchema.getMaxItems();
   }
 
 }

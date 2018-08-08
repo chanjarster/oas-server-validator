@@ -13,7 +13,14 @@ public abstract class SchemaValGeneratorHolderHelper {
     // singleton
   }
 
-  public static void addGeneratorsFor(SchemaValGeneratorHolder service,
+  /**
+   * Add generators to {@link SchemaValGeneratorHolder}
+   *
+   * @param service
+   * @param generator
+   * @param generators
+   */
+  public static void addGeneratorsTo(SchemaValGeneratorHolder service,
       SchemaValGenerator generator,
       SchemaValGenerator... generators) {
     service.addGenerator(generator);
@@ -22,7 +29,16 @@ public abstract class SchemaValGeneratorHolderHelper {
     }
   }
 
-  public static <T> void addGeneratorsFor(SchemaValGeneratorHolder service,
+  /**
+   * Add {@link FixedSchemaValGenerator}s to {@link SchemaValGeneratorHolder}
+   *
+   * @param service
+   * @param schemaValConstructor
+   * @param value
+   * @param values
+   * @param <T>
+   */
+  public static <T> void addGeneratorsTo(SchemaValGeneratorHolder service,
       Function<T, SchemaVal> schemaValConstructor,
       T value, T... values) {
     service.addGenerator(new FixedSchemaValGenerator(schemaValConstructor.apply(value)));

@@ -7,7 +7,7 @@ import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHo
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.IgnoredValGenerator;
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.NullValGenerator;
 
-import static me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper.addGeneratorsFor;
+import static me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper.addGeneratorsTo;
 
 public abstract class ByteArrayValGenerationServiceFactory {
 
@@ -25,7 +25,7 @@ public abstract class ByteArrayValGenerationServiceFactory {
   public static ByteArrayValGenerationService byteArray(SchemaValGenerator generator,
       SchemaValGenerator... generators) {
     ByteArrayValGenerationService service = new ByteArrayValGenerationService();
-    SchemaValGeneratorHolderHelper.addGeneratorsFor(service, generator, generators);
+    SchemaValGeneratorHolderHelper.addGeneratorsTo(service, generator, generators);
     return service;
   }
 
@@ -62,8 +62,8 @@ public abstract class ByteArrayValGenerationServiceFactory {
    */
   public static ByteArrayValGenerationService badByteArray() {
     ByteArrayValGenerationService service = new ByteArrayValGenerationService();
-    addGeneratorsFor(service, d -> new StringVal(d), "hijklm", "uvwxyz");
-    addGeneratorsFor(service, new NullValGenerator(false), new IgnoredValGenerator(false));
+    SchemaValGeneratorHolderHelper.addGeneratorsTo(service, d -> new StringVal(d), "hijklm", "uvwxyz");
+    addGeneratorsTo(service, new NullValGenerator(false), new IgnoredValGenerator(false));
     return service;
   }
 
@@ -76,7 +76,7 @@ public abstract class ByteArrayValGenerationServiceFactory {
    */
   public static ByteArrayValGenerationService fixedByteArray(Byte[] value, Byte[]... values) {
     ByteArrayValGenerationService service = new ByteArrayValGenerationService();
-    addGeneratorsFor(service, v -> new ByteArrayVal(v), value, values);
+    SchemaValGeneratorHolderHelper.addGeneratorsTo(service, v -> new ByteArrayVal(v), value, values);
     return service;
   }
 

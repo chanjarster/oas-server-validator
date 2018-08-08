@@ -6,7 +6,7 @@ import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerator;
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.IgnoredValGenerator;
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.NullValGenerator;
 
-import static me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper.addGeneratorsFor;
+import static me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper.addGeneratorsTo;
 
 public abstract class IntegerValGenerationServiceFactory {
 
@@ -24,7 +24,7 @@ public abstract class IntegerValGenerationServiceFactory {
   public static IntegerValGenerationService integer(SchemaValGenerator generator,
       SchemaValGenerator... generators) {
     IntegerValGenerationService service = new IntegerValGenerationService();
-    SchemaValGeneratorHolderHelper.addGeneratorsFor(service, generator, generators);
+    SchemaValGeneratorHolderHelper.addGeneratorsTo(service, generator, generators);
     return service;
   }
 
@@ -86,7 +86,7 @@ public abstract class IntegerValGenerationServiceFactory {
    */
   public static IntegerValGenerationService fixedInteger(Integer value, Integer... values) {
     IntegerValGenerationService service = new IntegerValGenerationService();
-    addGeneratorsFor(service, v -> new IntegerVal(v), value, values);
+    SchemaValGeneratorHolderHelper.addGeneratorsTo(service, v -> new IntegerVal(v), value, values);
     return service;
   }
 

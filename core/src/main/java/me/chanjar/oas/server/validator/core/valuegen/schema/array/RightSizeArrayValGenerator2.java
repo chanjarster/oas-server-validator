@@ -7,8 +7,9 @@ import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValCons;
 /**
  * Supports:
  * <ol>
- * <li><a href="https://tools.ietf.org/html/draft-wright-json-schema-validation-00#section-5.11">minimum</a> != null</li>
+ * <li><a href="https://tools.ietf.org/html/draft-wright-json-schema-validation-00#section-5.11">minItems</a> != null</li>
  * </ol>
+ * Create a array with size: minItems
  */
 public class RightSizeArrayValGenerator2 extends ArrayValGeneratorTemplate {
 

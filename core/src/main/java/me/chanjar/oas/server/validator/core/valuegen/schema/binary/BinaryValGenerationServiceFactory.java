@@ -6,7 +6,7 @@ import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHo
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.IgnoredValGenerator;
 import me.chanjar.oas.server.validator.core.valuegen.schema.special.NullValGenerator;
 
-import static me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper.addGeneratorsFor;
+import static me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper.addGeneratorsTo;
 
 // TODO unit test
 public abstract class BinaryValGenerationServiceFactory {
@@ -25,7 +25,7 @@ public abstract class BinaryValGenerationServiceFactory {
   public static BinaryValGenerationService binary(SchemaValGenerator generator,
       SchemaValGenerator... generators) {
     BinaryValGenerationService service = new BinaryValGenerationService();
-    SchemaValGeneratorHolderHelper.addGeneratorsFor(service, generator, generators);
+    SchemaValGeneratorHolderHelper.addGeneratorsTo(service, generator, generators);
     return service;
   }
 
@@ -62,7 +62,7 @@ public abstract class BinaryValGenerationServiceFactory {
    */
   public static BinaryValGenerationService badBinary() {
     BinaryValGenerationService service = fixedBinary("abcdefg", "uvwxyz");
-    addGeneratorsFor(service, new NullValGenerator(false), new IgnoredValGenerator(false));
+    addGeneratorsTo(service, new NullValGenerator(false), new IgnoredValGenerator(false));
     return service;
   }
 
@@ -75,7 +75,7 @@ public abstract class BinaryValGenerationServiceFactory {
    */
   public static BinaryValGenerationService fixedBinary(String value, String... values) {
     BinaryValGenerationService service = new BinaryValGenerationService();
-    addGeneratorsFor(service, d -> new BinaryVal(d), value, values);
+    SchemaValGeneratorHolderHelper.addGeneratorsTo(service, d -> new BinaryVal(d), value, values);
     return service;
   }
 

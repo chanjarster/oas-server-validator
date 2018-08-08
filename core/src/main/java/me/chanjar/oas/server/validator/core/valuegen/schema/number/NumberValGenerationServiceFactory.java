@@ -8,7 +8,7 @@ import me.chanjar.oas.server.validator.core.valuegen.schema.special.NullValGener
 
 import java.math.BigDecimal;
 
-import static me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper.addGeneratorsFor;
+import static me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGeneratorHolderHelper.addGeneratorsTo;
 
 public abstract class NumberValGenerationServiceFactory {
 
@@ -26,7 +26,7 @@ public abstract class NumberValGenerationServiceFactory {
   public static NumberValGenerationService number(SchemaValGenerator generator,
       SchemaValGenerator... generators) {
     NumberValGenerationService service = new NumberValGenerationService();
-    SchemaValGeneratorHolderHelper.addGeneratorsFor(service, generator, generators);
+    SchemaValGeneratorHolderHelper.addGeneratorsTo(service, generator, generators);
     return service;
   }
 
@@ -92,7 +92,7 @@ public abstract class NumberValGenerationServiceFactory {
   public static NumberValGenerationService fixedNumber(BigDecimal value, BigDecimal... values) {
 
     NumberValGenerationService service = new NumberValGenerationService();
-    addGeneratorsFor(service, v -> new NumberVal(v), value, values);
+    SchemaValGeneratorHolderHelper.addGeneratorsTo(service, v -> new NumberVal(v), value, values);
     return service;
   }
 
