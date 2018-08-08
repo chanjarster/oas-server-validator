@@ -16,11 +16,12 @@ import java.util.*;
 
 import static me.chanjar.oas.server.validator.core.valuegen.schema.bool.BooleanValGenerationServiceFactory.fixedBool;
 import static me.chanjar.oas.server.validator.core.valuegen.schema.integer.IntegerValGenerationServiceFactory.fixedInteger;
+import static me.chanjar.oas.server.validator.core.valuegen.schema.object.ObjectValGenerationServiceFactory.badObject;
 import static me.chanjar.oas.server.validator.core.valuegen.schema.object.ObjectValGenerationServiceFactory.goodObject;
 import static me.chanjar.oas.server.validator.core.valuegen.schema.string.StringValGenerationServiceFactory.fixedString;
 import static org.testng.Assert.*;
 
-public class ComplexObjectGenerationServiceTest {
+public class ComplexObjectValGenerationServiceTest {
 
   @Test
   public void testSupports() {
@@ -121,6 +122,7 @@ public class ComplexObjectGenerationServiceTest {
         new Object[] { "case-one-property-uuid.yaml", UUIDVal.class },
         new Object[] { "case-one-property-object.yaml", ObjectVal.class },
         new Object[] { "case-one-property-array.yaml", ArrayVal.class },
+        new Object[] { "case-one-property-array-nest-object.yaml", ArrayVal.class },
     };
   }
 
@@ -422,6 +424,40 @@ public class ComplexObjectGenerationServiceTest {
     service.addPropertyGenerationService(new ExceptionSchemaValGenerationService());
     service.generateAll(objectSchema, new SchemaValCons(true, false));
 
+  }
+
+  @Test
+  public void testGenerate_property_array_nest_object_good_mode() {
+
+    ObjectSchema objectSchema = loadObjectSchema("case-one-property-array-nest-object.yaml");
+
+    ObjectValGenerationService goodObject = goodObject();
+    assert_property_array_nest_object((ObjectVal) goodObject.generateOne(objectSchema, new SchemaValCons(true, false)));
+
+    List<SchemaVal> schemaVals = goodObject.generateAll(objectSchema, new SchemaValCons(true, false));
+    assert_property_array_nest_object((ObjectVal) schemaVals.get(0));
+
+  }
+
+  @Test
+  public void testGenerate_property_array_nest_object_bad_mode() {
+
+    ObjectSchema objectSchema = loadObjectSchema("case-one-property-array-nest-object.yaml");
+
+    ObjectValGenerationService badObject = badObject();
+    assert_property_array_nest_object((ObjectVal) badObject.generateOne(objectSchema, new SchemaValCons(false, true)));
+
+    List<SchemaVal> schemaVals = badObject.generateAll(objectSchema, new SchemaValCons(false, true));
+    assert_property_array_nest_object((ObjectVal) schemaVals.get(0));
+
+  }
+
+  private void assert_property_array_nest_object(ObjectVal l0_objectVal) {
+    ArrayVal l1_arrayVal = (ArrayVal) l0_objectVal.getValue().get("prop");
+    ObjectVal l2_objectVal = (ObjectVal) l1_arrayVal.getValue()[0];
+    ArrayVal l3_arrayVal = (ArrayVal) l2_objectVal.getValue().get("prop");
+    StringVal l4_stringVal = (StringVal) l3_arrayVal.getValue()[0];
+    assertNotNull(l4_stringVal);
   }
 
   private ObjectSchema loadObjectSchema(String schemaFile) {

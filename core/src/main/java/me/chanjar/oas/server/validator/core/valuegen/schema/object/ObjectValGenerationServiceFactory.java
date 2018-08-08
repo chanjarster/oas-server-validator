@@ -103,9 +103,7 @@ public abstract class ObjectValGenerationServiceFactory {
         goodNumber(),
         goodPassword(),
         goodString(),
-        goodUUID(),
-        // register self as ObjectVal generator
-        service
+        goodUUID()
     );
 
     service.addSchemaValGenerators(new IgnoredValGenerator(true), new NullValGenerator(true));
@@ -137,7 +135,7 @@ public abstract class ObjectValGenerationServiceFactory {
 
     ArrayValGenerationService badArray = badArrayWithoutObject();
     badArray.registerObjectGenerationService(service);
-    service.addPropertyGenerationService(service);
+    service.addPropertyGenerationService(badArray);
 
     return service;
   }
@@ -162,9 +160,7 @@ public abstract class ObjectValGenerationServiceFactory {
         badNumber(),
         badPassword(),
         badString(),
-        badUUID(),
-        // register self as ObjectVal generator
-        service
+        badUUID()
     );
 
     service.addSchemaValGenerators(new IgnoredValGenerator(false), new NullValGenerator(false));

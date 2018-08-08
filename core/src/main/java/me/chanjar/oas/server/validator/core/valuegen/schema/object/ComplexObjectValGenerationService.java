@@ -35,6 +35,7 @@ public class ComplexObjectValGenerationService implements ObjectValGenerationSer
   public ComplexObjectValGenerationService(String name) {
     this.name = name;
     defaultGenerationService = this;
+    generationServices.add(this);
   }
 
   /**
@@ -47,6 +48,7 @@ public class ComplexObjectValGenerationService implements ObjectValGenerationSer
       ObjectValGenerationService defaultGenerationService) {
     this.name = name;
     this.defaultGenerationService = defaultGenerationService;
+    generationServices.add(this);
   }
 
   @Override

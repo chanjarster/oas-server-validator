@@ -1,9 +1,11 @@
 package me.chanjar.oas.server.validator.core.valuegen.schema.array;
 
 import io.swagger.v3.oas.models.media.ArraySchema;
+import me.chanjar.oas.server.validator.core.value.schema.IntegerVal;
 import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
 import me.chanjar.oas.server.validator.core.value.schema.StringVal;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValCons;
+import me.chanjar.oas.server.validator.core.valuegen.schema.special.FixedSchemaValGenerator;
 import org.testng.annotations.Test;
 
 import java.util.List;
@@ -16,7 +18,9 @@ public class ArrayValGenerationServiceFactoryTest {
 
   @Test
   public void testArray() {
-    // TODO
+    ArrayValGenerationService service = array(new FixedSchemaValGenerator(new StringVal("a")),
+        new FixedSchemaValGenerator(new IntegerVal(1)));
+    assertNotNull(service);
   }
 
   @Test

@@ -194,7 +194,7 @@ public abstract class ArrayValGenerationServiceFactory {
    * @param arrayValGenerationService
    * @return
    */
-  public static ArrayValGenerator registerGoods(ArrayValGeneratorTemplate generatorTemplate,
+  protected static ArrayValGenerator registerGoods(ArrayValGeneratorTemplate generatorTemplate,
       ArrayValGenerationService arrayValGenerationService, ObjectValGenerationService goodObject) {
     generatorTemplate.addItemGenerationServices(
         goodBinary(),
@@ -226,7 +226,7 @@ public abstract class ArrayValGenerationServiceFactory {
    * @param arrayValGenerationService
    * @return
    */
-  public static ArrayValGenerator registerBads(ArrayValGeneratorTemplate generatorTemplate,
+  protected static ArrayValGenerator registerBads(ArrayValGeneratorTemplate generatorTemplate,
       ArrayValGenerationService arrayValGenerationService, ObjectValGenerationService badObject) {
     generatorTemplate.addItemGenerationServices(
         badBinary(),
