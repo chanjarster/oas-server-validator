@@ -1,60 +1,88 @@
 package me.chanjar.oas.server.validator.core.value.parameter;
 
-import me.chanjar.oas.server.validator.core.value.mediatype.MediaTypeVal;
+import io.swagger.v3.oas.models.parameters.Parameter;
 import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
 
+import java.util.Objects;
+
+/**
+ * see spec: <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#parameter-object">Parameter Object</a>
+ */
 public class ParameterVal {
+
+  private final String in;
 
   private final String name;
 
   private final SchemaVal schemaVal;
 
-  private final MediaTypeVal mediaTypeVal;
+  private final SerializeOption serializeOption;
 
-  /**
-   * Whether to ignoring this QueryParameterVal when building uri.
-   */
-  private final boolean ignoreMe;
-
-  /**
-   * Constructs a ParameterVal which ignoreMe == true
-   * @param name
-   */
-  public ParameterVal(String name) {
-    this.name = name;
-    this.schemaVal = null;
-    this.mediaTypeVal = null;
-    this.ignoreMe = true;
+  public ParameterVal(Parameter parameter, SchemaVal schemaVal) {
+    this.in = parameter.getIn();
+    this.name = parameter.getName();
+    this.schemaVal = schemaVal;
+    // according to https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#parameter-object
+    // allowReserved default value is false
+    this.serializeOption = new SerializeOption(parameter.getStyle(),
+        Boolean.TRUE.equals(parameter.getExplode()),
+        Boolean.TRUE.equals(parameter.getAllowReserved()));
   }
 
-  public ParameterVal(String name, SchemaVal schemaVal) {
+  public ParameterVal(String in, String name, SchemaVal schemaVal,
+      SerializeOption serializeOption) {
+    this.in = in;
     this.name = name;
     this.schemaVal = schemaVal;
-    this.ignoreMe = false;
-    this.mediaTypeVal = null;
+    this.serializeOption = serializeOption;
   }
 
-  public ParameterVal(String name, MediaTypeVal mediaTypeVal) {
-    this.name = name;
-    this.mediaTypeVal = mediaTypeVal;
-    this.ignoreMe = false;
-    this.schemaVal = null;
+  /**
+   * {@link Parameter#in}
+   *
+   * @return
+   */
+  public String getIn() {
+    return in;
   }
 
+  /**
+   * {@link Parameter#name}
+   *
+   * @return
+   */
   public String getName() {
     return name;
   }
 
+  /**
+   * @return {@link SchemaVal}
+   */
   public SchemaVal getSchemaVal() {
     return schemaVal;
   }
 
-  public boolean isIgnoreMe() {
-    return ignoreMe;
+  /**
+   * @return {@link SerializeOption}
+   */
+  public SerializeOption getSerializeOption() {
+    return serializeOption;
   }
 
-  public MediaTypeVal getMediaTypeVal() {
-    return mediaTypeVal;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    ParameterVal that = (ParameterVal) o;
+    return Objects.equals(in, that.in) &&
+        Objects.equals(name, that.name) &&
+        Objects.equals(schemaVal, that.schemaVal) &&
+        Objects.equals(serializeOption, that.serializeOption);
   }
 
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(in, name, schemaVal, serializeOption);
+  }
 }

@@ -16,7 +16,7 @@ public interface SchemaValGenerationService<S extends Schema> {
   boolean supports(Schema schema);
 
   /**
-   * Generate one good {@link SchemaVal}, which satisfies spec
+   * Generate one {@link SchemaVal}
    *
    * @param schema
    * @param cons
@@ -25,14 +25,12 @@ public interface SchemaValGenerationService<S extends Schema> {
   SchemaVal generateOne(S schema, SchemaValCons cons);
 
   /**
-   * Generate all good {@link SchemaVal}s, which satisfy spec, including all edge cases
+   * Generate all {@link SchemaVal}s
    *
    * @param schema
    * @param cons
    * @return
    */
   List<SchemaVal> generateAll(S schema, SchemaValCons cons);
-
-
 
 }
