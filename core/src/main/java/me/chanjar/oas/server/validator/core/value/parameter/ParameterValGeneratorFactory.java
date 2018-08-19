@@ -28,6 +28,7 @@ import static me.chanjar.oas.server.validator.core.valuegen.schema.uuid.UUIDValG
 import static me.chanjar.oas.server.validator.core.valuegen.schema.uuid.UUIDValGenerationServiceFactory.goodUUID;
 
 public abstract class ParameterValGeneratorFactory {
+
   private ParameterValGeneratorFactory() {
     // singleton
   }

@@ -2,6 +2,8 @@ package me.chanjar.oas.server.validator.core.value.parameter;
 
 import io.swagger.v3.oas.models.parameters.Parameter;
 import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Objects;
 
@@ -85,4 +87,15 @@ public class ParameterVal {
 
     return Objects.hash(in, name, schemaVal, serializeOption);
   }
+
+  @Override
+  public String toString() {
+    return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+        .append("in", in)
+        .append("name", name)
+        .append("schemaVal", schemaVal)
+        .append("serializeOption", serializeOption)
+        .toString();
+  }
+
 }
