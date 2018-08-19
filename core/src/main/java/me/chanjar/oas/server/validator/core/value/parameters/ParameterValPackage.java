@@ -5,10 +5,13 @@ import io.swagger.v3.oas.models.parameters.HeaderParameter;
 import io.swagger.v3.oas.models.parameters.PathParameter;
 import io.swagger.v3.oas.models.parameters.QueryParameter;
 import me.chanjar.oas.server.validator.core.value.parameter.ParameterVal;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.Collections.unmodifiableList;
 
@@ -71,5 +74,32 @@ public class ParameterValPackage {
 
   public List<ParameterVal> getHeaderParameters() {
     return unmodifiableList(headerParameters);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    ParameterValPackage that = (ParameterValPackage) o;
+    return Objects.equals(queryParameters, that.queryParameters) &&
+        Objects.equals(pathParameters, that.pathParameters) &&
+        Objects.equals(cookieParameters, that.cookieParameters) &&
+        Objects.equals(headerParameters, that.headerParameters);
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(queryParameters, pathParameters, cookieParameters, headerParameters);
+  }
+
+  @Override
+  public String toString() {
+    return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+        .append("queryParameters", queryParameters)
+        .append("pathParameters", pathParameters)
+        .append("cookieParameters", cookieParameters)
+        .append("headerParameters", headerParameters)
+        .toString();
   }
 }

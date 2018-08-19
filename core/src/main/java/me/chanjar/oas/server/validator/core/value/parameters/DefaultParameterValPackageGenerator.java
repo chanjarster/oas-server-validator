@@ -43,9 +43,9 @@ public class DefaultParameterValPackageGenerator implements ParameterValPackageG
   @Override
   public List<ParameterValPackage> generateAll(List<Parameter> parameters) {
 
-    ParameterValPackage parameterValPackage = defaultParameterValPackageGenerator.generateOne(parameters);
+    ParameterValPackage defaultParameterValPackage = defaultParameterValPackageGenerator.generateOne(parameters);
 
-    Map<ParameterKey, ParameterVal> defaultParameterVal = makeMap(parameterValPackage);
+    Map<ParameterKey, ParameterVal> defaultParameterVal = makeMap(defaultParameterValPackage);
 
     Map<ParameterKey, List<ParameterVal>> parameterKeyParameterVals = new HashMap<>();
 

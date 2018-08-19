@@ -46,8 +46,8 @@ public class ParameterValGeneratorFactoryTest {
   private void assertSchemaValGenerationServices(DefaultParameterValGenerator defaultParameterValGenerator)
       throws IllegalAccessException {
 
-    List<SchemaValGenerationService> schemaValGenerationServices = (List<SchemaValGenerationService>) FieldUtils
-        .readField(defaultParameterValGenerator, "schemaValGenerationServices", true);
+    List<SchemaValGenerationService> schemaValGenerationServices = (List<SchemaValGenerationService>)
+        FieldUtils.readField(defaultParameterValGenerator, "schemaValGenerationServices", true);
 
     Set<Class> schemaValGenerationServiceClasses = schemaValGenerationServiceClasses();
 
