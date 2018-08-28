@@ -1,6 +1,6 @@
-package me.chanjar.oas.server.validator.core.value.parameters;
+package me.chanjar.oas.server.validator.core.valuegen.parameters;
 
-import static me.chanjar.oas.server.validator.core.value.parameter.ParameterValGeneratorFactory.goodParameter;
+import static me.chanjar.oas.server.validator.core.valuegen.parameter.ParameterValGeneratorFactory.goodParameter;
 
 public abstract class ParameterValPackageGeneratorFactory {
 

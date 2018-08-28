@@ -1,4 +1,4 @@
-package me.chanjar.oas.server.validator.core.value.parameter;
+package me.chanjar.oas.server.validator.core.valuegen.parameter;
 
 import static me.chanjar.oas.server.validator.core.valuegen.schema.array.ArrayValGenerationServiceFactory.badArray;
 import static me.chanjar.oas.server.validator.core.valuegen.schema.array.ArrayValGenerationServiceFactory.goodArray;

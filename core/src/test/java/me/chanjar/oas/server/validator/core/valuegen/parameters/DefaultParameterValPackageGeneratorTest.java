@@ -1,10 +1,13 @@
-package me.chanjar.oas.server.validator.core.value.parameters;
+package me.chanjar.oas.server.validator.core.valuegen.parameters;
 
 import io.swagger.v3.oas.models.parameters.Parameter;
 import me.chanjar.oas.server.validator.core.value.parameter.ParameterVal;
-import me.chanjar.oas.server.validator.core.value.parameter.ParameterValGenerator;
+import me.chanjar.oas.server.validator.core.value.parameters.ParameterValPackage;
+import me.chanjar.oas.server.validator.core.valuegen.parameter.ParameterValGenerator;
 import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
 import me.chanjar.oas.server.validator.core.value.schema.StringVal;
+import me.chanjar.oas.server.validator.core.valuegen.parameters.DefaultParameterValPackageGenerator;
+import me.chanjar.oas.server.validator.core.valuegen.parameters.ParameterValPackageGenerator;
 import org.testng.annotations.Test;
 
 import java.util.List;

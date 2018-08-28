@@ -1,6 +1,7 @@
-package me.chanjar.oas.server.validator.core.value.parameter;
+package me.chanjar.oas.server.validator.core.valuegen.parameter;
 
 import io.swagger.v3.oas.models.parameters.Parameter;
+import me.chanjar.oas.server.validator.core.value.parameter.ParameterVal;
 import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
 
 import java.util.List;

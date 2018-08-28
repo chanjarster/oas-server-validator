@@ -1,5 +1,7 @@
-package me.chanjar.oas.server.validator.core.value.parameter;
+package me.chanjar.oas.server.validator.core.valuegen.parameter;
 
+import me.chanjar.oas.server.validator.core.valuegen.parameter.DefaultParameterValGenerator;
+import me.chanjar.oas.server.validator.core.valuegen.parameter.ParameterValGenerator;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerationService;
 import me.chanjar.oas.server.validator.core.valuegen.schema.array.ArrayValGenerationService;
 import me.chanjar.oas.server.validator.core.valuegen.schema.binary.BinaryValGenerationService;
@@ -21,8 +23,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static me.chanjar.oas.server.validator.core.value.parameter.ParameterValGeneratorFactory.badParameter;
-import static me.chanjar.oas.server.validator.core.value.parameter.ParameterValGeneratorFactory.goodParameter;
+import static me.chanjar.oas.server.validator.core.valuegen.parameter.ParameterValGeneratorFactory.badParameter;
+import static me.chanjar.oas.server.validator.core.valuegen.parameter.ParameterValGeneratorFactory.goodParameter;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ParameterValGeneratorFactoryTest {

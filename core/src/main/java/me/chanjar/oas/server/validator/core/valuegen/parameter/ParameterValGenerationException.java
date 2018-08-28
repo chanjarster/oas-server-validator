@@ -1,4 +1,4 @@
-package me.chanjar.oas.server.validator.core.value.parameter;
+package me.chanjar.oas.server.validator.core.valuegen.parameter;
 
 public class ParameterValGenerationException extends RuntimeException {
 
