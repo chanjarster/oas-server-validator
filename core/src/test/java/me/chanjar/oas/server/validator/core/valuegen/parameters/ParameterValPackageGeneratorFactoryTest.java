@@ -1,6 +1,5 @@
 package me.chanjar.oas.server.validator.core.valuegen.parameters;
 
-import me.chanjar.oas.server.validator.core.valuegen.parameters.ParameterValPackageGenerator;
 import org.testng.annotations.Test;
 
 import static me.chanjar.oas.server.validator.core.valuegen.parameters.ParameterValPackageGeneratorFactory.badParameters;

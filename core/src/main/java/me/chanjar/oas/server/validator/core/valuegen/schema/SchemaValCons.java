@@ -22,6 +22,11 @@ public class SchemaValCons {
    */
   private final boolean nullable;
 
+  /**
+   *
+   * @param required
+   * @param nullable
+   */
   public SchemaValCons(boolean required, boolean nullable) {
     this.required = required;
     this.nullable = nullable;

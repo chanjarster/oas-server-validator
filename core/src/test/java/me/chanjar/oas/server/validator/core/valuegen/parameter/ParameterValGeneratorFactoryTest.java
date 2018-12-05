@@ -1,7 +1,5 @@
 package me.chanjar.oas.server.validator.core.valuegen.parameter;
 
-import me.chanjar.oas.server.validator.core.valuegen.parameter.DefaultParameterValGenerator;
-import me.chanjar.oas.server.validator.core.valuegen.parameter.ParameterValGenerator;
 import me.chanjar.oas.server.validator.core.valuegen.schema.SchemaValGenerationService;
 import me.chanjar.oas.server.validator.core.valuegen.schema.array.ArrayValGenerationService;
 import me.chanjar.oas.server.validator.core.valuegen.schema.binary.BinaryValGenerationService;

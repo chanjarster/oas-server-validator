@@ -2,14 +2,13 @@ package me.chanjar.oas.server.validator.core.valuegen.parameter;
 
 import io.swagger.v3.oas.models.parameters.Parameter;
 import me.chanjar.oas.server.validator.core.value.parameter.ParameterVal;
-import me.chanjar.oas.server.validator.core.value.schema.SchemaVal;
 
 import java.util.List;
 
 public interface ParameterValGenerator {
 
   /**
-   * Generate one good {@link SchemaVal}, which satisfies spec
+   * Generate one {@link ParameterVal}, which satisfies spec
    *
    * @param parameter
    * @return
@@ -17,7 +16,7 @@ public interface ParameterValGenerator {
   ParameterVal generateOne(Parameter parameter);
 
   /**
-   * Generate all good {@link SchemaVal}s, which satisfy spec, including all edge cases
+   * Generate all {@link ParameterVal}s, which satisfy spec, including all edge cases
    *
    * @param parameter
    * @return
