@@ -1,5 +1,6 @@
 package me.chanjar.oas.server.validator.core.value.schema;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -8,8 +9,16 @@ import java.util.Date;
  *
  * @see io.swagger.v3.oas.models.media.DateSchema
  */
-public class DateVal extends SchemaVal<Date> {
+public class DateVal extends PrimitiveVal<Date> {
+
+  private static final SimpleDateFormat RFC_3339 = new SimpleDateFormat("yyyy-MM-dd");
+
   public DateVal(Date value) {
     super(value);
+  }
+
+  @Override
+  public String getValueString() {
+    return RFC_3339.format(getValue());
   }
 }

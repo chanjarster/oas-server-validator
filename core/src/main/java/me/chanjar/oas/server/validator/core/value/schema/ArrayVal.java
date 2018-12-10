@@ -11,5 +11,4 @@ public class ArrayVal extends SchemaVal<SchemaVal[]> {
     super(value);
   }
 
-
 }

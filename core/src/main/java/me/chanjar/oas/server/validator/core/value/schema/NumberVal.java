@@ -7,8 +7,13 @@ import java.math.BigDecimal;
  *
  * @see io.swagger.v3.oas.models.media.NumberSchema
  */
-public class NumberVal extends SchemaVal<BigDecimal> {
+public class NumberVal extends PrimitiveVal<BigDecimal> {
   public NumberVal(BigDecimal value) {
     super(value);
+  }
+
+  @Override
+  public String getValueString() {
+    return getValue().toPlainString();
   }
 }

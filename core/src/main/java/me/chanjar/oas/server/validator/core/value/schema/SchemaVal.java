@@ -20,6 +20,7 @@ public abstract class SchemaVal<T> {
     public String toString() {
       return "SchemaVal[NULL_VAL]";
     }
+
   };
 
   /**
@@ -32,22 +33,24 @@ public abstract class SchemaVal<T> {
     public String toString() {
       return "SchemaVal[IGNORED_VAL]";
     }
+
   };
 
   /**
    * <ol>
-   *   <li>{@link BinaryVal}</li>
-   *   <li>{@link BooleanVal}</li>
-   *   <li>{@link ByteArrayVal}</li>
-   *   <li>{@link DateTimeVal}</li>
-   *   <li>{@link DateVal}</li>
-   *   <li>{@link EmailVal}</li>
-   *   <li>{@link IntegerVal}</li>
-   *   <li>{@link NumberVal}</li>
-   *   <li>{@link PasswordVal}</li>
-   *   <li>{@link StringVal}</li>
-   *   <li>{@link UUIDVal}</li>
+   * <li>{@link BinaryVal}</li>
+   * <li>{@link BooleanVal}</li>
+   * <li>{@link ByteArrayVal}</li>
+   * <li>{@link DateTimeVal}</li>
+   * <li>{@link DateVal}</li>
+   * <li>{@link EmailVal}</li>
+   * <li>{@link IntegerVal}</li>
+   * <li>{@link NumberVal}</li>
+   * <li>{@link PasswordVal}</li>
+   * <li>{@link StringVal}</li>
+   * <li>{@link UUIDVal}</li>
    * </ol>
+   *
    * @return
    */
   public static final Class<? extends SchemaVal>[] getPrimitives() {
@@ -64,6 +67,37 @@ public abstract class SchemaVal<T> {
         StringVal.class,
         UUIDVal.class
     };
+  }
+
+  public static boolean isNull(SchemaVal schemaVal) {
+    return NULL_VAL == schemaVal;
+  }
+
+  public static boolean isIgnored(SchemaVal schemaVal) {
+    return IGNORED_VAL == schemaVal;
+  }
+
+  public static boolean isPrimitive(SchemaVal schemaVal) {
+
+    if (schemaVal == null) {
+      return false;
+    }
+    return PrimitiveVal.class.isAssignableFrom(schemaVal.getClass());
+  }
+
+  public static boolean isArray(SchemaVal schemaVal) {
+
+    if (schemaVal == null) {
+      return false;
+    }
+    return ArrayVal.class.equals(schemaVal.getClass());
+  }
+
+  public static boolean isObject(SchemaVal schemaVal) {
+    if (schemaVal == null) {
+      return false;
+    }
+    return ObjectVal.class.equals(schemaVal.getClass());
   }
 
   private final T value;

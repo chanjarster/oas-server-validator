@@ -5,10 +5,15 @@ package me.chanjar.oas.server.validator.core.value.schema;
  *
  * @see io.swagger.v3.oas.models.media.IntegerSchema
  */
-public class IntegerVal extends SchemaVal<Integer> {
+public class IntegerVal extends PrimitiveVal<Integer> {
 
   public IntegerVal(Integer value) {
     super(value);
+  }
+
+  @Override
+  public String getValueString() {
+    return String.valueOf(getValue());
   }
 
 }

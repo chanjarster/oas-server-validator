@@ -5,7 +5,7 @@ package me.chanjar.oas.server.validator.core.value.schema;
  *
  * @see io.swagger.v3.oas.models.media.EmailSchema
  */
-public class EmailVal extends SchemaVal<String> {
+public class EmailVal extends StringVal {
   public EmailVal(String value) {
     super(value);
   }

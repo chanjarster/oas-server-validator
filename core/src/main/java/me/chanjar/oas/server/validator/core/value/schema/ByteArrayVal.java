@@ -1,6 +1,7 @@
 package me.chanjar.oas.server.validator.core.value.schema;
 
 import java.util.Arrays;
+import java.util.Base64;
 
 /**
  * base64 encoded characters<br>
@@ -8,10 +9,20 @@ import java.util.Arrays;
  *
  * @see io.swagger.v3.oas.models.media.ByteArraySchema
  */
-public class ByteArrayVal extends SchemaVal<Byte[]> {
+public class ByteArrayVal extends PrimitiveVal<Byte[]> {
 
   public ByteArrayVal(Byte[] value) {
     super(value);
+  }
+
+  @Override
+  public String getValueString() {
+    Byte[] byteArray = getValue();
+    byte[] bytes = new byte[byteArray.length];
+    for (int i = 0; i < byteArray.length; i++) {
+      bytes[i] = byteArray[i].byteValue();
+    }
+    return Base64.getEncoder().encodeToString(bytes);
   }
 
   @Override

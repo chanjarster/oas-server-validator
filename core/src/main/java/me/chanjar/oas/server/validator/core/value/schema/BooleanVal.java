@@ -5,9 +5,14 @@ package me.chanjar.oas.server.validator.core.value.schema;
  *
  * @see io.swagger.v3.oas.models.media.BooleanSchema
  */
-public class BooleanVal extends SchemaVal<Boolean> {
+public class BooleanVal extends PrimitiveVal<Boolean> {
 
   public BooleanVal(Boolean value) {
     super(value);
+  }
+
+  @Override
+  public String getValueString() {
+    return getValue().toString();
   }
 }

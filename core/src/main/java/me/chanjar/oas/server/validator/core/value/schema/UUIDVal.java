@@ -6,7 +6,7 @@ package me.chanjar.oas.server.validator.core.value.schema;
  *
  * @see io.swagger.v3.oas.models.media.PasswordSchema
  */
-public class UUIDVal extends SchemaVal<String> {
+public class UUIDVal extends StringVal {
   public UUIDVal(String value) {
     super(value);
   }
