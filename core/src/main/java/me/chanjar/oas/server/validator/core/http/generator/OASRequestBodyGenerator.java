@@ -1,4 +1,4 @@
-package me.chanjar.oas.server.validator.core.generator;
+package me.chanjar.oas.server.validator.core.http.generator;
 
 import io.swagger.v3.oas.models.parameters.RequestBody;
 

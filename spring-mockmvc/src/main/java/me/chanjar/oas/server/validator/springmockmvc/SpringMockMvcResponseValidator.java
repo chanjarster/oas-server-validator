@@ -1,8 +1,8 @@
 package me.chanjar.oas.server.validator.springmockmvc;
 
-import me.chanjar.oas.server.validator.core.ValidationErrorException;
+import me.chanjar.oas.server.validator.core.http.ValidationErrorException;
 import me.chanjar.oas.server.validator.core.engine.OASResponseValidator;
-import me.chanjar.oas.server.validator.core.interaction.OASResponseSpec;
+import me.chanjar.oas.server.validator.core.http.OASResponseSpec;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.io.StringWriter;

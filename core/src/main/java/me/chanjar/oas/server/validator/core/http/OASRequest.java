@@ -1,4 +1,4 @@
-package me.chanjar.oas.server.validator.core.interaction;
+package me.chanjar.oas.server.validator.core.http;
 
 import java.util.ArrayList;
 import java.util.List;

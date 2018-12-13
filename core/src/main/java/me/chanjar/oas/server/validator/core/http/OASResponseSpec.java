@@ -1,4 +1,4 @@
-package me.chanjar.oas.server.validator.core.interaction;
+package me.chanjar.oas.server.validator.core.http;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.headers.Header;

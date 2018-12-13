@@ -1,6 +1,6 @@
 package me.chanjar.oas.server.validator.core.engine;
 
-import me.chanjar.oas.server.validator.core.interaction.OASRequest;
+import me.chanjar.oas.server.validator.core.http.OASRequest;
 
 /**
  *

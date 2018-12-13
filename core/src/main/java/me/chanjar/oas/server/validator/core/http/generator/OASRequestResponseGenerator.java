@@ -1,6 +1,6 @@
-package me.chanjar.oas.server.validator.core.generator;
+package me.chanjar.oas.server.validator.core.http.generator;
 
-import me.chanjar.oas.server.validator.core.interaction.OASRequestResponse;
+import me.chanjar.oas.server.validator.core.http.OASRequestResponse;
 
 import java.util.List;
 

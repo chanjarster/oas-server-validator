@@ -1,7 +1,7 @@
 package me.chanjar.oas.server.validator.core.engine;
 
 import io.swagger.v3.oas.models.responses.ApiResponse;
-import me.chanjar.oas.server.validator.core.interaction.OASResponseSpec;
+import me.chanjar.oas.server.validator.core.http.OASResponseSpec;
 
 /**
  * @param <RES> Response type be validated against

@@ -5,11 +5,11 @@ import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.parameters.*;
 import io.swagger.v3.oas.models.responses.ApiResponse;
-import me.chanjar.oas.server.validator.core.generator.OASRequestGenParam;
-import me.chanjar.oas.server.validator.core.generator.OASRequestResponseGenerator;
-import me.chanjar.oas.server.validator.core.generator.OASResponseGenParam;
-import me.chanjar.oas.server.validator.core.interaction.OASRequestResponse;
-import me.chanjar.oas.server.validator.core.spec.*;
+import me.chanjar.oas.server.validator.core.http.generator.OASRequestGenParam;
+import me.chanjar.oas.server.validator.core.http.generator.OASRequestResponseGenerator;
+import me.chanjar.oas.server.validator.core.http.generator.OASResponseGenParam;
+import me.chanjar.oas.server.validator.core.http.OASRequestResponse;
+import me.chanjar.oas.server.validator.core.loader.spec.*;
 
 import java.util.List;
 import java.util.Set;

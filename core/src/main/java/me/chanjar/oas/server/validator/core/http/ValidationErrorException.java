@@ -1,4 +1,4 @@
-package me.chanjar.oas.server.validator.core;
+package me.chanjar.oas.server.validator.core.http;
 
 public class ValidationErrorException extends RuntimeException {
   public ValidationErrorException() {

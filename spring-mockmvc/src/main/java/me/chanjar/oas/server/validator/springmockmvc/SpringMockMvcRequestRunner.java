@@ -1,7 +1,7 @@
 package me.chanjar.oas.server.validator.springmockmvc;
 
 import me.chanjar.oas.server.validator.core.engine.OASRequestRunner;
-import me.chanjar.oas.server.validator.core.interaction.OASRequest;
+import me.chanjar.oas.server.validator.core.http.OASRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.web.servlet.MockMvc;
